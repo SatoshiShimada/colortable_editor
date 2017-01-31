@@ -1,0 +1,218 @@
+
+#include <QtGui>
+#include "interface.h"
+#include "paint.h"
+#include <iostream>
+#include <string.h>
+
+Interface::Interface()
+{
+	setAcceptDrops(true);
+	createWindow();
+	connection();
+	//this->resize(840, 320);
+}
+
+Interface::~Interface()
+{
+}
+
+void Interface::createWindow(void)
+{
+	window         = new QWidget;
+	image          = new QLabel;
+	filenameLabel  = new QLabel("Image file name: ");
+	imageLabel    = new QLabel("Image");
+	colortableLabel  = new QLabel("Color Table");
+	catcherSizeLabel  = new QLabel("Catcher size: ");
+	selectCategoliesComboBox = new QComboBox();
+	setClickModeRatioButton = new QRadioButton("Set");
+	clearClickModeRatioButton = new QRadioButton("Clear");
+	changeClickModeGroupBox = new QGroupBox("Click mode");
+	clearImageButton    = new QPushButton("Clear");
+	saveImageButton     = new QPushButton("Save");
+	loadImageButton     = new QPushButton("Load");
+	clearTableButton = new QPushButton("Clear");
+	saveTableButton = new QPushButton("Save");
+	loadTableButton = new QPushButton("Load");
+	applyTableButton = new QPushButton("Apply");
+	filenameLine   = new QLineEdit;
+	paintarea      = new PaintArea;
+	catcherSizeSlider = new QSlider;
+	mainLayout     = new QVBoxLayout;
+	winLayout      = new QHBoxLayout;
+	labelLayout    = new QGridLayout;
+	buttonLayout = new QVBoxLayout;
+
+	image->setMinimumSize(320, 240);
+	image->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
+
+	setClickModeRatioButton->setChecked(true);
+
+	catcherSizeSlider->setTickPosition(QSlider::TicksBelow);
+	catcherSizeSlider->setOrientation(Qt::Horizontal);
+	catcherSizeSlider->setRange(1, 10);
+	catcherSizeLabel->setText("Catcher size: 1");
+
+	selectCategoliesComboBox->addItem(QString("Ball"));
+	selectCategoliesComboBox->addItem(QString("Goal"));
+	selectCategoliesComboBox->addItem(QString("White Line"));
+	selectCategoliesComboBox->addItem(QString("Field"));
+	selectCategoliesComboBox->addItem(QString("Robot"));
+	selectCategoliesComboBox->addItem(QString("Back Ground"));
+
+	buttonLayout->addWidget(setClickModeRatioButton);
+	buttonLayout->addWidget(clearClickModeRatioButton);
+	changeClickModeGroupBox->setLayout(buttonLayout);
+
+	labelLayout->addWidget(filenameLabel, 1, 1);
+	labelLayout->addWidget(filenameLine, 1, 2);
+	labelLayout->addWidget(colortableLabel, 3, 1);
+	labelLayout->addWidget(clearTableButton, 4, 1);
+	labelLayout->addWidget(saveTableButton, 5, 1);
+	labelLayout->addWidget(loadTableButton, 6, 1);
+	labelLayout->addWidget(applyTableButton, 7, 1);
+	labelLayout->addWidget(imageLabel, 3, 2);
+	labelLayout->addWidget(clearImageButton, 4, 2);
+	labelLayout->addWidget(saveImageButton, 5, 2);
+	labelLayout->addWidget(loadImageButton, 6, 2);
+	labelLayout->addWidget(selectCategoliesComboBox, 8, 1);
+	labelLayout->addWidget(catcherSizeSlider, 9, 1);
+	labelLayout->addWidget(catcherSizeLabel, 9, 2);
+	labelLayout->addWidget(changeClickModeGroupBox, 10, 1);
+
+	winLayout->addLayout(labelLayout);
+	winLayout->addWidget(image);
+	winLayout->addWidget(paintarea);
+	mainLayout->addLayout(winLayout);
+
+	window->setLayout(mainLayout);
+	setCentralWidget(window);
+}
+
+void Interface::loadImage(QString image_filename)
+{
+	QImage image_buf(image_filename);
+	if(image_buf.isNull()) {
+		std::cerr << "Error: can\'t open image file" << std::endl;
+		return;
+	}
+	QPixmap map = QPixmap::fromImage(image_buf);
+	map = map.scaled(320, 240);
+	image->setPixmap(map);
+}
+
+/*
+void Interface::loadImage(const char *image_filename)
+{
+	QImage image_buf(image_filename);
+	if(image_buf.isNull()) {
+		std::cerr << "Error: can\'t open image file" << std::endl;
+		return;
+	}
+	QPixmap map = QPixmap::fromImage(image_buf);
+	map = map.scaled(320, 240);
+	image->setPixmap(QPixmap::fromImage(image_buf));
+}
+*/
+
+void Interface::dragEnterEvent(QDragEnterEvent *e)
+{
+	if(e->mimeData()->hasFormat("text/uri-list")) {
+		e->acceptProposedAction();
+	}
+}
+
+void Interface::dropEvent(QDropEvent *e)
+{
+	filenameDrag = e->mimeData()->urls().first().toLocalFile();
+	filenameLine->setText(filenameDrag);
+	loadImage(filenameDrag);
+}
+
+void Interface::connection(void)
+{
+	QObject::connect(clearImageButton, SIGNAL(clicked()), this, SLOT(clearImageSlot()));
+	QObject::connect(saveImageButton, SIGNAL(clicked()), this, SLOT(saveImageSlot()));
+	QObject::connect(loadImageButton, SIGNAL(clicked()), this, SLOT(loadImageSlot()));
+	QObject::connect(clearTableButton, SIGNAL(clicked()), this, SLOT(clearTableSlot()));
+	QObject::connect(saveTableButton, SIGNAL(clicked()), this, SLOT(saveTableSlot()));
+	QObject::connect(loadTableButton, SIGNAL(clicked()), this, SLOT(loadTableSlot()));
+	QObject::connect(applyTableButton, SIGNAL(clicked()), this, SLOT(applyTableSlot()));
+	QObject::connect(catcherSizeSlider, SIGNAL(sliderReleased()), this, SLOT(catcherSizeChanged()));
+	QObject::connect(paintarea, SIGNAL(imageChanged()), this, SLOT(drawImage()));
+	QObject::connect(selectCategoliesComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setObjectType()));
+	QObject::connect(selectCategoliesComboBox, SIGNAL(highlighted(int)), this, SLOT(setObjectType()));
+}
+
+void Interface::clearImageSlot(void)
+{
+	paintarea->resetPixmapArea();
+}
+
+void Interface::saveImageSlot(void)
+{
+	const char *filename = "out.png";
+	paintarea->savePixmapImage(filename);
+}
+
+void Interface::loadImageSlot(void)
+{
+	const char *filename = "out.png";
+	paintarea->loadPixmapImage(filename);
+}
+
+void Interface::clearTableSlot(void)
+{
+	paintarea->clearTable();
+	paintarea->applyTable();
+}
+
+void Interface::saveTableSlot(void)
+{
+	const char *filename = "table";
+	paintarea->saveTable(filename);
+	paintarea->applyTable();
+}
+
+void Interface::loadTableSlot(void)
+{
+	const char *filename = "table";
+	paintarea->loadTable(filename);
+	paintarea->applyTable();
+}
+
+void Interface::applyTableSlot(void)
+{
+	paintarea->applyTable();
+}
+
+void Interface::saveImage(const char *filename)
+{
+	paintarea->savePixmapImage(filename);
+}
+
+void Interface::loadImage(const char *filename)
+{
+	paintarea->loadPixmapImage(filename);
+}
+
+void Interface::catcherSizeChanged(void)
+{
+	char buf[1024];
+	sprintf(buf, "Catcher size: %d", catcherSizeSlider->value());
+	catcherSizeLabel->setText(buf);
+	paintarea->setCatcherSize(catcherSizeSlider->value());
+}
+
+void Interface::drawImage(void)
+{
+	image->setPixmap(paintarea->map);
+}
+
+void Interface::setObjectType(void)
+{
+	paintarea->setCategoly(selectCategoliesComboBox->currentIndex());
+	paintarea->applyTable();
+}
+

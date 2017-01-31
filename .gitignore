@@ -1,0 +1,10 @@
+*.o
+*.pro
+*.app
+*.png
+moc_*
+.DS_store
+Makefile
+color_table
+table
+qt_make.sh
