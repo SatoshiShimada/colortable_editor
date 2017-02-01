@@ -44,6 +44,14 @@ bool ColorTable::clear(void)
 	return true;
 }
 
+bool ColorTable::clearCategoly(table value)
+{
+	for(int i = 0; i < color_table_size; i++) {
+		color_table[i] &= ~value;
+	}
+	return true;
+}
+
 bool ColorTable::save(const char *filename)
 {
 	std::ofstream fout(filename, std::ios::out | std::ios::binary | std::ios::trunc);

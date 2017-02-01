@@ -13,6 +13,7 @@ public:
 	void setColorTable(unsigned int, table);
 	table getColorTable(unsigned int);
 	bool clear(void);
+	bool clearCategoly(table);
 	bool save(const char *);
 	bool load(const char *);
 	static const int max_categolies = 6;

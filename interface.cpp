@@ -10,7 +10,6 @@ Interface::Interface()
 	setAcceptDrops(true);
 	createWindow();
 	connection();
-	//this->resize(840, 320);
 }
 
 Interface::~Interface()
@@ -22,16 +21,17 @@ void Interface::createWindow(void)
 	window         = new QWidget;
 	image          = new QLabel;
 	filenameLabel  = new QLabel("Image file name: ");
-	imageLabel    = new QLabel("Image");
-	colortableLabel  = new QLabel("Color Table");
 	catcherSizeLabel  = new QLabel("Catcher size: ");
 	selectCategoliesComboBox = new QComboBox();
 	setClickModeRatioButton = new QRadioButton("Set");
 	clearClickModeRatioButton = new QRadioButton("Clear");
 	changeClickModeGroupBox = new QGroupBox("Click mode");
+	colortableGroupBox = new QGroupBox("color table");
+	imageGroupBox = new QGroupBox("image");
 	clearImageButton    = new QPushButton("Clear");
 	saveImageButton     = new QPushButton("Save");
 	loadImageButton     = new QPushButton("Load");
+	clearAllTableButton = new QPushButton("Clear All");
 	clearTableButton = new QPushButton("Clear");
 	saveTableButton = new QPushButton("Save");
 	loadTableButton = new QPushButton("Load");
@@ -43,6 +43,8 @@ void Interface::createWindow(void)
 	winLayout      = new QHBoxLayout;
 	labelLayout    = new QGridLayout;
 	buttonLayout = new QVBoxLayout;
+	colortableLayout = new QVBoxLayout;
+	imageLayout = new QVBoxLayout;
 
 	image->setMinimumSize(320, 240);
 	image->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
@@ -65,21 +67,26 @@ void Interface::createWindow(void)
 	buttonLayout->addWidget(clearClickModeRatioButton);
 	changeClickModeGroupBox->setLayout(buttonLayout);
 
+	colortableLayout->addWidget(clearAllTableButton);
+	colortableLayout->addWidget(clearTableButton);
+	colortableLayout->addWidget(saveTableButton);
+	colortableLayout->addWidget(loadTableButton);
+	colortableLayout->addWidget(applyTableButton);
+	colortableGroupBox->setLayout(colortableLayout);
+
+	imageLayout->addWidget(clearImageButton);
+	imageLayout->addWidget(saveImageButton);
+	imageLayout->addWidget(loadImageButton);
+	imageGroupBox->setLayout(imageLayout);
+
 	labelLayout->addWidget(filenameLabel, 1, 1);
 	labelLayout->addWidget(filenameLine, 1, 2);
-	labelLayout->addWidget(colortableLabel, 3, 1);
-	labelLayout->addWidget(clearTableButton, 4, 1);
-	labelLayout->addWidget(saveTableButton, 5, 1);
-	labelLayout->addWidget(loadTableButton, 6, 1);
-	labelLayout->addWidget(applyTableButton, 7, 1);
-	labelLayout->addWidget(imageLabel, 3, 2);
-	labelLayout->addWidget(clearImageButton, 4, 2);
-	labelLayout->addWidget(saveImageButton, 5, 2);
-	labelLayout->addWidget(loadImageButton, 6, 2);
-	labelLayout->addWidget(selectCategoliesComboBox, 8, 1);
-	labelLayout->addWidget(catcherSizeSlider, 9, 1);
-	labelLayout->addWidget(catcherSizeLabel, 9, 2);
-	labelLayout->addWidget(changeClickModeGroupBox, 10, 1);
+	labelLayout->addWidget(imageGroupBox, 2, 1);
+	labelLayout->addWidget(colortableGroupBox, 2, 2);
+	labelLayout->addWidget(selectCategoliesComboBox, 3, 1);
+	labelLayout->addWidget(catcherSizeSlider, 4, 1);
+	labelLayout->addWidget(catcherSizeLabel, 4, 2);
+	labelLayout->addWidget(changeClickModeGroupBox, 5, 1);
 
 	winLayout->addLayout(labelLayout);
 	winLayout->addWidget(image);
@@ -135,6 +142,7 @@ void Interface::connection(void)
 	QObject::connect(clearImageButton, SIGNAL(clicked()), this, SLOT(clearImageSlot()));
 	QObject::connect(saveImageButton, SIGNAL(clicked()), this, SLOT(saveImageSlot()));
 	QObject::connect(loadImageButton, SIGNAL(clicked()), this, SLOT(loadImageSlot()));
+	QObject::connect(clearAllTableButton, SIGNAL(clicked()), this, SLOT(clearAllTableSlot()));
 	QObject::connect(clearTableButton, SIGNAL(clicked()), this, SLOT(clearTableSlot()));
 	QObject::connect(saveTableButton, SIGNAL(clicked()), this, SLOT(saveTableSlot()));
 	QObject::connect(loadTableButton, SIGNAL(clicked()), this, SLOT(loadTableSlot()));
@@ -164,9 +172,15 @@ void Interface::loadImageSlot(void)
 	paintarea->loadPixmapImage(filename);
 }
 
-void Interface::clearTableSlot(void)
+void Interface::clearAllTableSlot(void)
 {
 	paintarea->clearTable();
+	paintarea->applyTable();
+}
+
+void Interface::clearTableSlot(void)
+{
+	paintarea->clearCategolyTable();
 	paintarea->applyTable();
 }
 

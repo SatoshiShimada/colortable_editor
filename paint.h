@@ -21,6 +21,7 @@ public:
 	QPixmap map;
 	void setCatcherSize(int);
 	bool clearTable(void);
+	bool clearCategolyTable(void);
 	bool saveTable(const char *);
 	bool loadTable(const char *);
 	bool applyTable(void);

@@ -166,6 +166,11 @@ bool PaintArea::clearTable(void)
 	return color_table.clear();
 }
 
+bool PaintArea::clearCategolyTable(void)
+{
+	return color_table.clearCategoly(1 << currentIndex);
+}
+
 bool PaintArea::saveTable(const char *filename)
 {
 	return color_table.save(filename);

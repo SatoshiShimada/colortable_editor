@@ -28,9 +28,10 @@ private:
 	QString filenameDrag;
 	QWidget *window;
 	QGroupBox *changeClickModeGroupBox;
+	QGroupBox *colortableGroupBox;
+	QGroupBox *imageGroupBox;
 	QLabel *image;
 	QLabel *filenameLabel;
-	QLabel *imageLabel, *colortableLabel;
 	QLabel *catcherSizeLabel;
 	QComboBox *selectCategoliesComboBox;
 	QRadioButton *setClickModeRatioButton;
@@ -38,6 +39,7 @@ private:
 	QPushButton *clearImageButton;
 	QPushButton *saveImageButton;
 	QPushButton *loadImageButton;
+	QPushButton *clearAllTableButton;
 	QPushButton *clearTableButton;
 	QPushButton *saveTableButton;
 	QPushButton *loadTableButton;
@@ -49,6 +51,8 @@ private:
 	QGridLayout *labelLayout;
 	QHBoxLayout *winLayout;
 	QVBoxLayout *buttonLayout;
+	QVBoxLayout *colortableLayout;
+	QVBoxLayout *imageLayout;
 	void connection(void);
 
 public:
@@ -65,6 +69,7 @@ private slots:
 	void clearImageSlot(void);
 	void saveImageSlot(void);
 	void loadImageSlot(void);
+	void clearAllTableSlot(void);
 	void clearTableSlot(void);
 	void saveTableSlot(void);
 	void loadTableSlot(void);
