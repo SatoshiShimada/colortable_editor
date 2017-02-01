@@ -29,6 +29,7 @@ protected:
 	QGroupBox *changeClickModeGroupBox;
 	QGroupBox *colortableGroupBox;
 	QGroupBox *imageGroupBox;
+	QGroupBox *imageProcessingGroupBox;
 	QLabel *image;
 	QLabel *filenameLabel;
 	QLabel *catcherSizeLabel;
@@ -43,6 +44,8 @@ protected:
 	QPushButton *saveTableButton;
 	QPushButton *loadTableButton;
 	QPushButton *applyTableButton;
+	QPushButton *imageErosionButton;
+	QPushButton *imageDilationButton;
 	QLineEdit *filenameLine;
 	QSlider *catcherSizeSlider;
 	QVBoxLayout *mainLayout;
@@ -50,6 +53,7 @@ protected:
 	QHBoxLayout *winLayout;
 	QVBoxLayout *buttonLayout;
 	QVBoxLayout *colortableLayout;
+	QVBoxLayout *imageProcessingLayout;
 	QVBoxLayout *imageLayout;
 	void connection(void);
 

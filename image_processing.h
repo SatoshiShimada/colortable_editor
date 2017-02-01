@@ -8,6 +8,9 @@ public:
 	ImageProcessing();
 	~ImageProcessing();
 	void setImageData(int, int, unsigned char *);
+	void getImageData(unsigned char *);
+	void erosion(void);
+	void dilation(void);
 protected:
 	bool isAllocatedDataMemory;
 	unsigned char *data;

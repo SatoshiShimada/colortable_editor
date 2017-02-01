@@ -3,10 +3,11 @@
 #include "paint.h"
 #include "color_table.h"
 
-PaintArea::PaintArea() : QLabel(), catcherSize(1), currentIndex(1), isSetMode(true)
+PaintArea::PaintArea() : QLabel(), map(320, 240), catcherSize(1), currentIndex(1), isSetMode(true)
 {
 	mainPixmap = new QPixmap(320, 240);
-	mainPixmap->fill(qRgb(255, 255, 255));
+	mainPixmap->fill(qRgb(0, 0, 0));
+	map.fill(qRgb(0, 0, 0));
 	this->resize(320, 240);
 	this->setPixmap(*mainPixmap);
 	this->update();
@@ -56,6 +57,21 @@ void PaintArea::setColorToTable(int x, int y)
 			}
 		}
 	}
+}
+
+void PaintArea::setLabeledImageData(unsigned char *imageData)
+{
+	QImage label = map.toImage();
+	for(int y = 0; y < label.height(); y++) {
+		for(int x = 0; x < label.width(); x++) {
+			unsigned char r = imageData[(y * label.width() + x) * 3 + 0];
+			unsigned char g = imageData[(y * label.width() + x) * 3 + 1];
+			unsigned char b = imageData[(y * label.width() + x) * 3 + 2];
+			label.setPixel(x, y, qRgb((int)r, (int)g, (int)b));
+		}
+	}
+	map = QPixmap::fromImage(label);
+	emit imageChanged();
 }
 
 void PaintArea::getLabeledImageData(unsigned char *returnImage)
@@ -153,7 +169,7 @@ QPixmap PaintArea::createLabeledImage(void)
 {
 	QImage image = originalPixmap->toImage();
 	QImage label(image.width(), image.height(), QImage::Format_RGB32);
-	label.fill(qRgb(255, 255, 255));
+	label.fill(qRgb(0, 0, 0));
 	for(int y = 0; y < image.height(); y++) {
 		for(int x = 0; x < image.width(); x++) {
 			QRgb value = image.pixel(x, y);
@@ -164,14 +180,6 @@ QPixmap PaintArea::createLabeledImage(void)
 		}
 	}
 	map = QPixmap::fromImage(label);
-
-	unsigned char *data = new unsigned char[image.width() * image.height() * 3];
-	if(data) {
-		getLabeledImageData(data);
-		image_processing.setImageData(image.width(), image.height(), data);
-		delete data;
-	}
-
 	return map;
 }
 
@@ -218,5 +226,41 @@ bool PaintArea::applyTable(void)
 void PaintArea::setMode(bool mode)
 {
 	isSetMode = mode;
+}
+
+void PaintArea::setImageFromData(void)
+{
+	unsigned char *data = new unsigned char[map.width() * map.height() * 3];
+	if(data) {
+		image_processing.getImageData(data);
+		setLabeledImageData(data);
+		delete data;
+	}
+}
+
+void PaintArea::imageErosion(void)
+{
+	QImage image = originalPixmap->toImage();
+	unsigned char *data = new unsigned char[image.width() * image.height() * 3];
+	if(data) {
+		getLabeledImageData(data);
+		image_processing.setImageData(image.width(), image.height(), data);
+		delete data;
+	}
+	image_processing.erosion();
+	setImageFromData();
+}
+
+void PaintArea::imageDilation(void)
+{
+	QImage image = originalPixmap->toImage();
+	unsigned char *data = new unsigned char[image.width() * image.height() * 3];
+	if(data) {
+		getLabeledImageData(data);
+		image_processing.setImageData(image.width(), image.height(), data);
+		delete data;
+	}
+	image_processing.dilation();
+	setImageFromData();
 }
 

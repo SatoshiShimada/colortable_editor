@@ -28,6 +28,7 @@ void Interface::createWindow(void)
 	changeClickModeGroupBox   = new QGroupBox("Click mode");
 	colortableGroupBox        = new QGroupBox("color table");
 	imageGroupBox             = new QGroupBox("image");
+	imageProcessingGroupBox   = new QGroupBox("Image Processing");
 	clearImageButton          = new QPushButton("Clear");
 	saveImageButton           = new QPushButton("Save");
 	loadImageButton           = new QPushButton("Load");
@@ -36,6 +37,8 @@ void Interface::createWindow(void)
 	saveTableButton           = new QPushButton("Save");
 	loadTableButton           = new QPushButton("Load");
 	applyTableButton          = new QPushButton("Apply");
+	imageErosionButton        = new QPushButton("Erosion");
+	imageDilationButton       = new QPushButton("Dilation");
 	paintarea                 = new PaintArea;
 	catcherSizeSlider         = new QSlider;
 	mainLayout                = new QVBoxLayout;
@@ -43,10 +46,12 @@ void Interface::createWindow(void)
 	labelLayout               = new QGridLayout;
 	buttonLayout              = new QVBoxLayout;
 	colortableLayout          = new QVBoxLayout;
+	imageProcessingLayout     = new QVBoxLayout;
 	imageLayout               = new QVBoxLayout;
 
 	image->setMinimumSize(320, 240);
 	image->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
+	image->setPixmap(paintarea->map);
 
 	setClickModeRatioButton->setChecked(true);
 
@@ -78,12 +83,17 @@ void Interface::createWindow(void)
 	imageLayout->addWidget(loadImageButton);
 	imageGroupBox->setLayout(imageLayout);
 
+	imageProcessingLayout->addWidget(imageErosionButton);
+	imageProcessingLayout->addWidget(imageDilationButton);
+	imageProcessingGroupBox->setLayout(imageProcessingLayout);
+
 	labelLayout->addWidget(imageGroupBox, 1, 1);
 	labelLayout->addWidget(colortableGroupBox, 1, 2);
 	labelLayout->addWidget(selectCategoliesComboBox, 2, 1);
 	labelLayout->addWidget(changeClickModeGroupBox, 2, 2);
-	labelLayout->addWidget(catcherSizeLabel, 3, 1);
-	labelLayout->addWidget(catcherSizeSlider, 3, 2);
+	labelLayout->addWidget(imageProcessingGroupBox, 3, 1);
+	labelLayout->addWidget(catcherSizeLabel, 4, 1);
+	labelLayout->addWidget(catcherSizeSlider, 4, 2);
 
 	winLayout->addLayout(labelLayout);
 	winLayout->addWidget(image);
@@ -123,6 +133,8 @@ void Interface::connection(void)
 	QObject::connect(selectCategoliesComboBox, SIGNAL(highlighted(int)), this, SLOT(setObjectType()));
 	QObject::connect(setClickModeRatioButton, SIGNAL(clicked(bool)), this, SLOT(setClickModeSlot()));
 	QObject::connect(clearClickModeRatioButton, SIGNAL(clicked(bool)), this, SLOT(clearClickModeSlot()));
+	QObject::connect(imageErosionButton, SIGNAL(clicked(bool)), paintarea, SLOT(imageErosion()));
+	QObject::connect(imageDilationButton, SIGNAL(clicked(bool)), paintarea, SLOT(imageDilation()));
 }
 
 void Interface::clearImageSlot(void)

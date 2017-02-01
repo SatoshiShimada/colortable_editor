@@ -29,7 +29,6 @@ public:
 	bool applyTable(void);
 	void setCategoly(int);
 	void setMode(bool);
-	void getLabeledImageData(unsigned char *);
 protected:
 	QPixmap *mainPixmap;
 	QPixmap *originalPixmap;
@@ -46,10 +45,15 @@ protected:
 	bool isCategoly(QRgb);
 	void categolize(void);
 	QPixmap createLabeledImage(void);
+	void setImageFromData(void);
+	void setLabeledImageData(unsigned char *);
+	void getLabeledImageData(unsigned char *);
 public slots:
 	void resetPixmapArea(void);
 	void savePixmapImage(const char *);
 	void loadPixmapImage(const char *);
+	void imageErosion(void);
+	void imageDilation(void);
 signals:
 	void imageChanged(void);
 };
