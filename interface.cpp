@@ -1,9 +1,10 @@
 
 #include <QtGui>
+
+#include <cstring>
+
 #include "interface.h"
 #include "paint.h"
-#include <iostream>
-#include <string.h>
 
 Interface::Interface()
 {
@@ -18,33 +19,31 @@ Interface::~Interface()
 
 void Interface::createWindow(void)
 {
-	window         = new QWidget;
-	image          = new QLabel;
-	filenameLabel  = new QLabel("Image file name: ");
-	catcherSizeLabel  = new QLabel("Catcher size: ");
-	selectCategoliesComboBox = new QComboBox();
-	setClickModeRatioButton = new QRadioButton("Set");
+	window                    = new QWidget;
+	image                     = new QLabel;
+	catcherSizeLabel          = new QLabel("Catcher size: ");
+	selectCategoliesComboBox  = new QComboBox();
+	setClickModeRatioButton   = new QRadioButton("Set");
 	clearClickModeRatioButton = new QRadioButton("Clear");
-	changeClickModeGroupBox = new QGroupBox("Click mode");
-	colortableGroupBox = new QGroupBox("color table");
-	imageGroupBox = new QGroupBox("image");
-	clearImageButton    = new QPushButton("Clear");
-	saveImageButton     = new QPushButton("Save");
-	loadImageButton     = new QPushButton("Load");
-	clearAllTableButton = new QPushButton("Clear All");
-	clearTableButton = new QPushButton("Clear");
-	saveTableButton = new QPushButton("Save");
-	loadTableButton = new QPushButton("Load");
-	applyTableButton = new QPushButton("Apply");
-	filenameLine   = new QLineEdit;
-	paintarea      = new PaintArea;
-	catcherSizeSlider = new QSlider;
-	mainLayout     = new QVBoxLayout;
-	winLayout      = new QHBoxLayout;
-	labelLayout    = new QGridLayout;
-	buttonLayout = new QVBoxLayout;
-	colortableLayout = new QVBoxLayout;
-	imageLayout = new QVBoxLayout;
+	changeClickModeGroupBox   = new QGroupBox("Click mode");
+	colortableGroupBox        = new QGroupBox("color table");
+	imageGroupBox             = new QGroupBox("image");
+	clearImageButton          = new QPushButton("Clear");
+	saveImageButton           = new QPushButton("Save");
+	loadImageButton           = new QPushButton("Load");
+	clearAllTableButton       = new QPushButton("Clear All");
+	clearTableButton          = new QPushButton("Clear");
+	saveTableButton           = new QPushButton("Save");
+	loadTableButton           = new QPushButton("Load");
+	applyTableButton          = new QPushButton("Apply");
+	paintarea                 = new PaintArea;
+	catcherSizeSlider         = new QSlider;
+	mainLayout                = new QVBoxLayout;
+	winLayout                 = new QHBoxLayout;
+	labelLayout               = new QGridLayout;
+	buttonLayout              = new QVBoxLayout;
+	colortableLayout          = new QVBoxLayout;
+	imageLayout               = new QVBoxLayout;
 
 	image->setMinimumSize(320, 240);
 	image->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
@@ -79,14 +78,12 @@ void Interface::createWindow(void)
 	imageLayout->addWidget(loadImageButton);
 	imageGroupBox->setLayout(imageLayout);
 
-	labelLayout->addWidget(filenameLabel, 1, 1);
-	labelLayout->addWidget(filenameLine, 1, 2);
-	labelLayout->addWidget(imageGroupBox, 2, 1);
-	labelLayout->addWidget(colortableGroupBox, 2, 2);
-	labelLayout->addWidget(selectCategoliesComboBox, 3, 1);
-	labelLayout->addWidget(catcherSizeSlider, 4, 1);
-	labelLayout->addWidget(catcherSizeLabel, 4, 2);
-	labelLayout->addWidget(changeClickModeGroupBox, 5, 1);
+	labelLayout->addWidget(imageGroupBox, 1, 1);
+	labelLayout->addWidget(colortableGroupBox, 1, 2);
+	labelLayout->addWidget(selectCategoliesComboBox, 2, 1);
+	labelLayout->addWidget(changeClickModeGroupBox, 2, 2);
+	labelLayout->addWidget(catcherSizeLabel, 3, 1);
+	labelLayout->addWidget(catcherSizeSlider, 3, 2);
 
 	winLayout->addLayout(labelLayout);
 	winLayout->addWidget(image);
@@ -96,32 +93,6 @@ void Interface::createWindow(void)
 	window->setLayout(mainLayout);
 	setCentralWidget(window);
 }
-
-void Interface::loadImage(QString image_filename)
-{
-	QImage image_buf(image_filename);
-	if(image_buf.isNull()) {
-		std::cerr << "Error: can\'t open image file" << std::endl;
-		return;
-	}
-	QPixmap map = QPixmap::fromImage(image_buf);
-	map = map.scaled(320, 240);
-	image->setPixmap(map);
-}
-
-/*
-void Interface::loadImage(const char *image_filename)
-{
-	QImage image_buf(image_filename);
-	if(image_buf.isNull()) {
-		std::cerr << "Error: can\'t open image file" << std::endl;
-		return;
-	}
-	QPixmap map = QPixmap::fromImage(image_buf);
-	map = map.scaled(320, 240);
-	image->setPixmap(QPixmap::fromImage(image_buf));
-}
-*/
 
 void Interface::dragEnterEvent(QDragEnterEvent *e)
 {
@@ -133,8 +104,7 @@ void Interface::dragEnterEvent(QDragEnterEvent *e)
 void Interface::dropEvent(QDropEvent *e)
 {
 	filenameDrag = e->mimeData()->urls().first().toLocalFile();
-	filenameLine->setText(filenameDrag);
-	loadImage(filenameDrag);
+	loadImage(filenameDrag.toStdString().c_str());
 }
 
 void Interface::connection(void)

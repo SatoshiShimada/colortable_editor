@@ -8,8 +8,7 @@
 #include <QApplication>
 #include <QPushButton>
 #include <QLabel>
-#include <QTextEdit> /* multi line */
-#include <QLineEdit> /* single line */
+#include <QLineEdit>
 #include <QMainWindow>
 #include <QDropEvent>
 #include <QDrag>
@@ -23,7 +22,7 @@ class Interface : public QMainWindow
 {
 	Q_OBJECT
 
-private:
+protected:
 	PaintArea *paintarea;
 	QString filenameDrag;
 	QWidget *window;
@@ -45,7 +44,6 @@ private:
 	QPushButton *loadTableButton;
 	QPushButton *applyTableButton;
 	QLineEdit *filenameLine;
-	QLineEdit *resultLine;
 	QSlider *catcherSizeSlider;
 	QVBoxLayout *mainLayout;
 	QGridLayout *labelLayout;
@@ -60,7 +58,6 @@ public:
 	~Interface();
 	void createWindow(void);
 	void loadImage(const char *);
-	void loadImage(QString);
 	void saveImage(const char *);
 	void dragEnterEvent(QDragEnterEvent *e);
 	void dropEvent(QDropEvent *e);

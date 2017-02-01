@@ -6,6 +6,7 @@
 PaintArea::PaintArea() : QLabel(), catcherSize(1), currentIndex(1), isSetMode(true)
 {
 	mainPixmap = new QPixmap(320, 240);
+	mainPixmap->fill(qRgb(255, 255, 255));
 	this->resize(320, 240);
 	this->setPixmap(*mainPixmap);
 	this->update();
@@ -101,6 +102,7 @@ void PaintArea::loadPixmapImage(const char *filename)
 {
 	QString qfilename = QString(filename);
 	mainPixmap->load(qfilename);
+	*mainPixmap = mainPixmap->scaled(320, 240);
 	originalPixmap = new QPixmap(*mainPixmap);
 	this->setPixmap(*mainPixmap);
 	this->update();

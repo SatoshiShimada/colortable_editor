@@ -15,7 +15,8 @@
 
 class PaintArea : public QLabel
 {
-Q_OBJECT
+	Q_OBJECT
+
 public:
 	PaintArea();
 	QPixmap map;
@@ -42,7 +43,6 @@ protected:
 	bool isCategoly(QRgb);
 	void categolize(void);
 	QPixmap createLabeledImage(void);
-private:
 public slots:
 	void resetPixmapArea(void);
 	void savePixmapImage(const char *);
