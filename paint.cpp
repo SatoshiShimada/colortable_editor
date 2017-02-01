@@ -44,16 +44,32 @@ void PaintArea::setColorToTable(int x, int y)
 	y = y - y_diff;
 	if(x < 0 || x >= mainPixmap->width()) return;
 	if(y < 0 || y >= mainPixmap->height()) return;
-	unsigned int rgb = originalPixmap->toImage().pixel(x, y);
-	int r = (rgb >> 16) & 0xff;
-	int g = (rgb >>  8) & 0xff;
-	int b = (rgb >>  0) & 0xff;
-	for(int rr = std::max<int>(r - margin, 0); rr < std::min<int>(r + margin, 255); rr++) {
-		for(int gg = std::max<int>(g - margin, 0); gg < std::min<int>(g + margin, 255); gg++) {
-			for(int bb = std::max<int>(b - margin, 0); bb < std::min<int>(b + margin, 255); bb++) {
-				unsigned int index = qRgb(rr, gg, bb) & 0x00FFFFFF;
+	unsigned long rgb = originalPixmap->toImage().pixel(x, y);
+	unsigned long r = (rgb >> 16) & 0xff;
+	unsigned long g = (rgb >>  8) & 0xff;
+	unsigned long b = (rgb >>  0) & 0xff;
+	for(unsigned long rr = std::max<unsigned long>(r - margin, 0); rr < std::min<unsigned long>(r + margin, 255); rr++) {
+		for(unsigned long gg = std::max<unsigned long>(g - margin, 0); gg < std::min<unsigned long>(g + margin, 255); gg++) {
+			for(unsigned long bb = std::max<unsigned long>(b - margin, 0); bb < std::min<unsigned long>(b + margin, 255); bb++) {
+				unsigned long index = qRgb(rr, gg, bb) & 0x00FFFFFF;
 				color_table.setColorTable(index, 1 << currentIndex);
 			}
+		}
+	}
+}
+
+void PaintArea::getLabeledImageData(unsigned char *returnImage)
+{
+	QImage label = map.toImage();
+	for(int y = 0; y < label.height(); y++) {
+		for(int x = 0; x < label.width(); x++) {
+			QRgb rgb = label.pixel(x, y);
+			unsigned char r = (rgb >> 16) & 0xff;
+			unsigned char g = (rgb >>  8) & 0xff;
+			unsigned char b = (rgb >>  0) & 0xff;
+			returnImage[(y * label.width() + x) * 3 + 0] = r;
+			returnImage[(y * label.width() + x) * 3 + 1] = g;
+			returnImage[(y * label.width() + x) * 3 + 2] = b;
 		}
 	}
 }
@@ -148,6 +164,14 @@ QPixmap PaintArea::createLabeledImage(void)
 		}
 	}
 	map = QPixmap::fromImage(label);
+
+	unsigned char *data = new unsigned char[image.width() * image.height() * 3];
+	if(data) {
+		getLabeledImageData(data);
+		image_processing.setImageData(image.width(), image.height(), data);
+		delete data;
+	}
+
 	return map;
 }
 

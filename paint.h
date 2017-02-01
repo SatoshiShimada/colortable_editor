@@ -12,6 +12,7 @@
 #include <QHBoxLayout>
 
 #include "color_table.h"
+#include "image_processing.h"
 
 class PaintArea : public QLabel
 {
@@ -28,10 +29,12 @@ public:
 	bool applyTable(void);
 	void setCategoly(int);
 	void setMode(bool);
+	void getLabeledImageData(unsigned char *);
 protected:
 	QPixmap *mainPixmap;
 	QPixmap *originalPixmap;
 	ColorTable color_table;
+	ImageProcessing image_processing;
 	int catcherSize;
 	int currentIndex;
 	bool isSetMode;
