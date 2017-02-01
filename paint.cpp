@@ -234,7 +234,7 @@ void PaintArea::setImageFromData(void)
 	if(data) {
 		image_processing.getImageData(data);
 		setLabeledImageData(data);
-		delete data;
+		delete[] data;
 	}
 }
 
@@ -245,7 +245,7 @@ void PaintArea::imageErosion(void)
 	if(data) {
 		getLabeledImageData(data);
 		image_processing.setImageData(image.width(), image.height(), data);
-		delete data;
+		delete[] data;
 	}
 	image_processing.erosion();
 	setImageFromData();
@@ -258,7 +258,7 @@ void PaintArea::imageDilation(void)
 	if(data) {
 		getLabeledImageData(data);
 		image_processing.setImageData(image.width(), image.height(), data);
-		delete data;
+		delete[] data;
 	}
 	image_processing.dilation();
 	setImageFromData();
