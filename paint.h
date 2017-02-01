@@ -25,15 +25,18 @@ public:
 	bool loadTable(const char *);
 	bool applyTable(void);
 	void setCategoly(int);
+	void setMode(bool);
 protected:
 	QPixmap *mainPixmap;
 	QPixmap *originalPixmap;
 	ColorTable color_table;
 	int catcherSize;
 	int currentIndex;
+	bool isSetMode;
 	void mousePressEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);
+	void clearColorToTable(int x, int y);
 	void setColorToTable(int x, int y);
 	bool isCategoly(QRgb);
 	void categolize(void);

@@ -9,6 +9,7 @@ class ColorTable
 public:
 	ColorTable();
 	~ColorTable();
+	void clearColorTable(unsigned int, table);
 	void setColorTable(unsigned int, table);
 	table getColorTable(unsigned int);
 	bool clear(void);

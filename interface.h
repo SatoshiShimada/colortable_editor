@@ -72,6 +72,8 @@ private slots:
 	void catcherSizeChanged(void);
 	void drawImage(void);
 	void setObjectType(void);
+	void setClickModeSlot(void);
+	void clearClickModeSlot(void);
 };
 
 #endif // _INTERFACE_H_

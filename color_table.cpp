@@ -18,6 +18,12 @@ ColorTable::~ColorTable()
 	delete color_table;
 }
 
+void ColorTable::clearColorTable(unsigned int index, table value)
+{
+	index &= color_table_size - 1;
+	color_table[index] &= ~value;
+}
+
 void ColorTable::setColorTable(unsigned int index, table value)
 {
 	index &= color_table_size - 1;

@@ -143,6 +143,8 @@ void Interface::connection(void)
 	QObject::connect(paintarea, SIGNAL(imageChanged()), this, SLOT(drawImage()));
 	QObject::connect(selectCategoliesComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setObjectType()));
 	QObject::connect(selectCategoliesComboBox, SIGNAL(highlighted(int)), this, SLOT(setObjectType()));
+	QObject::connect(setClickModeRatioButton, SIGNAL(clicked(bool)), this, SLOT(setClickModeSlot()));
+	QObject::connect(clearClickModeRatioButton, SIGNAL(clicked(bool)), this, SLOT(clearClickModeSlot()));
 }
 
 void Interface::clearImageSlot(void)
@@ -214,5 +216,15 @@ void Interface::setObjectType(void)
 {
 	paintarea->setCategoly(selectCategoliesComboBox->currentIndex());
 	paintarea->applyTable();
+}
+
+void Interface::setClickModeSlot(void)
+{
+	paintarea->setMode(true);
+}
+
+void Interface::clearClickModeSlot(void)
+{
+	paintarea->setMode(false);
 }
 
