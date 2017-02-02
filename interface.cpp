@@ -32,6 +32,7 @@ void Interface::createWindow(void)
 	clearImageButton          = new QPushButton("Clear");
 	saveImageButton           = new QPushButton("Save");
 	loadImageButton           = new QPushButton("Load");
+	exportImageButton         = new QPushButton("Export");
 	clearAllTableButton       = new QPushButton("Clear All");
 	clearTableButton          = new QPushButton("Clear");
 	saveTableButton           = new QPushButton("Save");
@@ -81,6 +82,7 @@ void Interface::createWindow(void)
 	imageLayout->addWidget(clearImageButton);
 	imageLayout->addWidget(saveImageButton);
 	imageLayout->addWidget(loadImageButton);
+	imageLayout->addWidget(exportImageButton);
 	imageGroupBox->setLayout(imageLayout);
 
 	imageProcessingLayout->addWidget(imageErosionButton);
@@ -122,6 +124,7 @@ void Interface::connection(void)
 	QObject::connect(clearImageButton, SIGNAL(clicked()), this, SLOT(clearImageSlot()));
 	QObject::connect(saveImageButton, SIGNAL(clicked()), this, SLOT(saveImageSlot()));
 	QObject::connect(loadImageButton, SIGNAL(clicked()), this, SLOT(loadImageSlot()));
+	QObject::connect(exportImageButton, SIGNAL(clicked()), this, SLOT(exportImageSlot()));
 	QObject::connect(clearAllTableButton, SIGNAL(clicked()), this, SLOT(clearAllTableSlot()));
 	QObject::connect(clearTableButton, SIGNAL(clicked()), this, SLOT(clearTableSlot()));
 	QObject::connect(saveTableButton, SIGNAL(clicked()), this, SLOT(saveTableSlot()));
@@ -152,6 +155,12 @@ void Interface::loadImageSlot(void)
 {
 	const char *filename = "out.png";
 	paintarea->loadPixmapImage(filename);
+}
+
+void Interface::exportImageSlot(void)
+{
+	const char *filename = "export.png";
+	paintarea->exportPixmapImage(filename);
 }
 
 void Interface::clearAllTableSlot(void)

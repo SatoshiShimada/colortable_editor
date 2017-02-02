@@ -52,6 +52,7 @@ public slots:
 	void resetPixmapArea(void);
 	void savePixmapImage(const char *);
 	void loadPixmapImage(const char *);
+	void exportPixmapImage(const char *);
 	void imageErosion(void);
 	void imageDilation(void);
 signals:

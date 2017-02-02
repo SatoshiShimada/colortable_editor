@@ -140,6 +140,38 @@ void PaintArea::loadPixmapImage(const char *filename)
 	this->update();
 }
 
+void PaintArea::exportPixmapImage(const char *filename)
+{
+	int color_lists[ColorTable::max_categolies][3] = {
+		//{ 255, 255, 255 },
+		{ 255, 255,   0 },
+		{ 255,   0, 255 },
+		{ 255,   0,   0 },
+		{   0, 255, 255 },
+		{   0, 255,   0 },
+		{   0,   0, 255 },
+	};
+	int r, g, b;
+	QImage image = map.toImage();
+	QImage outputImage(image.width(), image.height(), QImage::Format_RGB32);
+	outputImage.fill(qRgb(0, 0, 0));
+	for(int y = 0; y < image.height(); y++) {
+		for(int x = 0; x < image.width(); x++) {
+			QRgb value = image.pixel(x, y);
+			for(int i = 0; i < ColorTable::max_categolies; i++) {
+				if(value & (1 << i)) {
+					r = color_lists[i][0];
+					g = color_lists[i][1];
+					b = color_lists[i][2];
+					outputImage.setPixel(x, y, qRgb(r, g, b));
+					break;
+				}
+			}
+		}
+	}
+	outputImage.save(QString(filename));
+}
+
 bool PaintArea::isCategoly(QRgb color)
 {
 	unsigned int index = color & 0x00FFFFFF;
