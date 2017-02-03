@@ -185,6 +185,7 @@ void Interface::loadTableSlot(void)
 
 void Interface::applyTableSlot(void)
 {
+	labelingimage->applyColorTable();
 }
 
 void Interface::saveImage(const char *filename)

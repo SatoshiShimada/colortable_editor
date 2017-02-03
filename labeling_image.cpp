@@ -38,6 +38,7 @@ void LabelingImage::clearBitColorTable(int x, int y)
 	if(y < 0 || y > height) return;
 	labelData.clearBitColorTable(x, y);
 	labelData.applyColorTable();
+	setImage(labelData.getCurrentData());
 }
 
 void LabelingImage::clearAllColorTable(void)
@@ -96,6 +97,7 @@ void LabelingImage::dilation(void)
 void LabelingImage::applyColorTable(void)
 {
 	labelData.applyColorTable();
+	setImage(labelData.getCurrentData());
 }
 
 void LabelingImage::setImage(const unsigned char *data)
