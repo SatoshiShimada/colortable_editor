@@ -5,8 +5,9 @@
 
 #include "interface.h"
 #include "paint.h"
+#include "labeling_image.h"
 
-Interface::Interface()
+Interface::Interface() : QMainWindow(), isSetColorTable(true)
 {
 	setAcceptDrops(true);
 	createWindow();
@@ -20,7 +21,6 @@ Interface::~Interface()
 void Interface::createWindow(void)
 {
 	window                    = new QWidget;
-	image                     = new QLabel;
 	catcherSizeLabel          = new QLabel("Catcher size: ");
 	selectCategoliesComboBox  = new QComboBox();
 	setClickModeRatioButton   = new QRadioButton("Set");
@@ -40,25 +40,21 @@ void Interface::createWindow(void)
 	applyTableButton          = new QPushButton("Apply");
 	imageErosionButton        = new QPushButton("Erosion");
 	imageDilationButton       = new QPushButton("Dilation");
-	paintarea                 = new PaintArea;
+	paintarea                 = new PaintArea(320, 240);
+	labelingimage             = new LabelingImage(320, 240, 6);
 	catcherSizeSlider         = new QSlider;
-	mainLayout                = new QVBoxLayout;
-	winLayout                 = new QHBoxLayout;
+	mainLayout                = new QHBoxLayout;
 	labelLayout               = new QGridLayout;
 	buttonLayout              = new QVBoxLayout;
 	colortableLayout          = new QVBoxLayout;
 	imageProcessingLayout     = new QVBoxLayout;
 	imageLayout               = new QVBoxLayout;
 
-	image->setMinimumSize(320, 240);
-	image->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
-	image->setPixmap(paintarea->map);
-
 	setClickModeRatioButton->setChecked(true);
 
 	catcherSizeSlider->setTickPosition(QSlider::TicksBelow);
 	catcherSizeSlider->setOrientation(Qt::Horizontal);
-	catcherSizeSlider->setRange(1, 10);
+	catcherSizeSlider->setRange(0, 10);
 	catcherSizeLabel->setText("Catcher size: 1");
 
 	selectCategoliesComboBox->addItem(QString("Ball"));
@@ -97,10 +93,9 @@ void Interface::createWindow(void)
 	labelLayout->addWidget(catcherSizeLabel, 4, 1);
 	labelLayout->addWidget(catcherSizeSlider, 4, 2);
 
-	winLayout->addLayout(labelLayout);
-	winLayout->addWidget(image);
-	winLayout->addWidget(paintarea);
-	mainLayout->addLayout(winLayout);
+	mainLayout->addLayout(labelLayout);
+	mainLayout->addWidget(labelingimage);
+	mainLayout->addWidget(paintarea);
 
 	window->setLayout(mainLayout);
 	setCentralWidget(window);
@@ -131,13 +126,16 @@ void Interface::connection(void)
 	QObject::connect(loadTableButton, SIGNAL(clicked()), this, SLOT(loadTableSlot()));
 	QObject::connect(applyTableButton, SIGNAL(clicked()), this, SLOT(applyTableSlot()));
 	QObject::connect(catcherSizeSlider, SIGNAL(sliderReleased()), this, SLOT(catcherSizeChanged()));
-	QObject::connect(paintarea, SIGNAL(imageChanged()), this, SLOT(drawImage()));
 	QObject::connect(selectCategoliesComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setObjectType()));
 	QObject::connect(selectCategoliesComboBox, SIGNAL(highlighted(int)), this, SLOT(setObjectType()));
 	QObject::connect(setClickModeRatioButton, SIGNAL(clicked(bool)), this, SLOT(setClickModeSlot()));
 	QObject::connect(clearClickModeRatioButton, SIGNAL(clicked(bool)), this, SLOT(clearClickModeSlot()));
-	QObject::connect(imageErosionButton, SIGNAL(clicked(bool)), paintarea, SLOT(imageErosion()));
-	QObject::connect(imageDilationButton, SIGNAL(clicked(bool)), paintarea, SLOT(imageDilation()));
+	QObject::connect(paintarea, SIGNAL(mousePressSignal(int, int)), this, SLOT(mousePressSlot(int, int)));
+	QObject::connect(paintarea, SIGNAL(mouseMoveSignal(int, int)), this, SLOT(mousePressSlot(int, int)));
+	QObject::connect(paintarea, SIGNAL(mouseReleaseSignal(int, int)), this, SLOT(mouseReleaseSlot(int, int)));
+	QObject::connect(labelingimage, SIGNAL(updatedImage()), this, SLOT(drawImage()));
+	//QObject::connect(imageErosionButton, SIGNAL(clicked(bool)), paintarea, SLOT(imageErosion()));
+	//QObject::connect(imageDilationButton, SIGNAL(clicked(bool)), paintarea, SLOT(imageDilation()));
 }
 
 void Interface::clearImageSlot(void)
@@ -154,44 +152,39 @@ void Interface::saveImageSlot(void)
 void Interface::loadImageSlot(void)
 {
 	const char *filename = "out.png";
-	paintarea->loadPixmapImage(filename);
+	loadImage(filename);
 }
 
 void Interface::exportImageSlot(void)
 {
 	const char *filename = "export.png";
-	paintarea->exportPixmapImage(filename);
+	labelingimage->exportImage(filename);
 }
 
 void Interface::clearAllTableSlot(void)
 {
-	paintarea->clearTable();
-	paintarea->applyTable();
+	labelingimage->clearAllColorTable();
 }
 
 void Interface::clearTableSlot(void)
 {
-	paintarea->clearCategolyTable();
-	paintarea->applyTable();
+	labelingimage->clearColorTable();
 }
 
 void Interface::saveTableSlot(void)
 {
 	const char *filename = "table";
-	paintarea->saveTable(filename);
-	paintarea->applyTable();
+	labelingimage->saveColorTable(filename);
 }
 
 void Interface::loadTableSlot(void)
 {
 	const char *filename = "table";
-	paintarea->loadTable(filename);
-	paintarea->applyTable();
+	labelingimage->loadColorTable(filename);
 }
 
 void Interface::applyTableSlot(void)
 {
-	paintarea->applyTable();
 }
 
 void Interface::saveImage(const char *filename)
@@ -202,6 +195,7 @@ void Interface::saveImage(const char *filename)
 void Interface::loadImage(const char *filename)
 {
 	paintarea->loadPixmapImage(filename);
+	labelingimage->loadImage(filename);
 }
 
 void Interface::catcherSizeChanged(void)
@@ -209,27 +203,38 @@ void Interface::catcherSizeChanged(void)
 	char buf[1024];
 	sprintf(buf, "Catcher size: %d", catcherSizeSlider->value());
 	catcherSizeLabel->setText(buf);
-	paintarea->setCatcherSize(catcherSizeSlider->value());
+	labelingimage->setMargin(catcherSizeSlider->value());
 }
 
 void Interface::drawImage(void)
 {
-	image->setPixmap(paintarea->map);
+	labelingimage->update();
 }
 
 void Interface::setObjectType(void)
 {
-	paintarea->setCategoly(selectCategoliesComboBox->currentIndex());
-	paintarea->applyTable();
+	labelingimage->setIndex(selectCategoliesComboBox->currentIndex());
 }
 
 void Interface::setClickModeSlot(void)
 {
-	paintarea->setMode(true);
+	isSetColorTable = true;
 }
 
 void Interface::clearClickModeSlot(void)
 {
-	paintarea->setMode(false);
+	isSetColorTable = false;
+}
+
+void Interface::mousePressSlot(int x, int y)
+{
+	if(isSetColorTable)
+		labelingimage->setBitColorTable(x, y);
+	else
+		labelingimage->clearBitColorTable(x, y);
+}
+
+void Interface::mouseReleaseSlot(int x, int y)
+{
 }
 

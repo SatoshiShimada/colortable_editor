@@ -17,6 +17,7 @@
 #include <QString>
 
 #include "paint.h"
+#include "labeling_image.h"
 
 class Interface : public QMainWindow
 {
@@ -24,6 +25,7 @@ class Interface : public QMainWindow
 
 protected:
 	PaintArea *paintarea;
+    LabelingImage *labelingimage;
 	QString filenameDrag;
 	QWidget *window;
 	QGroupBox *changeClickModeGroupBox;
@@ -49,15 +51,14 @@ protected:
 	QPushButton *imageDilationButton;
 	QLineEdit *filenameLine;
 	QSlider *catcherSizeSlider;
-	QVBoxLayout *mainLayout;
+	QHBoxLayout *mainLayout;
 	QGridLayout *labelLayout;
-	QHBoxLayout *winLayout;
 	QVBoxLayout *buttonLayout;
 	QVBoxLayout *colortableLayout;
 	QVBoxLayout *imageProcessingLayout;
 	QVBoxLayout *imageLayout;
 	void connection(void);
-
+    bool isSetColorTable;
 public:
 	Interface();
 	~Interface();
@@ -66,7 +67,6 @@ public:
 	void saveImage(const char *);
 	void dragEnterEvent(QDragEnterEvent *e);
 	void dropEvent(QDropEvent *e);
-
 private slots:
 	void clearImageSlot(void);
 	void saveImageSlot(void);
@@ -82,6 +82,8 @@ private slots:
 	void setObjectType(void);
 	void setClickModeSlot(void);
 	void clearClickModeSlot(void);
+    void mousePressSlot(int, int);
+    void mouseReleaseSlot(int, int);
 };
 
 #endif // _INTERFACE_H_

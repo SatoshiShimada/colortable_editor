@@ -1,22 +1,18 @@
 
-#ifndef _IMAGEPROCESSING_H_
-#define _IMAGEPROCESSING_H_
+#ifndef __IMAGEPROCESSING_H__
+#define __IMAGEPROCESSING_H__
 
 class ImageProcessing
 {
 public:
-	ImageProcessing();
+  ImageProcessing(int, int);
 	~ImageProcessing();
-	void setImageData(int, int, unsigned char *);
-	void getImageData(unsigned char *);
-	void erosion(void);
-	void dilation(void);
+	void erosion(unsigned char *);
+	void dilation(unsigned char *);
 protected:
-	bool isAllocatedDataMemory;
-	unsigned char *data;
 	int width;
 	int height;
 };
 
-#endif // _IMAGEPROCESSING_H_
+#endif // __IMAGEPROCESSING_H__
 

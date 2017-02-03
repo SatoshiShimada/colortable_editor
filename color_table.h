@@ -1,6 +1,6 @@
 
-#ifndef _COLORTABLE_H_
-#define _COLORTABLE_H_
+#ifndef __COLORTABLE_H__
+#define __COLORTABLE_H__
 
 typedef unsigned long table;
 
@@ -10,12 +10,15 @@ public:
 	ColorTable();
 	~ColorTable();
 	void clearColorTable(unsigned int, table);
+    void clearColorTable(unsigned int, table, int);
 	void setColorTable(unsigned int, table);
+    void setColorTable(unsigned int, table, int);
 	table getColorTable(unsigned int);
 	bool clear(void);
-	bool clearCategoly(table);
+	bool clearCategory(table);
 	bool save(const char *);
 	bool load(const char *);
+    bool apply(int, int, const unsigned char *, unsigned char *, table);
 	static const int max_categolies = 6;
 	static enum {
 		none = 0,
@@ -31,5 +34,5 @@ protected:
 	int color_table_size;
 };
 
-#endif // _COLORTABLE_H_
+#endif // __COLORTABLE_H__
 
