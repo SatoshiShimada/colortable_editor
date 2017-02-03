@@ -134,8 +134,8 @@ void Interface::connection(void)
 	QObject::connect(paintarea, SIGNAL(mouseMoveSignal(int, int)), this, SLOT(mousePressSlot(int, int)));
 	QObject::connect(paintarea, SIGNAL(mouseReleaseSignal(int, int)), this, SLOT(mouseReleaseSlot(int, int)));
 	QObject::connect(labelingimage, SIGNAL(updatedImage()), this, SLOT(drawImage()));
-	//QObject::connect(imageErosionButton, SIGNAL(clicked(bool)), paintarea, SLOT(imageErosion()));
-	//QObject::connect(imageDilationButton, SIGNAL(clicked(bool)), paintarea, SLOT(imageDilation()));
+	QObject::connect(imageErosionButton, SIGNAL(clicked(bool)), this, SLOT(imageErosionSlot()));
+	QObject::connect(imageDilationButton, SIGNAL(clicked(bool)), this, SLOT(imageDilationSlot()));
 }
 
 void Interface::clearImageSlot(void)
@@ -237,5 +237,15 @@ void Interface::mousePressSlot(int x, int y)
 
 void Interface::mouseReleaseSlot(int x, int y)
 {
+}
+
+void Interface::imageErosionSlot(void)
+{
+	labelingimage->erosion();
+}
+
+void Interface::imageDilationSlot(void)
+{
+	labelingimage->dilation();
 }
 

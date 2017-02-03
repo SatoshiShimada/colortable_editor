@@ -87,11 +87,13 @@ void LabelingImage::loadImage(const char *filename)
 void LabelingImage::erosion(void)
 {
 	labelData.erosion();
+	setImage(labelData.getCurrentData());
 }
 
 void LabelingImage::dilation(void)
 {
 	labelData.dilation();
+	setImage(labelData.getCurrentData());
 }
 
 void LabelingImage::applyColorTable(void)

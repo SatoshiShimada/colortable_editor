@@ -32,12 +32,12 @@ unsigned char *LabelingImageData::getData(int index)
 
 void LabelingImageData::erosion(void)
 {
-	imageprocessing.erosion(getData(currentIndex));
+	imageprocessing.erosion(getCurrentData());
 }
 
 void LabelingImageData::dilation(void)
 {
-	imageprocessing.dilation(getData(currentIndex));
+	imageprocessing.dilation(getCurrentData());
 }
 
 void LabelingImageData::loadColorTable(const char *filename)

@@ -84,6 +84,8 @@ private slots:
 	void clearClickModeSlot(void);
     void mousePressSlot(int, int);
     void mouseReleaseSlot(int, int);
+	void imageErosionSlot(void);
+	void imageDilationSlot(void);
 };
 
 #endif // _INTERFACE_H_

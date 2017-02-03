@@ -27,7 +27,7 @@ void ImageProcessing::erosion(unsigned char *data)
 			unsigned char p4 = data[h    * width + winc];
 			unsigned char p5 = data[hinc * width + w   ];
 			if(p1 && p2 && p3 && p4 && p5) {
-				buf[h * width + w] = 255;
+				buf[h * width + w] = 1;
 			} else {
 				buf[h * width + w] = 0;
 			}
@@ -47,8 +47,8 @@ void ImageProcessing::dilation(unsigned char *data)
 			int winc = std::min<int>(w + 1, width - 1);
 			int hdec = std::max<int>(h - 1, 0);
 			int hinc = std::min<int>(h + 1, height - 1);
-			unsigned char value = 255;
-			if(data[h * width + w] == 255) {
+			unsigned char value = 1;
+			if(data[h * width + w] == 1) {
 				buf[hdec * width + w   ] = value;
 				buf[h    * width + wdec] = value;
 				buf[h    * width + w   ] = value;
