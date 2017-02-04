@@ -5,7 +5,7 @@
 class ImageProcessing
 {
 public:
-  ImageProcessing(int, int);
+	ImageProcessing(int, int);
 	~ImageProcessing();
 	void erosion(unsigned char *);
 	void dilation(unsigned char *);
@@ -14,5 +14,5 @@ protected:
 	int height;
 };
 
-#endif // __IMAGEPROCESSING_H__
+#endif //__IMAGEPROCESSING_H__
 

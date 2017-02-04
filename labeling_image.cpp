@@ -101,7 +101,7 @@ void LabelingImage::loadImage(const char *filename)
 	originalMap.load(filename);
 	originalMap.scaled(width, height);
 	QImage image = originalMap.toImage();
-    unsigned char *data = new unsigned char [width * height * 3];
+	unsigned char *data = new unsigned char [width * height * 3];
 	for(int h = 0; h < height; h++) {
 		for(int w = 0; w < width; w++) {
 			QRgb rgb = image.pixel(w, h);

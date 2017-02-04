@@ -21,7 +21,7 @@ Interface::~Interface()
 void Interface::createWindow(void)
 {
 	window                    = new QWidget;
-	marginSizeLabel           = new QLabel("margin size: ");
+	marginSizeLabel           = new QLabel("Margin size: ");
 	deleteSizeLabel           = new QLabel("Delete size: ");
 	selectCategoliesComboBox  = new QComboBox();
 	setClickModeRadioButton   = new QRadioButton("Set");
@@ -58,7 +58,7 @@ void Interface::createWindow(void)
 	marginSizeSlider->setTickPosition(QSlider::TicksBelow);
 	marginSizeSlider->setOrientation(Qt::Horizontal);
 	marginSizeSlider->setRange(0, 10);
-	marginSizeLabel->setText("margin size: 1");
+	marginSizeLabel->setText("Margin size: 1");
 
 	deleteSizeSlider->setTickPosition(QSlider::TicksBelow);
 	deleteSizeSlider->setOrientation(Qt::Horizontal);
@@ -215,7 +215,7 @@ void Interface::loadImage(const char *filename)
 void Interface::marginSizeChanged(void)
 {
 	char buf[1024];
-	sprintf(buf, "margin size: %d", marginSizeSlider->value());
+	sprintf(buf, "Margin size: %d", marginSizeSlider->value());
 	marginSizeLabel->setText(buf);
 	labelingimage->setMargin(marginSizeSlider->value());
 }

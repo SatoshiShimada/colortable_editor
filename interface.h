@@ -1,6 +1,6 @@
 
-#ifndef _INTERFACE_H_
-#define _INTERFACE_H_
+#ifndef __INTERFACE_H__
+#define __INTERFACE_H__
 
 #include <iostream>
 #include <QtGui>
@@ -25,7 +25,7 @@ class Interface : public QMainWindow
 
 protected:
 	PaintArea *paintarea;
-    LabelingImage *labelingimage;
+	LabelingImage *labelingimage;
 	QString filenameDrag;
 	QWidget *window;
 	QGroupBox *changeClickModeGroupBox;
@@ -61,7 +61,7 @@ protected:
 	QVBoxLayout *imageProcessingLayout;
 	QVBoxLayout *imageLayout;
 	void connection(void);
-    bool isSetColorTable;
+	bool isSetColorTable;
 	bool isClickPixMode;
 	bool isClickColorTableMode;
 	bool isDeletePixMode;
@@ -90,11 +90,11 @@ private slots:
 	void setClickModeSlot(void);
 	void clearClickModeSlot(void);
 	void deletePixModeSlot(void);
-    void mousePressSlot(int, int);
-    void mouseReleaseSlot(int, int);
+	void mousePressSlot(int, int);
+	void mouseReleaseSlot(int, int);
 	void imageErosionSlot(void);
 	void imageDilationSlot(void);
 };
 
-#endif // _INTERFACE_H_
+#endif //__INTERFACE_H__
 

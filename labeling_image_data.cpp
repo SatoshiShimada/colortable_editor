@@ -14,7 +14,7 @@ LabelingImageData::LabelingImageData(int width, int height, int category_num) : 
 LabelingImageData::~LabelingImageData()
 {
 	delete[] original_data;
-    for(int i = 0; i < category_num; i++) {
+	for(int i = 0; i < category_num; i++) {
 		delete[] bitmap_data[i];
 	}
 }
@@ -29,7 +29,6 @@ void LabelingImageData::setData(int index, unsigned char *data)
 unsigned char *LabelingImageData::getData(int index)
 {
 	return bitmap_data[index];
-
 }
 
 void LabelingImageData::erosion(void)
@@ -116,7 +115,6 @@ void LabelingImageData::setImage(unsigned char *data)
 unsigned char *LabelingImageData::getCurrentData(void)
 {
 	return bitmap_data[currentIndex];
-
 }
 
 void LabelingImageData::deletePix(int x, int y, int size)
