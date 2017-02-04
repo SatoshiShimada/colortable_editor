@@ -2,6 +2,8 @@
 #include <QtGui>
 
 #include <cstring>
+#include <string>
+#include <iostream>
 
 #include "interface.h"
 #include "paint.h"
@@ -23,7 +25,7 @@ void Interface::createWindow(void)
 	window                    = new QWidget;
 	marginSizeLabel           = new QLabel("Margin size: ");
 	deleteSizeLabel           = new QLabel("Delete size: ");
-	selectCategoliesComboBox  = new QComboBox();
+	selectCategoriesComboBox  = new QComboBox();
 	setClickModeRadioButton   = new QRadioButton("Set");
 	clearClickModeRadioButton = new QRadioButton("Clear");
 	deletePixModeRadioButton  = new QRadioButton("Delete");
@@ -65,12 +67,12 @@ void Interface::createWindow(void)
 	deleteSizeSlider->setRange(1, 10);
 	deleteSizeLabel->setText("Delete size: 1");
 
-	selectCategoliesComboBox->addItem(QString("Ball"));
-	selectCategoliesComboBox->addItem(QString("Goal"));
-	selectCategoliesComboBox->addItem(QString("White Line"));
-	selectCategoliesComboBox->addItem(QString("Field"));
-	selectCategoliesComboBox->addItem(QString("Robot"));
-	selectCategoliesComboBox->addItem(QString("Back Ground"));
+	selectCategoriesComboBox->addItem(QString("Ball"));
+	selectCategoriesComboBox->addItem(QString("Goal"));
+	selectCategoriesComboBox->addItem(QString("White Line"));
+	selectCategoriesComboBox->addItem(QString("Field"));
+	selectCategoriesComboBox->addItem(QString("Robot"));
+	selectCategoriesComboBox->addItem(QString("Back Ground"));
 
 	buttonLayout->addWidget(setClickModeRadioButton);
 	buttonLayout->addWidget(clearClickModeRadioButton);
@@ -96,7 +98,7 @@ void Interface::createWindow(void)
 
 	labelLayout->addWidget(imageGroupBox, 1, 1);
 	labelLayout->addWidget(colortableGroupBox, 1, 2);
-	labelLayout->addWidget(selectCategoliesComboBox, 2, 1);
+	labelLayout->addWidget(selectCategoriesComboBox, 2, 1);
 	labelLayout->addWidget(imageProcessingGroupBox, 3, 1);
 	labelLayout->addWidget(changeClickModeGroupBox, 3, 2);
 	labelLayout->addWidget(marginSizeLabel, 4, 1);
@@ -138,8 +140,8 @@ void Interface::connection(void)
 	QObject::connect(applyTableButton, SIGNAL(clicked()), this, SLOT(applyTableSlot()));
 	QObject::connect(marginSizeSlider, SIGNAL(sliderReleased()), this, SLOT(marginSizeChanged()));
 	QObject::connect(deleteSizeSlider, SIGNAL(sliderReleased()), this, SLOT(deleteSizeChanged()));
-	QObject::connect(selectCategoliesComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setObjectType()));
-	QObject::connect(selectCategoliesComboBox, SIGNAL(highlighted(int)), this, SLOT(setObjectType()));
+	QObject::connect(selectCategoriesComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setObjectType()));
+	QObject::connect(selectCategoriesComboBox, SIGNAL(highlighted(int)), this, SLOT(setObjectType()));
 	QObject::connect(setClickModeRadioButton, SIGNAL(clicked(bool)), this, SLOT(setClickModeSlot()));
 	QObject::connect(clearClickModeRadioButton, SIGNAL(clicked(bool)), this, SLOT(clearClickModeSlot()));
 	QObject::connect(deletePixModeRadioButton, SIGNAL(clicked(bool)), this, SLOT(deletePixModeSlot()));
@@ -235,7 +237,7 @@ void Interface::drawImage(void)
 
 void Interface::setObjectType(void)
 {
-	labelingimage->setIndex(selectCategoliesComboBox->currentIndex());
+	labelingimage->setIndex(selectCategoriesComboBox->currentIndex());
 }
 
 void Interface::setClickModeSlot(void)

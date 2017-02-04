@@ -6,9 +6,13 @@
 LabelingImageData::LabelingImageData(int width, int height, int category_num) : width(width), height(height), category_num(category_num), currentIndex(0), margin(0), imageprocessing(width, height)
 {
 	original_data = new unsigned char [width * height * 3];
-	for(int i = 0; i < category_num; i++) {
+	for(int i = 0; i < width * height * 3; i++)
+		original_data[i] = 0;
+	for(int c = 0; c < category_num; c++)
 		bitmap_data.push_back(new unsigned char [width * height]);
-	}
+	for(int c = 0; c < category_num; c++)
+		for(int i = 0; i < width * height; i++)
+			bitmap_data[c][i] = 0;
 }
 
 LabelingImageData::~LabelingImageData()

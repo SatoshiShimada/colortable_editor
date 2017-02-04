@@ -36,7 +36,7 @@ protected:
 	QLabel *filenameLabel;
 	QLabel *marginSizeLabel;
 	QLabel *deleteSizeLabel;
-	QComboBox *selectCategoliesComboBox;
+	QComboBox *selectCategoriesComboBox;
 	QRadioButton *setClickModeRadioButton;
 	QRadioButton *clearClickModeRadioButton;
 	QRadioButton *deletePixModeRadioButton;
