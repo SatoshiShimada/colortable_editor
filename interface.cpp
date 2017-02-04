@@ -225,7 +225,7 @@ void Interface::deleteSizeChanged(void)
 	char buf[1024];
 	sprintf(buf, "Delete size: %d", deleteSizeSlider->value());
 	deleteSizeLabel->setText(buf);
-	//labelingimage->setMargin(marginSizeSlider->value());
+	labelingimage->setDeleteSize(deleteSizeSlider->value());
 }
 
 void Interface::drawImage(void)

@@ -28,7 +28,7 @@ class LabelingImageData
   void setMargin(int);
   void exportImage(const char *);
   void setImage(unsigned char *);
-  void deletePix(int, int);
+  void deletePix(int, int, int);
   unsigned char *original_data;
   std::vector<unsigned char *> bitmap_data;
  protected:

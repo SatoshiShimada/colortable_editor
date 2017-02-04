@@ -1,4 +1,6 @@
 
+#include <iostream>
+
 #include "labeling_image_data.h"
 
 LabelingImageData::LabelingImageData(int width, int height, int category_num) : width(width), height(height), category_num(category_num), currentIndex(0), margin(0), imageprocessing(width, height)
@@ -117,8 +119,12 @@ unsigned char *LabelingImageData::getCurrentData(void)
 
 }
 
-void LabelingImageData::deletePix(int x, int y)
+void LabelingImageData::deletePix(int x, int y, int size)
 {
-	bitmap_data[currentIndex][y * width + x] = 0;
+	for(int yi = std::max<int>(y - size, 0); yi < std::min<int>(y + size + 1, height); yi++) {
+		for(int xi = std::max<int>(x - size, 0); xi < std::min<int>(x + size + 1, width); xi++) {
+			bitmap_data[currentIndex][yi * width + xi] = 0;
+		}
+	}
 }
 

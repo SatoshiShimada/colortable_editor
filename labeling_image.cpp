@@ -49,7 +49,7 @@ void LabelingImage::deletePix(int x, int y)
 {
 	if(x < 0 || x > width) return;
 	if(y < 0 || y > height) return;
-	labelData.deletePix(x, y);
+	labelData.deletePix(x, y, deleteSize);
 	setImage(labelData.getCurrentData());
 }
 
@@ -146,5 +146,10 @@ void LabelingImage::setImage(const unsigned char *data)
 	map = QPixmap::fromImage(image);
 	this->setPixmap(map);
 	emit updatedImage();
+}
+
+void LabelingImage::setDeleteSize(int value)
+{
+	deleteSize = value;
 }
 

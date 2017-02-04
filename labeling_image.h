@@ -32,9 +32,11 @@ class LabelingImage : public QLabel
   int currentIndex;
   int width;
   int height;
+  int deleteSize;
  public slots:
   void setIndex(int);
   void setMargin(int);
+  void setDeleteSize(int);
   void deletePix(int, int);
   void setBitColorTable(int, int);
   void clearBitColorTable(int, int);
