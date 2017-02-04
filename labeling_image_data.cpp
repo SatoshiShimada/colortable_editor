@@ -117,3 +117,8 @@ unsigned char *LabelingImageData::getCurrentData(void)
 
 }
 
+void LabelingImageData::deletePix(int x, int y)
+{
+	bitmap_data[currentIndex][y * width + x] = 0;
+}
+

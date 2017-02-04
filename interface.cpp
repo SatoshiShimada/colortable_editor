@@ -7,7 +7,7 @@
 #include "paint.h"
 #include "labeling_image.h"
 
-Interface::Interface() : QMainWindow(), isSetColorTable(true)
+Interface::Interface() : QMainWindow(), isSetColorTable(true), isClickPixMode(false), isClickColorTableMode(true), isDeletePixMode(true)
 {
 	setAcceptDrops(true);
 	createWindow();
@@ -23,8 +23,9 @@ void Interface::createWindow(void)
 	window                    = new QWidget;
 	catcherSizeLabel          = new QLabel("Catcher size: ");
 	selectCategoliesComboBox  = new QComboBox();
-	setClickModeRatioButton   = new QRadioButton("Set");
-	clearClickModeRatioButton = new QRadioButton("Clear");
+	setClickModeRadioButton   = new QRadioButton("Set");
+	clearClickModeRadioButton = new QRadioButton("Clear");
+	deletePixModeRadioButton  = new QRadioButton("Delete");
 	changeClickModeGroupBox   = new QGroupBox("Click mode");
 	colortableGroupBox        = new QGroupBox("color table");
 	imageGroupBox             = new QGroupBox("image");
@@ -50,7 +51,7 @@ void Interface::createWindow(void)
 	imageProcessingLayout     = new QVBoxLayout;
 	imageLayout               = new QVBoxLayout;
 
-	setClickModeRatioButton->setChecked(true);
+	setClickModeRadioButton->setChecked(true);
 
 	catcherSizeSlider->setTickPosition(QSlider::TicksBelow);
 	catcherSizeSlider->setOrientation(Qt::Horizontal);
@@ -64,8 +65,9 @@ void Interface::createWindow(void)
 	selectCategoliesComboBox->addItem(QString("Robot"));
 	selectCategoliesComboBox->addItem(QString("Back Ground"));
 
-	buttonLayout->addWidget(setClickModeRatioButton);
-	buttonLayout->addWidget(clearClickModeRatioButton);
+	buttonLayout->addWidget(setClickModeRadioButton);
+	buttonLayout->addWidget(clearClickModeRadioButton);
+	buttonLayout->addWidget(deletePixModeRadioButton);
 	changeClickModeGroupBox->setLayout(buttonLayout);
 
 	colortableLayout->addWidget(clearAllTableButton);
@@ -128,8 +130,9 @@ void Interface::connection(void)
 	QObject::connect(catcherSizeSlider, SIGNAL(sliderReleased()), this, SLOT(catcherSizeChanged()));
 	QObject::connect(selectCategoliesComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setObjectType()));
 	QObject::connect(selectCategoliesComboBox, SIGNAL(highlighted(int)), this, SLOT(setObjectType()));
-	QObject::connect(setClickModeRatioButton, SIGNAL(clicked(bool)), this, SLOT(setClickModeSlot()));
-	QObject::connect(clearClickModeRatioButton, SIGNAL(clicked(bool)), this, SLOT(clearClickModeSlot()));
+	QObject::connect(setClickModeRadioButton, SIGNAL(clicked(bool)), this, SLOT(setClickModeSlot()));
+	QObject::connect(clearClickModeRadioButton, SIGNAL(clicked(bool)), this, SLOT(clearClickModeSlot()));
+	QObject::connect(deletePixModeRadioButton, SIGNAL(clicked(bool)), this, SLOT(deletePixModeSlot()));
 	QObject::connect(paintarea, SIGNAL(mousePressSignal(int, int)), this, SLOT(mousePressSlot(int, int)));
 	QObject::connect(paintarea, SIGNAL(mouseMoveSignal(int, int)), this, SLOT(mousePressSlot(int, int)));
 	QObject::connect(paintarea, SIGNAL(mouseReleaseSignal(int, int)), this, SLOT(mouseReleaseSlot(int, int)));
@@ -220,19 +223,37 @@ void Interface::setObjectType(void)
 void Interface::setClickModeSlot(void)
 {
 	isSetColorTable = true;
+	isClickColorTableMode = true;
+	isClickPixMode = false;
 }
 
 void Interface::clearClickModeSlot(void)
 {
 	isSetColorTable = false;
+	isClickColorTableMode = true;
+	isClickPixMode = false;
+}
+
+void Interface::deletePixModeSlot(void)
+{
+	isDeletePixMode = true;
+	isClickColorTableMode = false;
+	isClickPixMode = true;
 }
 
 void Interface::mousePressSlot(int x, int y)
 {
-	if(isSetColorTable)
-		labelingimage->setBitColorTable(x, y);
-	else
-		labelingimage->clearBitColorTable(x, y);
+	if(isClickColorTableMode) {
+		if(isSetColorTable)
+			labelingimage->setBitColorTable(x, y);
+		else
+			labelingimage->clearBitColorTable(x, y);
+	} else if(isClickPixMode) {
+		if(isDeletePixMode)
+			labelingimage->deletePix(x, y);
+		else
+			;
+	}
 }
 
 void Interface::mouseReleaseSlot(int x, int y)

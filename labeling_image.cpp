@@ -9,6 +9,32 @@ LabelingImage::LabelingImage(int width, int height, int category_num) : QLabel()
 	this->setPixmap(map);
 }
 
+void LabelingImage::mousePressEvent(QMouseEvent *event)
+{
+	if(event->button() == Qt::LeftButton) {
+		int x = event->x() - (this->size().width() - width) / 2;
+		int y = event->y() - (this->size().height() - height) / 2;
+		deletePix(x, y);
+	}
+}
+
+void LabelingImage::mouseReleaseEvent(QMouseEvent *event)
+{
+	if((event->button() & Qt::LeftButton)) {
+		int x = event->x() - (this->size().width() - width) / 2;
+		int y = event->y() - (this->size().height() - height) / 2;
+		deletePix(x, y);
+	}
+}
+
+void LabelingImage::mouseMoveEvent(QMouseEvent *event)
+{
+	if(event->button() == Qt::NoButton) {
+		int x = event->x() - (this->size().width() - width) / 2;
+		int y = event->y() - (this->size().height() - height) / 2;
+		deletePix(x, y);
+	}
+}
 void LabelingImage::setIndex(int index)
 {
 	labelData.setIndex(index);
@@ -19,10 +45,16 @@ void LabelingImage::setMargin(int margin)
 	labelData.setMargin(margin);
 }
 
+void LabelingImage::deletePix(int x, int y)
+{
+	if(x < 0 || x > width) return;
+	if(y < 0 || y > height) return;
+	labelData.deletePix(x, y);
+	setImage(labelData.getCurrentData());
+}
+
 void LabelingImage::setBitColorTable(int x, int y)
 {
-	x -= (this->size().width() - width) / 2;
-	y -= (this->size().height() - height) / 2;
 	if(x < 0 || x > width) return;
 	if(y < 0 || y > height) return;
 	labelData.setBitColorTable(x, y);
@@ -32,8 +64,6 @@ void LabelingImage::setBitColorTable(int x, int y)
 
 void LabelingImage::clearBitColorTable(int x, int y)
 {
-	x -= (this->size().width() - width) / 2;
-	y -= (this->size().height() - height) / 2;
 	if(x < 0 || x > width) return;
 	if(y < 0 || y > height) return;
 	labelData.clearBitColorTable(x, y);

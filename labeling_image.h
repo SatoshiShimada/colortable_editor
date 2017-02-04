@@ -23,6 +23,9 @@ class LabelingImage : public QLabel
   void dilation(void);
   void setImage(const unsigned char *);
  protected:
+	void mousePressEvent(QMouseEvent *event);
+	void mouseReleaseEvent(QMouseEvent *event);
+	void mouseMoveEvent(QMouseEvent *event);
   QPixmap map;
   QPixmap originalMap;
   LabelingImageData labelData;
@@ -32,6 +35,7 @@ class LabelingImage : public QLabel
  public slots:
   void setIndex(int);
   void setMargin(int);
+  void deletePix(int, int);
   void setBitColorTable(int, int);
   void clearBitColorTable(int, int);
   void applyColorTable(void);

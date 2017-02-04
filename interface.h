@@ -36,8 +36,9 @@ protected:
 	QLabel *filenameLabel;
 	QLabel *catcherSizeLabel;
 	QComboBox *selectCategoliesComboBox;
-	QRadioButton *setClickModeRatioButton;
-	QRadioButton *clearClickModeRatioButton;
+	QRadioButton *setClickModeRadioButton;
+	QRadioButton *clearClickModeRadioButton;
+	QRadioButton *deletePixModeRadioButton;
 	QPushButton *clearImageButton;
 	QPushButton *saveImageButton;
 	QPushButton *loadImageButton;
@@ -59,6 +60,9 @@ protected:
 	QVBoxLayout *imageLayout;
 	void connection(void);
     bool isSetColorTable;
+	bool isClickPixMode;
+	bool isClickColorTableMode;
+	bool isDeletePixMode;
 public:
 	Interface();
 	~Interface();
@@ -82,6 +86,7 @@ private slots:
 	void setObjectType(void);
 	void setClickModeSlot(void);
 	void clearClickModeSlot(void);
+	void deletePixModeSlot(void);
     void mousePressSlot(int, int);
     void mouseReleaseSlot(int, int);
 	void imageErosionSlot(void);

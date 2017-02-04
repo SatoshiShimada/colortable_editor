@@ -10,13 +10,13 @@ PaintArea::PaintArea(int width, int height) : QLabel(), width(width), height(hei
 	this->update();
 }
 
-
-
 void PaintArea::mousePressEvent(QMouseEvent *event)
 {
 	int x = event->x();
 	int y = event->y();
 	if(event->button() == Qt::LeftButton) {
+		x -= (this->size().width() - width) / 2;
+		y -= (this->size().height() - height) / 2;
 		if(x < 0 || x > width) return;
 		if(y < 0 || y > height) return;
 		emit mousePressSignal(x, y);
@@ -28,6 +28,8 @@ void PaintArea::mouseReleaseEvent(QMouseEvent *event)
 	int x = event->x();
 	int y = event->y();
 	if((event->button() & Qt::LeftButton)) {
+		x -= (this->size().width() - width) / 2;
+		y -= (this->size().height() - height) / 2;
 		if(x < 0 || x > width) return;
 		if(y < 0 || y > height) return;
 		emit mouseReleaseSignal(x, y);
@@ -39,6 +41,8 @@ void PaintArea::mouseMoveEvent(QMouseEvent *event)
 	int x = event->x();
 	int y = event->y();
 	if(event->button() == Qt::NoButton) {
+		x -= (this->size().width() - width) / 2;
+		y -= (this->size().height() - height) / 2;
 		if(x < 0 || x > width) return;
 		if(y < 0 || y > height) return;
 		emit mouseMoveSignal(x, y);
