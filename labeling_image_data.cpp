@@ -101,8 +101,28 @@ void LabelingImageData::setMargin(int margin)
 	this->margin = margin;
 }
 
-void LabelingImageData::exportImage(const char *filename)
+void LabelingImageData::exportImage(unsigned char *output_image)
 {
+	int color_lists[][3] = {
+		{   0,   0, 255 },
+		{   0, 255,   0 },
+		{   0, 255, 255 },
+		{ 255,   0,   0 },
+		{ 255,   0, 255 },
+		{ 255, 255,   0 },
+		{ 255, 255, 255 },
+	};
+	for(int i = 0; i < width * height * 3; i++)
+		output_image[i] = 0;
+	for(int num = 0; num < category_num; num++) {
+		for(int i = 0; i < width * height; i++) {
+			if(bitmap_data[num][i] != 0) {
+				output_image[i * 3 + 0] = color_lists[num][0];
+				output_image[i * 3 + 1] = color_lists[num][1];
+				output_image[i * 3 + 2] = color_lists[num][2];
+			}
+		}
+	}
 }
 
 void LabelingImageData::setImage(unsigned char *data)

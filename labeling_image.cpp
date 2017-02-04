@@ -93,7 +93,18 @@ void LabelingImage::saveColorTable(const char *filename)
 
 void LabelingImage::exportImage(const char *filename)
 {
-	labelData.exportImage(filename);
+	QImage outputImage(width, height, QImage::Format_RGB32);
+	unsigned char *data = new unsigned char [width * height * 3];
+	labelData.exportImage(data);
+	for(int y = 0; y < height; y++) {
+		for(int x = 0; x < width; x++) {
+			outputImage.setPixel(x, y, qRgb(
+				(int)data[(y * width + x) * 3 + 0],
+				(int)data[(y * width + x) * 3 + 1],
+				(int)data[(y * width + x) * 3 + 2]));
+		}
+	}
+	outputImage.save(QString(filename));
 }
 
 void LabelingImage::loadImage(const char *filename)

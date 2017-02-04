@@ -26,7 +26,7 @@ public:
 	void dilation();
 	void setIndex(int);
 	void setMargin(int);
-	void exportImage(const char *);
+	void exportImage(unsigned char *);
 	void setImage(unsigned char *);
 	void deletePix(int, int, int);
 	unsigned char *original_data;
