@@ -34,7 +34,8 @@ protected:
 	QGroupBox *imageProcessingGroupBox;
 	QLabel *image;
 	QLabel *filenameLabel;
-	QLabel *catcherSizeLabel;
+	QLabel *marginSizeLabel;
+	QLabel *deleteSizeLabel;
 	QComboBox *selectCategoliesComboBox;
 	QRadioButton *setClickModeRadioButton;
 	QRadioButton *clearClickModeRadioButton;
@@ -51,7 +52,8 @@ protected:
 	QPushButton *imageErosionButton;
 	QPushButton *imageDilationButton;
 	QLineEdit *filenameLine;
-	QSlider *catcherSizeSlider;
+	QSlider *marginSizeSlider;
+	QSlider *deleteSizeSlider;
 	QHBoxLayout *mainLayout;
 	QGridLayout *labelLayout;
 	QVBoxLayout *buttonLayout;
@@ -81,7 +83,8 @@ private slots:
 	void saveTableSlot(void);
 	void loadTableSlot(void);
 	void applyTableSlot(void);
-	void catcherSizeChanged(void);
+	void marginSizeChanged(void);
+	void deleteSizeChanged(void);
 	void drawImage(void);
 	void setObjectType(void);
 	void setClickModeSlot(void);

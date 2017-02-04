@@ -21,7 +21,8 @@ Interface::~Interface()
 void Interface::createWindow(void)
 {
 	window                    = new QWidget;
-	catcherSizeLabel          = new QLabel("Catcher size: ");
+	marginSizeLabel           = new QLabel("margin size: ");
+	deleteSizeLabel           = new QLabel("Delete size: ");
 	selectCategoliesComboBox  = new QComboBox();
 	setClickModeRadioButton   = new QRadioButton("Set");
 	clearClickModeRadioButton = new QRadioButton("Clear");
@@ -43,7 +44,8 @@ void Interface::createWindow(void)
 	imageDilationButton       = new QPushButton("Dilation");
 	paintarea                 = new PaintArea(320, 240);
 	labelingimage             = new LabelingImage(320, 240, 6);
-	catcherSizeSlider         = new QSlider;
+	marginSizeSlider          = new QSlider;
+	deleteSizeSlider          = new QSlider;
 	mainLayout                = new QHBoxLayout;
 	labelLayout               = new QGridLayout;
 	buttonLayout              = new QVBoxLayout;
@@ -53,10 +55,15 @@ void Interface::createWindow(void)
 
 	setClickModeRadioButton->setChecked(true);
 
-	catcherSizeSlider->setTickPosition(QSlider::TicksBelow);
-	catcherSizeSlider->setOrientation(Qt::Horizontal);
-	catcherSizeSlider->setRange(0, 10);
-	catcherSizeLabel->setText("Catcher size: 1");
+	marginSizeSlider->setTickPosition(QSlider::TicksBelow);
+	marginSizeSlider->setOrientation(Qt::Horizontal);
+	marginSizeSlider->setRange(0, 10);
+	marginSizeLabel->setText("margin size: 1");
+
+	deleteSizeSlider->setTickPosition(QSlider::TicksBelow);
+	deleteSizeSlider->setOrientation(Qt::Horizontal);
+	deleteSizeSlider->setRange(1, 10);
+	deleteSizeLabel->setText("Delete size: 1");
 
 	selectCategoliesComboBox->addItem(QString("Ball"));
 	selectCategoliesComboBox->addItem(QString("Goal"));
@@ -90,10 +97,12 @@ void Interface::createWindow(void)
 	labelLayout->addWidget(imageGroupBox, 1, 1);
 	labelLayout->addWidget(colortableGroupBox, 1, 2);
 	labelLayout->addWidget(selectCategoliesComboBox, 2, 1);
-	labelLayout->addWidget(changeClickModeGroupBox, 2, 2);
 	labelLayout->addWidget(imageProcessingGroupBox, 3, 1);
-	labelLayout->addWidget(catcherSizeLabel, 4, 1);
-	labelLayout->addWidget(catcherSizeSlider, 4, 2);
+	labelLayout->addWidget(changeClickModeGroupBox, 3, 2);
+	labelLayout->addWidget(marginSizeLabel, 4, 1);
+	labelLayout->addWidget(marginSizeSlider, 4, 2);
+	labelLayout->addWidget(deleteSizeLabel, 5, 1);
+	labelLayout->addWidget(deleteSizeSlider, 5, 2);
 
 	mainLayout->addLayout(labelLayout);
 	mainLayout->addWidget(labelingimage);
@@ -127,7 +136,8 @@ void Interface::connection(void)
 	QObject::connect(saveTableButton, SIGNAL(clicked()), this, SLOT(saveTableSlot()));
 	QObject::connect(loadTableButton, SIGNAL(clicked()), this, SLOT(loadTableSlot()));
 	QObject::connect(applyTableButton, SIGNAL(clicked()), this, SLOT(applyTableSlot()));
-	QObject::connect(catcherSizeSlider, SIGNAL(sliderReleased()), this, SLOT(catcherSizeChanged()));
+	QObject::connect(marginSizeSlider, SIGNAL(sliderReleased()), this, SLOT(marginSizeChanged()));
+	QObject::connect(deleteSizeSlider, SIGNAL(sliderReleased()), this, SLOT(deleteSizeChanged()));
 	QObject::connect(selectCategoliesComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setObjectType()));
 	QObject::connect(selectCategoliesComboBox, SIGNAL(highlighted(int)), this, SLOT(setObjectType()));
 	QObject::connect(setClickModeRadioButton, SIGNAL(clicked(bool)), this, SLOT(setClickModeSlot()));
@@ -202,12 +212,20 @@ void Interface::loadImage(const char *filename)
 	labelingimage->loadImage(filename);
 }
 
-void Interface::catcherSizeChanged(void)
+void Interface::marginSizeChanged(void)
 {
 	char buf[1024];
-	sprintf(buf, "Catcher size: %d", catcherSizeSlider->value());
-	catcherSizeLabel->setText(buf);
-	labelingimage->setMargin(catcherSizeSlider->value());
+	sprintf(buf, "margin size: %d", marginSizeSlider->value());
+	marginSizeLabel->setText(buf);
+	labelingimage->setMargin(marginSizeSlider->value());
+}
+
+void Interface::deleteSizeChanged(void)
+{
+	char buf[1024];
+	sprintf(buf, "Delete size: %d", deleteSizeSlider->value());
+	deleteSizeLabel->setText(buf);
+	//labelingimage->setMargin(marginSizeSlider->value());
 }
 
 void Interface::drawImage(void)
