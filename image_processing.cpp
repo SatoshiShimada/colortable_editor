@@ -48,7 +48,7 @@ void ImageProcessing::dilation(unsigned char *data)
 			int hdec = std::max<int>(h - 1, 0);
 			int hinc = std::min<int>(h + 1, height - 1);
 			unsigned char value = 1;
-			if(data[h * width + w] == 1) {
+			if(data[h * width + w] != 0) {
 				buf[hdec * width + w   ] = value;
 				buf[h    * width + wdec] = value;
 				buf[h    * width + w   ] = value;
