@@ -29,10 +29,11 @@ protected:
 	QPixmap map;
 	QPixmap originalMap;
 	LabelingImageData labelData;
-	int currentIndex;
 	int width;
 	int height;
+	int currentIndex;
 	int deleteSize;
+	int categoryNum;
 public slots:
 	void setIndex(int);
 	void setMargin(int);

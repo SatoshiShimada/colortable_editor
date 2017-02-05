@@ -1,7 +1,7 @@
 
 #include "labeling_image.h"
 
-LabelingImage::LabelingImage(int width, int height, int category_num) : QLabel(), map(width, height), originalMap(width, height), labelData(width, height, category_num), currentIndex(0), width(width), height(height)
+LabelingImage::LabelingImage(int width, int height, int category_num) : QLabel(), map(width, height), originalMap(width, height), labelData(width, height, category_num), width(width), height(height), currentIndex(0), deleteSize(1), categoryNum(category_num)
 {
 	this->setMinimumSize(width, height);
 	this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
@@ -38,6 +38,7 @@ void LabelingImage::mouseMoveEvent(QMouseEvent *event)
 void LabelingImage::setIndex(int index)
 {
 	labelData.setIndex(index);
+	setImage(labelData.getCurrentData());
 }
 
 void LabelingImage::setMargin(int margin)
@@ -84,6 +85,7 @@ void LabelingImage::clearColorTable(void)
 void LabelingImage::loadColorTable(const char *filename)
 {
 	labelData.loadColorTable(filename);
+	setImage(labelData.getCurrentData());
 }
 
 void LabelingImage::saveColorTable(const char *filename)

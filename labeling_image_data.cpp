@@ -48,6 +48,9 @@ void LabelingImageData::dilation(void)
 void LabelingImageData::loadColorTable(const char *filename)
 {
 	colortable.load(filename);
+	for(int i = 0; i < category_num; i++) {
+		colortable.apply(width, height, original_data, bitmap_data[i], tableValue(i));
+	}
 }
 
 void LabelingImageData::saveColorTable(const char *filename)
@@ -133,6 +136,9 @@ void LabelingImageData::setImage(unsigned char *data)
 {
 	for(int i = 0; i < width * height * 3; i++) {
 		original_data[i] = data[i];
+	}
+	for(int i = 0; i < category_num; i++) {
+		colortable.apply(width, height, original_data, bitmap_data[i], tableValue(i));
 	}
 }
 
