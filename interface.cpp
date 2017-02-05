@@ -4,12 +4,13 @@
 #include <cstring>
 #include <string>
 #include <iostream>
+#include <vector>
 
 #include "interface.h"
 #include "paint.h"
 #include "labeling_image.h"
 
-Interface::Interface() : QMainWindow(), isSetColorTable(true), isClickPixMode(false), isClickColorTableMode(true), isDeletePixMode(true), width(320), height(240)
+Interface::Interface() : QMainWindow(), isSetColorTable(true), isClickPixMode(false), isClickColorTableMode(true), isDeletePixMode(true), width(320), height(240), smallImageWidth(width / 2), smallImageHeight(height / 2), categories(5)
 {
 	setAcceptDrops(true);
 	createWindow();
@@ -30,11 +31,11 @@ void Interface::createWindow(void)
 	whitelineSmallImageLabel  = new QLabel;
 	goalpoleSmallImageLabel   = new QLabel;
 	robotSmallImageLabel      = new QLabel;
-	ballSmallImagePixmap      = new QPixmap(width / 2, height / 2);
-	fieldSmallImagePixmap     = new QPixmap(width / 2, height / 2);
-	whitelineSmallImagePixmap = new QPixmap(width / 2, height / 2);
-	goalpoleSmallImagePixmap  = new QPixmap(width / 2, height / 2);
-	robotSmallImagePixmap     = new QPixmap(width / 2, height / 2);
+	ballSmallImagePixmap      = new QPixmap(smallImageWidth, smallImageHeight);
+	fieldSmallImagePixmap     = new QPixmap(smallImageWidth, smallImageHeight);
+	whitelineSmallImagePixmap = new QPixmap(smallImageWidth, smallImageHeight);
+	goalpoleSmallImagePixmap  = new QPixmap(smallImageWidth, smallImageHeight);
+	robotSmallImagePixmap     = new QPixmap(smallImageWidth, smallImageHeight);
 	selectCategoriesComboBox  = new QComboBox();
 	setClickModeRadioButton   = new QRadioButton("Set");
 	clearClickModeRadioButton = new QRadioButton("Clear");
@@ -59,8 +60,8 @@ void Interface::createWindow(void)
 	whitelineSmallImageButton = new QPushButton("White line");
 	goalpoleSmallImageButton  = new QPushButton("Goal pole");
 	robotSmallImageButton     = new QPushButton("Robot");
-	paintarea                 = new PaintArea(320, 240);
-	labelingimage             = new LabelingImage(320, 240, 6);
+	paintarea                 = new PaintArea(width, height);
+	labelingimage             = new LabelingImage(width, height, categories);
 	marginSizeSlider          = new QSlider;
 	deleteSizeSlider          = new QSlider;
 	mainLayout                = new QGridLayout;
@@ -293,6 +294,7 @@ void Interface::deleteSizeChanged(void)
 void Interface::drawImage(void)
 {
 	labelingimage->update();
+	getSmallImages();
 }
 
 void Interface::setObjectType(void)
@@ -373,5 +375,37 @@ void Interface::goalpoleCategorySelectedSlot(void)
 void Interface::robotCategorySelectedSlot(void)
 {
 	labelingimage->setIndex(4);
+}
+
+void Interface::getSmallImages(void)
+{
+	unsigned char *data = new unsigned char [width * height];
+	std::vector<QPixmap *> pixmaps;
+	pixmaps.push_back(ballSmallImagePixmap);
+	pixmaps.push_back(goalpoleSmallImagePixmap);
+	pixmaps.push_back(whitelineSmallImagePixmap);
+	pixmaps.push_back(fieldSmallImagePixmap);
+	pixmaps.push_back(robotSmallImagePixmap);
+
+	for(int i = 0; i < categories; i++) {
+		labelingimage->getSmallImage(data, i);
+		QImage image(width, height, QImage::Format_RGB32);
+		image.fill(qRgb(0, 0, 0));
+		for(int h = 0; h < height; h++) {
+			for(int w = 0; w < width; w++) {
+				if(data[h * width + w] != 0) {
+					image.setPixel(w, h, qRgb(255, 0, 0));
+				}
+			}
+		}
+		image = image.scaled(smallImageWidth, smallImageHeight);
+		pixmaps[i]->operator=(QPixmap::fromImage(image));
+	}
+	ballSmallImageLabel->setPixmap(*ballSmallImagePixmap);
+	fieldSmallImageLabel->setPixmap(*fieldSmallImagePixmap);
+	whitelineSmallImageLabel->setPixmap(*whitelineSmallImagePixmap);
+	goalpoleSmallImageLabel->setPixmap(*goalpoleSmallImagePixmap);
+	robotSmallImageLabel->setPixmap(*robotSmallImagePixmap);
+	delete[] data;
 }
 

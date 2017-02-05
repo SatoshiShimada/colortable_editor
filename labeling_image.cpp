@@ -166,3 +166,13 @@ void LabelingImage::setDeleteSize(int value)
 	deleteSize = value;
 }
 
+void LabelingImage::getSmallImage(unsigned char *data, int index)
+{
+	unsigned char *image = labelData.getData(index);
+	for(int h = 0; h < height; h++) {
+		for(int w = 0; w < width; w++) {
+			data[h * width + w] = image[h * width + w];
+		}
+	}
+}
+

@@ -22,6 +22,7 @@ public:
 	void erosion(void);
 	void dilation(void);
 	void setImage(const unsigned char *);
+	void getSmallImage(unsigned char *, int);
 protected:
 	void mousePressEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);

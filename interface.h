@@ -30,6 +30,7 @@ protected:
 	void saveImage(const char *);
 	void dragEnterEvent(QDragEnterEvent *e);
 	void dropEvent(QDropEvent *e);
+	void getSmallImages(void);
 	PaintArea *paintarea;
 	LabelingImage *labelingimage;
 	QString filenameDrag;
@@ -93,6 +94,9 @@ protected:
 	bool isDeletePixMode;
 	int width;
 	int height;
+	int smallImageWidth;
+	int smallImageHeight;
+	const int categories;
 public:
 	Interface();
 	~Interface();
