@@ -90,11 +90,11 @@ void Interface::createWindow(void)
 	deleteSizeLabel->setText("Delete size: 1");
 
 	selectCategoriesComboBox->addItem(QString("Ball"));
-	selectCategoriesComboBox->addItem(QString("Goal"));
-	selectCategoriesComboBox->addItem(QString("White Line"));
 	selectCategoriesComboBox->addItem(QString("Field"));
+	selectCategoriesComboBox->addItem(QString("White Line"));
+	selectCategoriesComboBox->addItem(QString("Goal"));
 	selectCategoriesComboBox->addItem(QString("Robot"));
-	selectCategoriesComboBox->addItem(QString("Back Ground"));
+	//selectCategoriesComboBox->addItem(QString("Back Ground"));
 
 	ballSmallImagePixmap->fill(qRgb(0, 0, 0));
 	fieldSmallImagePixmap->fill(qRgb(0, 0, 0));
@@ -359,7 +359,7 @@ void Interface::ballCategorySelectedSlot(void)
 
 void Interface::fieldCategorySelectedSlot(void)
 {
-	labelingimage->setIndex(3);
+	labelingimage->setIndex(1);
 }
 
 void Interface::whitelineCategorySelectedSlot(void)
@@ -369,7 +369,7 @@ void Interface::whitelineCategorySelectedSlot(void)
 
 void Interface::goalpoleCategorySelectedSlot(void)
 {
-	labelingimage->setIndex(1);
+	labelingimage->setIndex(3);
 }
 
 void Interface::robotCategorySelectedSlot(void)
@@ -382,9 +382,9 @@ void Interface::getSmallImages(void)
 	unsigned char *data = new unsigned char [width * height];
 	std::vector<QPixmap *> pixmaps;
 	pixmaps.push_back(ballSmallImagePixmap);
-	pixmaps.push_back(goalpoleSmallImagePixmap);
-	pixmaps.push_back(whitelineSmallImagePixmap);
 	pixmaps.push_back(fieldSmallImagePixmap);
+	pixmaps.push_back(whitelineSmallImagePixmap);
+	pixmaps.push_back(goalpoleSmallImagePixmap);
 	pixmaps.push_back(robotSmallImagePixmap);
 
 	for(int i = 0; i < categories; i++) {
