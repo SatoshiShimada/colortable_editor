@@ -33,7 +33,7 @@ void ColorTable::clearColorTable(unsigned int index, table value, int margin)
 	for(int ri = std::max<int>(r - margin, 0); ri < std::min<int>(r + margin, 255); ri++) {
 		for(int gi = std::max<int>(g - margin, 0); gi < std::min<int>(g + margin, 255); gi++) {
 			for(int bi = std::max<int>(b - margin, 0); bi < std::min<int>(b + margin, 255); bi++) {
-				index = (ri << 16) | (gi << 8) | (bi << 0);
+				index = ((ri << 16) | (gi << 8) | (bi << 0)) & (color_table_size - 1);
 				color_table[index] &= ~value;
 			}
 		}
@@ -55,7 +55,7 @@ void ColorTable::setColorTable(unsigned int index, table value, int margin)
 	for(int ri = std::max<int>(r - margin, 0); ri < std::min<int>(r + margin, 255); ri++) {
 		for(int gi = std::max<int>(g - margin, 0); gi < std::min<int>(g + margin, 255); gi++) {
 			for(int bi = std::max<int>(b - margin, 0); bi < std::min<int>(b + margin, 255); bi++) {
-				index = (ri << 16) | (gi << 8) | (bi << 0);
+				index = ((ri << 16) | (gi << 8) | (bi << 0)) & (color_table_size - 1);
 				color_table[index] |= value;
 			}
 		}

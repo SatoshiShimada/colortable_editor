@@ -41,6 +41,8 @@ void ImageProcessing::erosion(unsigned char *data)
 void ImageProcessing::dilation(unsigned char *data)
 {
 	unsigned char *buf = new unsigned char[width * height];
+	for(int i = 0; i < width * height; i++)
+		buf[i] = 0;
 	for(int h = 0; h < height; h++) {
 		for(int w = 0; w < width; w++) {
 			int wdec = std::max<int>(w - 1, 0);
