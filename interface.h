@@ -24,6 +24,12 @@ class Interface : public QMainWindow
 	Q_OBJECT
 
 protected:
+	void connection(void);
+	void createWindow(void);
+	void loadImage(const char *);
+	void saveImage(const char *);
+	void dragEnterEvent(QDragEnterEvent *e);
+	void dropEvent(QDropEvent *e);
 	PaintArea *paintarea;
 	LabelingImage *labelingimage;
 	QString filenameDrag;
@@ -36,6 +42,16 @@ protected:
 	QLabel *filenameLabel;
 	QLabel *marginSizeLabel;
 	QLabel *deleteSizeLabel;
+	QLabel *ballSmallImageLabel;
+	QLabel *fieldSmallImageLabel;
+	QLabel *whitelineSmallImageLabel;
+	QLabel *goalpoleSmallImageLabel;
+	QLabel *robotSmallImageLabel;
+	QPixmap *ballSmallImagePixmap;
+	QPixmap *fieldSmallImagePixmap;
+	QPixmap *whitelineSmallImagePixmap;
+	QPixmap *goalpoleSmallImagePixmap;
+	QPixmap *robotSmallImagePixmap;
 	QComboBox *selectCategoriesComboBox;
 	QRadioButton *setClickModeRadioButton;
 	QRadioButton *clearClickModeRadioButton;
@@ -51,28 +67,35 @@ protected:
 	QPushButton *applyTableButton;
 	QPushButton *imageErosionButton;
 	QPushButton *imageDilationButton;
+	QPushButton *ballSmallImageButton;
+	QPushButton *fieldSmallImageButton;
+	QPushButton *whitelineSmallImageButton;
+	QPushButton *goalpoleSmallImageButton;
+	QPushButton *robotSmallImageButton;
 	QLineEdit *filenameLine;
 	QSlider *marginSizeSlider;
 	QSlider *deleteSizeSlider;
-	QHBoxLayout *mainLayout;
+	QGridLayout *mainLayout;
 	QGridLayout *labelLayout;
 	QVBoxLayout *buttonLayout;
 	QVBoxLayout *colortableLayout;
 	QVBoxLayout *imageProcessingLayout;
 	QVBoxLayout *imageLayout;
-	void connection(void);
+	QVBoxLayout *ballSmallImageLayout;
+	QVBoxLayout *fieldSmallImageLayout;
+	QVBoxLayout *whitelineSmallImageLayout;
+	QVBoxLayout *goalpoleSmallImageLayout;
+	QVBoxLayout *robotSmallImageLayout;
+	QHBoxLayout *smallImageLayout;
 	bool isSetColorTable;
 	bool isClickPixMode;
 	bool isClickColorTableMode;
 	bool isDeletePixMode;
+	int width;
+	int height;
 public:
 	Interface();
 	~Interface();
-	void createWindow(void);
-	void loadImage(const char *);
-	void saveImage(const char *);
-	void dragEnterEvent(QDragEnterEvent *e);
-	void dropEvent(QDropEvent *e);
 private slots:
 	void clearImageSlot(void);
 	void saveImageSlot(void);
@@ -94,6 +117,11 @@ private slots:
 	void mouseReleaseSlot(int, int);
 	void imageErosionSlot(void);
 	void imageDilationSlot(void);
+	void ballCategorySelectedSlot(void);
+	void fieldCategorySelectedSlot(void);
+	void whitelineCategorySelectedSlot(void);
+	void goalpoleCategorySelectedSlot(void);
+	void robotCategorySelectedSlot(void);
 };
 
 #endif //__INTERFACE_H__

@@ -9,7 +9,7 @@
 #include "paint.h"
 #include "labeling_image.h"
 
-Interface::Interface() : QMainWindow(), isSetColorTable(true), isClickPixMode(false), isClickColorTableMode(true), isDeletePixMode(true)
+Interface::Interface() : QMainWindow(), isSetColorTable(true), isClickPixMode(false), isClickColorTableMode(true), isDeletePixMode(true), width(320), height(240)
 {
 	setAcceptDrops(true);
 	createWindow();
@@ -25,6 +25,16 @@ void Interface::createWindow(void)
 	window                    = new QWidget;
 	marginSizeLabel           = new QLabel("Margin size: ");
 	deleteSizeLabel           = new QLabel("Delete size: ");
+	ballSmallImageLabel       = new QLabel;
+	fieldSmallImageLabel      = new QLabel;
+	whitelineSmallImageLabel  = new QLabel;
+	goalpoleSmallImageLabel   = new QLabel;
+	robotSmallImageLabel      = new QLabel;
+	ballSmallImagePixmap      = new QPixmap(width / 2, height / 2);
+	fieldSmallImagePixmap     = new QPixmap(width / 2, height / 2);
+	whitelineSmallImagePixmap = new QPixmap(width / 2, height / 2);
+	goalpoleSmallImagePixmap  = new QPixmap(width / 2, height / 2);
+	robotSmallImagePixmap     = new QPixmap(width / 2, height / 2);
 	selectCategoriesComboBox  = new QComboBox();
 	setClickModeRadioButton   = new QRadioButton("Set");
 	clearClickModeRadioButton = new QRadioButton("Clear");
@@ -44,16 +54,27 @@ void Interface::createWindow(void)
 	applyTableButton          = new QPushButton("Apply");
 	imageErosionButton        = new QPushButton("Erosion");
 	imageDilationButton       = new QPushButton("Dilation");
+	ballSmallImageButton      = new QPushButton("Ball");
+	fieldSmallImageButton     = new QPushButton("Field");
+	whitelineSmallImageButton = new QPushButton("White line");
+	goalpoleSmallImageButton  = new QPushButton("Goal pole");
+	robotSmallImageButton     = new QPushButton("Robot");
 	paintarea                 = new PaintArea(320, 240);
 	labelingimage             = new LabelingImage(320, 240, 6);
 	marginSizeSlider          = new QSlider;
 	deleteSizeSlider          = new QSlider;
-	mainLayout                = new QHBoxLayout;
+	mainLayout                = new QGridLayout;
 	labelLayout               = new QGridLayout;
 	buttonLayout              = new QVBoxLayout;
 	colortableLayout          = new QVBoxLayout;
 	imageProcessingLayout     = new QVBoxLayout;
 	imageLayout               = new QVBoxLayout;
+	ballSmallImageLayout      = new QVBoxLayout;
+	fieldSmallImageLayout     = new QVBoxLayout;
+	whitelineSmallImageLayout = new QVBoxLayout;
+	goalpoleSmallImageLayout  = new QVBoxLayout;
+	robotSmallImageLayout     = new QVBoxLayout;
+	smallImageLayout          = new QHBoxLayout;
 
 	setClickModeRadioButton->setChecked(true);
 
@@ -73,6 +94,39 @@ void Interface::createWindow(void)
 	selectCategoriesComboBox->addItem(QString("Field"));
 	selectCategoriesComboBox->addItem(QString("Robot"));
 	selectCategoriesComboBox->addItem(QString("Back Ground"));
+
+	ballSmallImagePixmap->fill(qRgb(0, 0, 0));
+	fieldSmallImagePixmap->fill(qRgb(0, 0, 0));
+	whitelineSmallImagePixmap->fill(qRgb(0, 0, 0));
+	goalpoleSmallImagePixmap->fill(qRgb(0, 0, 0));
+	robotSmallImagePixmap->fill(qRgb(0, 0, 0));
+
+	ballSmallImageLabel->setPixmap(*ballSmallImagePixmap);
+	fieldSmallImageLabel->setPixmap(*fieldSmallImagePixmap);
+	whitelineSmallImageLabel->setPixmap(*whitelineSmallImagePixmap);
+	goalpoleSmallImageLabel->setPixmap(*goalpoleSmallImagePixmap);
+	robotSmallImageLabel->setPixmap(*robotSmallImagePixmap);
+
+	ballSmallImageLayout->addWidget(ballSmallImageButton);
+	ballSmallImageLayout->addWidget(ballSmallImageLabel);
+
+	fieldSmallImageLayout->addWidget(fieldSmallImageButton);
+	fieldSmallImageLayout->addWidget(fieldSmallImageLabel);
+
+	whitelineSmallImageLayout->addWidget(whitelineSmallImageButton);
+	whitelineSmallImageLayout->addWidget(whitelineSmallImageLabel);
+
+	goalpoleSmallImageLayout->addWidget(goalpoleSmallImageButton);
+	goalpoleSmallImageLayout->addWidget(goalpoleSmallImageLabel);
+
+	robotSmallImageLayout->addWidget(robotSmallImageButton);
+	robotSmallImageLayout->addWidget(robotSmallImageLabel);
+
+	smallImageLayout->addLayout(ballSmallImageLayout);
+	smallImageLayout->addLayout(fieldSmallImageLayout);
+	smallImageLayout->addLayout(whitelineSmallImageLayout);
+	smallImageLayout->addLayout(goalpoleSmallImageLayout);
+	smallImageLayout->addLayout(robotSmallImageLayout);
 
 	buttonLayout->addWidget(setClickModeRadioButton);
 	buttonLayout->addWidget(clearClickModeRadioButton);
@@ -106,9 +160,10 @@ void Interface::createWindow(void)
 	labelLayout->addWidget(deleteSizeLabel, 5, 1);
 	labelLayout->addWidget(deleteSizeSlider, 5, 2);
 
-	mainLayout->addLayout(labelLayout);
-	mainLayout->addWidget(labelingimage);
-	mainLayout->addWidget(paintarea);
+	mainLayout->addLayout(labelLayout, 1, 1, 2, 1);
+	mainLayout->addWidget(labelingimage, 1, 2);
+	mainLayout->addWidget(paintarea, 1, 3);
+	mainLayout->addLayout(smallImageLayout, 2, 2, 1, 2);
 
 	window->setLayout(mainLayout);
 	setCentralWidget(window);
@@ -151,6 +206,11 @@ void Interface::connection(void)
 	QObject::connect(labelingimage, SIGNAL(updatedImage()), this, SLOT(drawImage()));
 	QObject::connect(imageErosionButton, SIGNAL(clicked(bool)), this, SLOT(imageErosionSlot()));
 	QObject::connect(imageDilationButton, SIGNAL(clicked(bool)), this, SLOT(imageDilationSlot()));
+	QObject::connect(ballSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(ballCategorySelectedSlot()));
+	QObject::connect(fieldSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(fieldCategorySelectedSlot()));
+	QObject::connect(whitelineSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(whitelineCategorySelectedSlot()));
+	QObject::connect(goalpoleSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(goalpoleCategorySelectedSlot()));
+	QObject::connect(robotSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(robotCategorySelectedSlot()));
 }
 
 void Interface::clearImageSlot(void)
@@ -288,5 +348,30 @@ void Interface::imageErosionSlot(void)
 void Interface::imageDilationSlot(void)
 {
 	labelingimage->dilation();
+}
+
+void Interface::ballCategorySelectedSlot(void)
+{
+	labelingimage->setIndex(0);
+}
+
+void Interface::fieldCategorySelectedSlot(void)
+{
+	labelingimage->setIndex(3);
+}
+
+void Interface::whitelineCategorySelectedSlot(void)
+{
+	labelingimage->setIndex(2);
+}
+
+void Interface::goalpoleCategorySelectedSlot(void)
+{
+	labelingimage->setIndex(1);
+}
+
+void Interface::robotCategorySelectedSlot(void)
+{
+	labelingimage->setIndex(4);
 }
 
