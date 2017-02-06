@@ -55,6 +55,7 @@ void Interface::createWindow(void)
 	applyTableButton          = new QPushButton("Apply");
 	imageErosionButton        = new QPushButton("Erosion");
 	imageDilationButton       = new QPushButton("Dilation");
+	imageLabelingButton       = new QPushButton("Labeling");
 	ballSmallImageButton      = new QPushButton("Ball");
 	fieldSmallImageButton     = new QPushButton("Field");
 	whitelineSmallImageButton = new QPushButton("White line");
@@ -149,6 +150,7 @@ void Interface::createWindow(void)
 
 	imageProcessingLayout->addWidget(imageErosionButton);
 	imageProcessingLayout->addWidget(imageDilationButton);
+	imageProcessingLayout->addWidget(imageLabelingButton);
 	imageProcessingGroupBox->setLayout(imageProcessingLayout);
 
 	labelLayout->addWidget(imageGroupBox, 1, 1);
@@ -207,6 +209,7 @@ void Interface::connection(void)
 	QObject::connect(labelingimage, SIGNAL(updatedImage()), this, SLOT(drawImage()));
 	QObject::connect(imageErosionButton, SIGNAL(clicked(bool)), this, SLOT(imageErosionSlot()));
 	QObject::connect(imageDilationButton, SIGNAL(clicked(bool)), this, SLOT(imageDilationSlot()));
+	QObject::connect(imageLabelingButton, SIGNAL(clicked(bool)), this, SLOT(imageLabelingSlot()));
 	QObject::connect(ballSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(ballCategorySelectedSlot()));
 	QObject::connect(fieldSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(fieldCategorySelectedSlot()));
 	QObject::connect(whitelineSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(whitelineCategorySelectedSlot()));
@@ -350,6 +353,10 @@ void Interface::imageErosionSlot(void)
 void Interface::imageDilationSlot(void)
 {
 	labelingimage->dilation();
+}
+
+void Interface::imageLabelingSlot(void)
+{
 }
 
 void Interface::ballCategorySelectedSlot(void)

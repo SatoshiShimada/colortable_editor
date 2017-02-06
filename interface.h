@@ -68,6 +68,7 @@ protected:
 	QPushButton *applyTableButton;
 	QPushButton *imageErosionButton;
 	QPushButton *imageDilationButton;
+	QPushButton *imageLabelingButton;
 	QPushButton *ballSmallImageButton;
 	QPushButton *fieldSmallImageButton;
 	QPushButton *whitelineSmallImageButton;
@@ -121,6 +122,7 @@ private slots:
 	void mouseReleaseSlot(int, int);
 	void imageErosionSlot(void);
 	void imageDilationSlot(void);
+	void imageLabelingSlot(void);
 	void ballCategorySelectedSlot(void);
 	void fieldCategorySelectedSlot(void);
 	void whitelineCategorySelectedSlot(void);
