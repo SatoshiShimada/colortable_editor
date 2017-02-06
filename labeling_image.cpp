@@ -153,13 +153,32 @@ void LabelingImage::applyColorTable(void)
 
 void LabelingImage::setImage(const unsigned char *data)
 {
+	const int color_num = 14;
+	int color_lists[color_num][3] = {
+		{ 127,   0,   0 },
+		{ 255,   0,   0 },
+		{ 255, 127,   0 },
+		{   0, 255,   0 },
+		{ 127, 255,   0 },
+		{ 255, 255,   0 },
+		{   0,   0, 127 },
+		{   0,   0, 255 },
+		{ 127,   0, 255 },
+		{ 255,   0, 255 },
+		{   0, 127, 255 },
+		{   0, 255, 255 },
+		{ 127, 255, 255 },
+		{ 255, 255, 255 },
+	};
 	QImage image = map.toImage();
 	for(int h = 0; h < height; h++) {
 		for(int w = 0; w < width; w++) {
-			if(data[h * width + w] != 0)
-				image.setPixel(w, h, qRgb(255, 0, 0));
-			else
+			if(data[h * width + w] != 0) {
+				int *color = color_lists[data[h * width + w] % color_num];
+				image.setPixel(w, h, qRgb(color[0], color[1], color[2]));
+			} else {
 				image.setPixel(w, h, qRgb(0, 0, 0));
+			}
 		}
 	}
 	map = QPixmap::fromImage(image);
