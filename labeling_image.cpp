@@ -139,6 +139,12 @@ void LabelingImage::dilation(void)
 	setImage(labelData.getCurrentData());
 }
 
+void LabelingImage::labeling(void)
+{
+	labelData.labeling();
+	setImage(labelData.getCurrentData());
+}
+
 void LabelingImage::applyColorTable(void)
 {
 	labelData.applyColorTable();

@@ -9,6 +9,7 @@ public:
 	~ImageProcessing();
 	void erosion(unsigned char *);
 	void dilation(unsigned char *);
+	void labeling(unsigned char *);
 protected:
 	int width;
 	int height;

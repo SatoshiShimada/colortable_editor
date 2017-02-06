@@ -22,8 +22,9 @@ public:
 	void applyColorTable();
 	void clearBitColorTable(int, int);
 	void setBitColorTable(int, int);
-	void erosion();
-	void dilation();
+	void erosion(void);
+	void dilation(void);
+	void labeling(void);
 	void setIndex(int);
 	void setMargin(int);
 	void exportImage(unsigned char *);

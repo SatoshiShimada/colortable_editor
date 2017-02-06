@@ -357,6 +357,7 @@ void Interface::imageDilationSlot(void)
 
 void Interface::imageLabelingSlot(void)
 {
+	labelingimage->labeling();
 }
 
 void Interface::ballCategorySelectedSlot(void)
