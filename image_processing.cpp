@@ -1,6 +1,8 @@
 
 #include <cstdio>
 #include <iostream>
+#include <utility>
+#include <vector>
 
 #include "image_processing.h"
 
@@ -69,24 +71,21 @@ void ImageProcessing::labeling(unsigned char *data)
 	unsigned char *buf = new unsigned char[width * height];
 	const int lookup_table_size = 256; /* 8bits */
 	const int lookup_num = 4; /* left-up, up, right-up, left */
-	int lookup_table[lookup_table_size];
 	int last_num = 0;
+	std::vector<std::pair<int, int> > lookup_table;
 	for(int i = 0; i < width * height; i++)
 		buf[i] = 0;
-	for(int i = 0; i < lookup_table_size; i++)
-		lookup_table[i] = i;
 	for(int h = 0; h < height; h++) {
 		for(int w = 0; w < width; w++) {
 			if(data[h * width + w] != 0) {
 				int wdec = std::max<int>(w - 1, 0);
 				int winc = std::min<int>(w + 1, width - 1);
 				int hdec = std::max<int>(h - 1, 0);
-				int hinc = std::min<int>(h + 1, height - 1);
 				unsigned char value[lookup_num];
-				value[0] = data[hdec * width + wdec];
-				value[1] = data[hdec * width + w   ];
-				value[2] = data[hdec * width + winc];
-				value[3] = data[h    * width + wdec];
+				value[0] = buf[hdec * width + wdec];
+				value[1] = buf[hdec * width + w   ];
+				value[2] = buf[hdec * width + winc];
+				value[3] = buf[h    * width + wdec];
 				if(value[0] == 0 && value[1] == 0 && value[2] == 0 && value[3] == 0) {
 					buf[h * width + w] = last_num + 1;
 					last_num++;
@@ -100,22 +99,56 @@ void ImageProcessing::labeling(unsigned char *data)
 						if(value[i] < min_value)
 							min_value = value[i];
 					}
+					buf[h * width + w] = min_value;
 					for(int i = 0; i < lookup_num; i++) {
-						buf[h * width + w] = min_value;
 						if(value[i] != 0 && value[i] != min_value)
-							lookup_table[i] = min_value;
+							lookup_table.push_back(std::make_pair(value[i], min_value));
 					}
 				}
 			}
+		}
+	}
+	std::vector<int> table[1000];
+	if(lookup_table.size() != 0) {
+	int index = lookup_table[0].first;
+	int num = lookup_table[0].second;
+	lookup_table.erase(lookup_table.begin());
+	std::vector<int> list;
+	list.push_back(num);
+	table[index] = list;
+	for(int i = 0, j = 0; i < lookup_table.size(); i++) {
+		if(lookup_table[i].first == num) {
+			list.push_back(lookup_table[i].second);
+		} else if(lookup_table[i].second == num) {
+			list.push_back(lookup_table[i].first);
+		} else {
+			if(j >= list.size()) {
+				table[index] = list;
+				list.clear();
+				j = 0;
+			} else {
+				num = list[j++];
+			}
+			continue;
+		}
+		lookup_table.erase(lookup_table.begin() + i);
+		i--;
+	}
+	int map[256];
+	for(int i = 0; i < 256; i++) map[i] = i;
+	for(int i = 0; i < 1000; i++) {
+		for(int j = 0; j < table[i].size(); j++) {
+			map[table[i][j]] = i;
 		}
 	}
 	for(int h = 0; h < height; h++) {
 		for(int w = 0; w < width; w++) {
 			unsigned char value = buf[h * width + w];
 			if(value != 0) {
-				buf[h * width + w] = lookup_table[(int)value];
+				buf[h * width + w] = map[(int)value];
 			}
 		}
+	}
 	}
 	for(int i = 0; i < width * height; i++)
 		data[i] = buf[i];
