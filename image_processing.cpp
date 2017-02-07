@@ -6,7 +6,8 @@
 
 #include "image_processing.h"
 
-ImageProcessing::ImageProcessing(int width, int height) : width(width), height(height)
+ImageProcessing::ImageProcessing(int width, int height) : width(width), height(height), lookup_table_size(0xff * sizeof(int) /* max number of sizeof(int) byte */), size_threshold(1)
+
 {
 }
 
@@ -66,10 +67,9 @@ void ImageProcessing::dilation(unsigned char *data)
 	delete[] buf;
 }
 
-void ImageProcessing::labeling(unsigned char *data)
+void ImageProcessing::labelingProcess(unsigned int *data)
 {
-	unsigned char *buf = new unsigned char[width * height];
-	const int lookup_table_size = 256; /* 8bits */
+	unsigned int *buf = new unsigned int[width * height];
 	const int lookup_num = 4; /* left-up, up, right-up, left */
 	int last_num = 0;
 	int map[lookup_table_size];
@@ -91,7 +91,7 @@ void ImageProcessing::labeling(unsigned char *data)
 				int wdec = std::max<int>(w - 1, 0);
 				int winc = std::min<int>(w + 1, width - 1);
 				int hdec = std::max<int>(h - 1, 0);
-				unsigned char value[lookup_num];
+				unsigned int value[lookup_num];
 				value[0] = buf[hdec * width + wdec];
 				value[1] = buf[hdec * width + w   ];
 				value[2] = buf[hdec * width + winc];
@@ -104,7 +104,7 @@ void ImageProcessing::labeling(unsigned char *data)
 						return;
 					}
 				} else {
-					unsigned char min_value = lookup_table_size - 1;
+					unsigned int min_value = lookup_table_size - 1;
 					for(int i = 0; i < lookup_num; i++) {
 						if(value[i] == 0) continue;
 						if(value[i] < min_value)
@@ -163,7 +163,7 @@ void ImageProcessing::labeling(unsigned char *data)
 	}
 	for(int h = 0; h < height; h++) {
 		for(int w = 0; w < width; w++) {
-			unsigned char value = buf[h * width + w];
+			unsigned int value = buf[h * width + w];
 			if(value != 0) {
 				buf[h * width + w] = map[(int)value];
 			}
@@ -172,5 +172,47 @@ void ImageProcessing::labeling(unsigned char *data)
 	for(int i = 0; i < width * height; i++)
 		data[i] = buf[i];
 	delete[] buf;
+}
+
+void ImageProcessing::labeling(unsigned char *data)
+{
+	unsigned int *int_data = new unsigned int[width * height];
+
+	for(int i = 0; i < width * height; i++)
+		int_data[i] = (unsigned int)data[i];
+	labelingProcess(int_data);
+	for(int i = 0; i < width * height; i++)
+		data[i] = (unsigned char)int_data[i];
+	delete[] int_data;
+}
+
+void ImageProcessing::labelingWithSize(unsigned char *data)
+{
+	labelingWithSize(data, size_threshold);
+}
+
+void ImageProcessing::labelingWithSize(unsigned char *data, unsigned int threshold)
+{
+	unsigned int *int_data = new unsigned int[width * height];
+	unsigned int region_size[lookup_table_size];
+	int map[lookup_table_size];
+
+	for(int i = 0; i < lookup_table_size; i++)
+		region_size[i] = 0;
+	for(int i = 0; i < width * height; i++)
+		int_data[i] = (unsigned int)data[i];
+	labelingProcess(int_data);
+	for(int i = 0; i < width * height; i++)
+		region_size[int_data[i]]++;
+	for(int i = 0; i < lookup_table_size; i++) {
+		if(region_size[i] < threshold) {
+			map[i] = 0;
+		} else {
+			map[i] = i;
+		}
+	}
+	for(int i = 0; i < width * height; i++)
+		data[i] = map[int_data[i]];
+	delete[] int_data;
 }
 

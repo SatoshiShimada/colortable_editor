@@ -47,7 +47,7 @@ void LabelingImageData::dilation(void)
 
 void LabelingImageData::labeling(void)
 {
-	imageprocessing.labeling(getCurrentData());
+	imageprocessing.labelingWithSize(getCurrentData(), 20);
 }
 
 void LabelingImageData::loadColorTable(const char *filename)
