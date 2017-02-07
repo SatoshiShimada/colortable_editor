@@ -71,19 +71,19 @@ void ImageProcessing::labelingProcess(unsigned int *data)
 {
 	unsigned int *buf = new unsigned int[width * height];
 	const int lookup_num = 4; /* left-up, up, right-up, left */
-	int last_num = 0;
+	unsigned int last_num = 0;
 	int map[lookup_table_size];
 	bool use_flag[lookup_table_size];
 	std::vector<std::pair<int, int> > lookup_table;
-	std::vector<int> table[lookup_table_size * 10];
+	std::vector<int> *table = new std::vector<int>[lookup_table_size * 10];
 	std::vector<int> list;
 	int next_index = 1;
 	int new_index_map[lookup_table_size];
 
-	for(int i = 0; i < width * height; i++)	buf[i] = 0;
-	for(int i = 0; i < lookup_table_size; i++) map[i] = i;
-	for(int i = 0; i < lookup_table_size; i++) use_flag[i] = false;
-	for(int i = 0; i < lookup_table_size; i++) new_index_map[i] = 0;
+	for(unsigned int i = 0; i < (unsigned int)(width * height); i++) buf[i] = 0;
+	for(unsigned int i = 0; i < lookup_table_size; i++) map[i] = i;
+	for(unsigned int i = 0; i < lookup_table_size; i++) use_flag[i] = false;
+	for(unsigned int i = 0; i < lookup_table_size; i++) new_index_map[i] = 0;
 
 	for(int h = 0; h < height; h++) {
 		for(int w = 0; w < width; w++) {
@@ -107,8 +107,7 @@ void ImageProcessing::labelingProcess(unsigned int *data)
 					unsigned int min_value = lookup_table_size - 1;
 					for(int i = 0; i < lookup_num; i++) {
 						if(value[i] == 0) continue;
-						if(value[i] < min_value)
-							min_value = value[i];
+						if(value[i] < min_value) min_value = value[i];
 					}
 					buf[h * width + w] = min_value;
 					for(int i = 0; i < lookup_num; i++) {
@@ -125,7 +124,7 @@ void ImageProcessing::labelingProcess(unsigned int *data)
 		lookup_table.erase(lookup_table.begin());
 		list.push_back(num);
 		table[index] = list;
-		for(int i = 0, j = 0; i < lookup_table.size(); i++) {
+		for(unsigned int i = 0, j = 0; i < lookup_table.size(); ) {
 			if(lookup_table[i].first == num) {
 				list.push_back(lookup_table[i].second);
 			} else if(lookup_table[i].second == num) {
@@ -138,18 +137,18 @@ void ImageProcessing::labelingProcess(unsigned int *data)
 				} else {
 					num = list[j++];
 				}
+				i++;
 				continue;
 			}
 			lookup_table.erase(lookup_table.begin() + i);
-			i--;
 		}
 	}
-	for(int i = 0; i < 1000; i++) {
-		for(int j = 0; j < table[i].size(); j++) {
+	for(unsigned int i = 0; i < 1000; i++) {
+		for(unsigned int j = 0; j < table[i].size(); j++) {
 			map[table[i][j]] = i;
 		}
 	}
-	for(int i = 1; i < lookup_table_size; i++) {
+	for(unsigned int i = 1; i < lookup_table_size; i++) {
 		if(use_flag[i] == true) {
 			if(new_index_map[map[i]] == 0) {
 				new_index_map[map[i]] = next_index++;
@@ -172,6 +171,7 @@ void ImageProcessing::labelingProcess(unsigned int *data)
 	for(int i = 0; i < width * height; i++)
 		data[i] = buf[i];
 	delete[] buf;
+	delete[] table;
 }
 
 void ImageProcessing::labeling(unsigned char *data)
@@ -197,14 +197,14 @@ void ImageProcessing::labelingWithSize(unsigned char *data, unsigned int thresho
 	unsigned int region_size[lookup_table_size];
 	int map[lookup_table_size];
 
-	for(int i = 0; i < lookup_table_size; i++)
+	for(unsigned int i = 0; i < lookup_table_size; i++)
 		region_size[i] = 0;
 	for(int i = 0; i < width * height; i++)
 		int_data[i] = (unsigned int)data[i];
 	labelingProcess(int_data);
 	for(int i = 0; i < width * height; i++)
 		region_size[int_data[i]]++;
-	for(int i = 0; i < lookup_table_size; i++) {
+	for(unsigned int i = 0; i < lookup_table_size; i++) {
 		if(region_size[i] < threshold) {
 			map[i] = 0;
 		} else {
