@@ -87,7 +87,7 @@ void ImageProcessing::labeling(unsigned char *data)
 				value[1] = data[hdec * width + w   ];
 				value[2] = data[hdec * width + winc];
 				value[3] = data[h    * width + wdec];
-				if(value[1] == 0 && value[2] == 0 && value[3] == 0 && value[4] == 0) {
+				if(value[0] == 0 && value[1] == 0 && value[2] == 0 && value[3] == 0) {
 					buf[h * width + w] = last_num + 1;
 					last_num++;
 					if(last_num > 255) { /* overflow */
