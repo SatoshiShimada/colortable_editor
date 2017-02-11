@@ -12,8 +12,8 @@ LabelingImage::LabelingImage(int width, int height, int category_num) : QLabel()
 void LabelingImage::mousePressEvent(QMouseEvent *event)
 {
 	if(event->button() == Qt::LeftButton) {
-		int x = event->x() - (this->size().width() - width) / 2;
-		int y = event->y() - (this->size().height() - height) / 2;
+		int x = event->x();
+		int y = event->y();
 		deletePix(x, y);
 	}
 }
@@ -21,8 +21,8 @@ void LabelingImage::mousePressEvent(QMouseEvent *event)
 void LabelingImage::mouseReleaseEvent(QMouseEvent *event)
 {
 	if((event->button() & Qt::LeftButton)) {
-		int x = event->x() - (this->size().width() - width) / 2;
-		int y = event->y() - (this->size().height() - height) / 2;
+		int x = event->x();
+		int y = event->y();
 		deletePix(x, y);
 	}
 }
@@ -30,8 +30,8 @@ void LabelingImage::mouseReleaseEvent(QMouseEvent *event)
 void LabelingImage::mouseMoveEvent(QMouseEvent *event)
 {
 	if(event->button() == Qt::NoButton) {
-		int x = event->x() - (this->size().width() - width) / 2;
-		int y = event->y() - (this->size().height() - height) / 2;
+		int x = event->x();
+		int y = event->y();
 		deletePix(x, y);
 	}
 }
