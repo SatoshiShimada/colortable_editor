@@ -5,6 +5,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 #include <vector>
 
 #include "interface.h"
@@ -32,6 +33,7 @@ void Interface::createWindow(void)
 	whitelineSmallImageLabel  = new QLabel;
 	goalpoleSmallImageLabel   = new QLabel;
 	robotSmallImageLabel      = new QLabel;
+	currentFileNameLineEdit   = new QLineEdit;
 	ballSmallImagePixmap      = new QPixmap(smallImageWidth, smallImageHeight);
 	fieldSmallImagePixmap     = new QPixmap(smallImageWidth, smallImageHeight);
 	whitelineSmallImagePixmap = new QPixmap(smallImageWidth, smallImageHeight);
@@ -168,10 +170,11 @@ void Interface::createWindow(void)
 	labelLayout->addWidget(deleteSizeLabel, 5, 1);
 	labelLayout->addWidget(deleteSizeSlider, 5, 2);
 
-	mainLayout->addLayout(labelLayout, 1, 1, 2, 1);
-	mainLayout->addWidget(labelingimage, 1, 2);
-	mainLayout->addWidget(paintarea, 1, 3);
-	mainLayout->addLayout(smallImageLayout, 2, 2, 1, 2);
+	mainLayout->addLayout(labelLayout, 1, 1, 3, 1);
+	mainLayout->addWidget(currentFileNameLineEdit, 1, 2, 1, 2);
+	mainLayout->addWidget(labelingimage, 2, 2);
+	mainLayout->addWidget(paintarea, 2, 3);
+	mainLayout->addLayout(smallImageLayout, 3, 2, 1, 2);
 
 	window->setLayout(mainLayout);
 	setCentralWidget(window);
@@ -232,12 +235,22 @@ void Interface::loadListFileSlot(void)
 	while(std::getline(listFileStream, line)) {
 		listFile.push_back(line);
 	}
+	if(listFile.size() != 0) {
+		loadImage(listFile[0].c_str());
+		currentFileNameLineEdit->setText(QString(listFile[0].c_str()));
+		labelingimage->applyColorTable();
+	}
+	listFileIndex = 0;
 }
 
 void Interface::nextImageSlot(void)
 {
 	listFileIndex++;
+	if(listFileIndex >= listFile.size())
+		listFileIndex = std::max<int>(listFile.size() - 1, 0);
 	loadImage(listFile[listFileIndex].c_str());
+	currentFileNameLineEdit->setText(QString(listFile[listFileIndex].c_str()));
+	labelingimage->applyColorTable();
 }
 
 void Interface::clearImageSlot(void)

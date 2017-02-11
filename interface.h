@@ -51,6 +51,7 @@ protected:
 	QLabel *whitelineSmallImageLabel;
 	QLabel *goalpoleSmallImageLabel;
 	QLabel *robotSmallImageLabel;
+	QLineEdit *currentFileNameLineEdit;
 	QPixmap *ballSmallImagePixmap;
 	QPixmap *fieldSmallImagePixmap;
 	QPixmap *whitelineSmallImagePixmap;
