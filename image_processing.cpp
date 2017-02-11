@@ -123,6 +123,8 @@ void ImageProcessing::labelingProcess(unsigned int *data)
 		list.push_back(lookup_table[0].first);
 		list.push_back(lookup_table[0].second);
 		lookup_table.erase(lookup_table.begin());
+loop:
+		bool none = true;
 		for(unsigned int i = 0; i < lookup_table.size(); ) {
 			unsigned int num1 = lookup_table[i].first;
 			unsigned int num2 = lookup_table[i].second;
@@ -131,10 +133,12 @@ void ImageProcessing::labelingProcess(unsigned int *data)
 				if(num1 == list[j]) {
 					list.push_back(num2);
 					found = true;
+					none = false;
 					break;
 				} else if(num2 == list[j]) {
 					list.push_back(num1);
 					found = true;
+					none = false;
 					break;
 				}
 			}
@@ -146,6 +150,7 @@ void ImageProcessing::labelingProcess(unsigned int *data)
 		}
 		std::sort(list.begin(), list.end());
 		list.erase(std::unique(list.begin(), list.end()), list.end());
+		if(!none) goto loop;
 		if(list.size() != 0)
 			table[list[0]] = list;
 	}
