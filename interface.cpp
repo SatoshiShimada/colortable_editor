@@ -44,6 +44,7 @@ void Interface::createWindow(void)
 	colortableGroupBox        = new QGroupBox("color table");
 	imageGroupBox             = new QGroupBox("image");
 	imageProcessingGroupBox   = new QGroupBox("Image Processing");
+	loadListFileButton        = new QPushButton("Load List File");
 	clearImageButton          = new QPushButton("Clear");
 	saveImageButton           = new QPushButton("Save");
 	loadImageButton           = new QPushButton("Load");
@@ -142,6 +143,7 @@ void Interface::createWindow(void)
 	colortableLayout->addWidget(applyTableButton);
 	colortableGroupBox->setLayout(colortableLayout);
 
+	imageLayout->addWidget(loadListFileButton);
 	imageLayout->addWidget(clearImageButton);
 	imageLayout->addWidget(saveImageButton);
 	imageLayout->addWidget(loadImageButton);
@@ -187,6 +189,7 @@ void Interface::dropEvent(QDropEvent *e)
 
 void Interface::connection(void)
 {
+	QObject::connect(loadListFileButton, SIGNAL(clicked()), this, SLOT(loadListFileSlot()));
 	QObject::connect(clearImageButton, SIGNAL(clicked()), this, SLOT(clearImageSlot()));
 	QObject::connect(saveImageButton, SIGNAL(clicked()), this, SLOT(saveImageSlot()));
 	QObject::connect(loadImageButton, SIGNAL(clicked()), this, SLOT(loadImageSlot()));
@@ -217,6 +220,11 @@ void Interface::connection(void)
 	QObject::connect(robotSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(robotCategorySelectedSlot()));
 }
 
+void Interface::loadListFileSlot(void)
+{
+	QString filename = QFileDialog::getOpenFileName(this, "Open Image", "./");
+}
+
 void Interface::clearImageSlot(void)
 {
 	paintarea->resetPixmapArea();
@@ -224,20 +232,20 @@ void Interface::clearImageSlot(void)
 
 void Interface::saveImageSlot(void)
 {
-	const char *filename = "out.png";
-	paintarea->savePixmapImage(filename);
+	QString qfilename = QFileDialog::getSaveFileName(this, "Save Image", "./");
+	paintarea->savePixmapImage(qfilename.toStdString().c_str());
 }
 
 void Interface::loadImageSlot(void)
 {
-	const char *filename = "out.png";
-	loadImage(filename);
+	QString qfilename = QFileDialog::getOpenFileName(this, "Load Image", "./");
+	loadImage(qfilename.toStdString().c_str());
 }
 
 void Interface::exportImageSlot(void)
 {
-	const char *filename = "export.png";
-	labelingimage->exportImage(filename);
+	QString qfilename = QFileDialog::getSaveFileName(this, "Export Image", "./");
+	labelingimage->exportImage(qfilename.toStdString().c_str());
 }
 
 void Interface::clearAllTableSlot(void)
@@ -252,14 +260,14 @@ void Interface::clearTableSlot(void)
 
 void Interface::saveTableSlot(void)
 {
-	const char *filename = "table";
-	labelingimage->saveColorTable(filename);
+	QString qfilename = QFileDialog::getSaveFileName(this, "Save Table", "./");
+	labelingimage->saveColorTable(qfilename.toStdString().c_str());
 }
 
 void Interface::loadTableSlot(void)
 {
-	const char *filename = "table";
-	labelingimage->loadColorTable(filename);
+	QString qfilename = QFileDialog::getOpenFileName(this, "Load Table", "./");
+	labelingimage->loadColorTable(qfilename.toStdString().c_str());
 }
 
 void Interface::applyTableSlot(void)

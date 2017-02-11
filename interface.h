@@ -15,6 +15,7 @@
 #include <QUrl>
 #include <QMimeData>
 #include <QString>
+#include <QFileDialog>
 
 #include "paint.h"
 #include "labeling_image.h"
@@ -57,6 +58,7 @@ protected:
 	QRadioButton *setClickModeRadioButton;
 	QRadioButton *clearClickModeRadioButton;
 	QRadioButton *deletePixModeRadioButton;
+	QPushButton *loadListFileButton;
 	QPushButton *clearImageButton;
 	QPushButton *saveImageButton;
 	QPushButton *loadImageButton;
@@ -102,6 +104,7 @@ public:
 	Interface();
 	~Interface();
 private slots:
+	void loadListFileSlot(void);
 	void clearImageSlot(void);
 	void saveImageSlot(void);
 	void loadImageSlot(void);
