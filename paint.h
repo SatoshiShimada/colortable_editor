@@ -22,7 +22,6 @@ public:
 	PaintArea(int, int);
 protected:
 	QPixmap *mainPixmap;
-	QPixmap *originalPixmap;
 	void mousePressEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);

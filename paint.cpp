@@ -13,8 +13,8 @@ PaintArea::PaintArea(int width, int height) : QLabel(), width(width), height(hei
 void PaintArea::mousePressEvent(QMouseEvent *event)
 {
 	if(event->button() == Qt::LeftButton) {
-		int x = event->x() - (this->size().width() - width) / 2;
-		int y = event->y() - (this->size().height() - height) / 2;
+		int x = event->x();
+		int y = event->y();
 		if(x < 0 || x > width) return;
 		if(y < 0 || y > height) return;
 		emit mousePressSignal(x, y);
@@ -24,8 +24,8 @@ void PaintArea::mousePressEvent(QMouseEvent *event)
 void PaintArea::mouseReleaseEvent(QMouseEvent *event)
 {
 	if((event->button() & Qt::LeftButton)) {
-		int x = event->x() - (this->size().width() - width) / 2;
-		int y = event->y() - (this->size().height() - height) / 2;
+		int x = event->x();
+		int y = event->y();
 		if(x < 0 || x > width) return;
 		if(y < 0 || y > height) return;
 		emit mouseReleaseSignal(x, y);
@@ -35,8 +35,8 @@ void PaintArea::mouseReleaseEvent(QMouseEvent *event)
 void PaintArea::mouseMoveEvent(QMouseEvent *event)
 {
 	if(event->button() == Qt::NoButton) {
-		int x = event->x() - (this->size().width() - width) / 2;
-		int y = event->y() - (this->size().height() - height) / 2;
+		int x = event->x();
+		int y = event->y();
 		if(x < 0 || x > width) return;
 		if(y < 0 || y > height) return;
 		emit mouseMoveSignal(x, y);
@@ -61,7 +61,6 @@ void PaintArea::loadPixmapImage(const char *filename)
 	QString qfilename = QString(filename);
 	mainPixmap->load(qfilename);
 	*mainPixmap = mainPixmap->scaled(width, height);
-	originalPixmap = new QPixmap(*mainPixmap);
 	this->setPixmap(*mainPixmap);
 	this->update();
 }
