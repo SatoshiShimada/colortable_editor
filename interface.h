@@ -3,6 +3,7 @@
 #define __INTERFACE_H__
 
 #include <iostream>
+#include <vector>
 #include <QtGui>
 #include <QtCore>
 #include <QApplication>
@@ -35,6 +36,7 @@ protected:
 	PaintArea *paintarea;
 	LabelingImage *labelingimage;
 	QString filenameDrag;
+	QString listFileName;
 	QWidget *window;
 	QGroupBox *changeClickModeGroupBox;
 	QGroupBox *colortableGroupBox;
@@ -59,6 +61,7 @@ protected:
 	QRadioButton *clearClickModeRadioButton;
 	QRadioButton *deletePixModeRadioButton;
 	QPushButton *loadListFileButton;
+	QPushButton *nextImageButton;
 	QPushButton *clearImageButton;
 	QPushButton *saveImageButton;
 	QPushButton *loadImageButton;
@@ -99,12 +102,15 @@ protected:
 	int height;
 	int smallImageWidth;
 	int smallImageHeight;
+	int listFileIndex;
 	const int categories;
+	std::vector<std::string> listFile;
 public:
 	Interface();
 	~Interface();
 private slots:
 	void loadListFileSlot(void);
+	void nextImageSlot(void);
 	void clearImageSlot(void);
 	void saveImageSlot(void);
 	void loadImageSlot(void);

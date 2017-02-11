@@ -3,6 +3,7 @@
 
 #include <cstring>
 #include <string>
+#include <fstream>
 #include <iostream>
 #include <vector>
 
@@ -10,7 +11,7 @@
 #include "paint.h"
 #include "labeling_image.h"
 
-Interface::Interface() : QMainWindow(), isSetColorTable(true), isClickPixMode(false), isClickColorTableMode(true), isDeletePixMode(true), width(320), height(240), smallImageWidth(width / 2), smallImageHeight(height / 2), categories(5)
+Interface::Interface() : QMainWindow(), isSetColorTable(true), isClickPixMode(false), isClickColorTableMode(true), isDeletePixMode(true), width(320), height(240), smallImageWidth(width / 2), smallImageHeight(height / 2), listFileIndex(0), categories(5)
 {
 	setAcceptDrops(true);
 	createWindow();
@@ -45,6 +46,7 @@ void Interface::createWindow(void)
 	imageGroupBox             = new QGroupBox("image");
 	imageProcessingGroupBox   = new QGroupBox("Image Processing");
 	loadListFileButton        = new QPushButton("Load List File");
+	nextImageButton           = new QPushButton("Next Image");
 	clearImageButton          = new QPushButton("Clear");
 	saveImageButton           = new QPushButton("Save");
 	loadImageButton           = new QPushButton("Load");
@@ -144,6 +146,7 @@ void Interface::createWindow(void)
 	colortableGroupBox->setLayout(colortableLayout);
 
 	imageLayout->addWidget(loadListFileButton);
+	imageLayout->addWidget(nextImageButton);
 	imageLayout->addWidget(clearImageButton);
 	imageLayout->addWidget(saveImageButton);
 	imageLayout->addWidget(loadImageButton);
@@ -190,6 +193,7 @@ void Interface::dropEvent(QDropEvent *e)
 void Interface::connection(void)
 {
 	QObject::connect(loadListFileButton, SIGNAL(clicked()), this, SLOT(loadListFileSlot()));
+	QObject::connect(nextImageButton, SIGNAL(clicked()), this, SLOT(nextImageSlot()));
 	QObject::connect(clearImageButton, SIGNAL(clicked()), this, SLOT(clearImageSlot()));
 	QObject::connect(saveImageButton, SIGNAL(clicked()), this, SLOT(saveImageSlot()));
 	QObject::connect(loadImageButton, SIGNAL(clicked()), this, SLOT(loadImageSlot()));
@@ -222,7 +226,18 @@ void Interface::connection(void)
 
 void Interface::loadListFileSlot(void)
 {
-	QString filename = QFileDialog::getOpenFileName(this, "Open Image", "./");
+	listFileName = QFileDialog::getOpenFileName(this, "Open Image", "./");
+	std::ifstream listFileStream(listFileName.toStdString().c_str());
+	std::string line;
+	while(std::getline(listFileStream, line)) {
+		listFile.push_back(line);
+	}
+}
+
+void Interface::nextImageSlot(void)
+{
+	listFileIndex++;
+	loadImage(listFile[listFileIndex].c_str());
 }
 
 void Interface::clearImageSlot(void)
