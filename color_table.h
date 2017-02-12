@@ -10,15 +10,15 @@ public:
 	ColorTable();
 	~ColorTable();
 	void clearColorTable(unsigned int, table);
-    void clearColorTable(unsigned int, table, int);
+	void clearColorTable(unsigned int, table, int);
 	void setColorTable(unsigned int, table);
-    void setColorTable(unsigned int, table, int);
+	void setColorTable(unsigned int, table, int);
 	table getColorTable(unsigned int);
 	bool clear(void);
 	bool clearCategory(table);
 	bool save(const char *);
 	bool load(const char *);
-    bool apply(int, int, const unsigned char *, unsigned char *, table);
+	bool apply(int, int, const unsigned char *, unsigned char *, table);
 	static const int max_categolies = 6;
 	static enum {
 		none = 0,
