@@ -50,6 +50,11 @@ void LabelingImageData::labeling(void)
 	imageprocessing.labelingWithSize(getCurrentData(), 20);
 }
 
+void LabelingImageData::eliminateIsolatedPixel(void)
+{
+	imageprocessing.eliminateIsolatedPixel(getCurrentData());
+}
+
 void LabelingImageData::loadColorTable(const char *filename)
 {
 	colortable.load(filename);

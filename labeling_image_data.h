@@ -25,6 +25,7 @@ public:
 	void erosion(void);
 	void dilation(void);
 	void labeling(void);
+	void eliminateIsolatedPixel(void);
 	void setIndex(int);
 	void setMargin(int);
 	void exportImage(unsigned char *);

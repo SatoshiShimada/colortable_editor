@@ -22,6 +22,7 @@ public:
 	void erosion(void);
 	void dilation(void);
 	void labeling(void);
+	void eliminateIsolatedPixel(void);
 	void setImage(const unsigned char *);
 	void getSmallImage(unsigned char *, int);
 protected:

@@ -112,7 +112,7 @@ void LabelingImage::exportImage(const char *filename)
 void LabelingImage::loadImage(const char *filename)
 {
 	originalMap.load(filename);
-	originalMap.scaled(width, height);
+	originalMap = originalMap.scaled(width, height);
 	QImage image = originalMap.toImage();
 	unsigned char *data = new unsigned char [width * height * 3];
 	for(int h = 0; h < height; h++) {
@@ -142,6 +142,12 @@ void LabelingImage::dilation(void)
 void LabelingImage::labeling(void)
 {
 	labelData.labeling();
+	setImage(labelData.getCurrentData());
+}
+
+void LabelingImage::eliminateIsolatedPixel(void)
+{
+	labelData.eliminateIsolatedPixel();
 	setImage(labelData.getCurrentData());
 }
 
