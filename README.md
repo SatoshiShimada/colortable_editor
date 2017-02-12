@@ -6,8 +6,6 @@ It's create senmentation label image from captured image.
 
 ## Requirement
 * Qt 4.8
-* g++ > 4.2
-* clang > 8.0.0
 
 ## Usage
 
