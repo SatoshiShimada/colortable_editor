@@ -61,6 +61,7 @@ protected:
 	QRadioButton *setClickModeRadioButton;
 	QRadioButton *clearClickModeRadioButton;
 	QRadioButton *deletePixModeRadioButton;
+	QRadioButton *selectRegionRadioButton;
 	QPushButton *loadListFileButton;
 	QPushButton *nextImageButton;
 	QPushButton *clearImageButton;
@@ -76,6 +77,7 @@ protected:
 	QPushButton *imageDilationButton;
 	QPushButton *imageLabelingButton;
 	QPushButton *imageEliminateIsolatedPixelButton;
+	QPushButton *imageExtractSelectedRegionsButton;
 	QPushButton *ballSmallImageButton;
 	QPushButton *fieldSmallImageButton;
 	QPushButton *whitelineSmallImageButton;
@@ -100,6 +102,7 @@ protected:
 	bool isClickPixMode;
 	bool isClickColorTableMode;
 	bool isDeletePixMode;
+	bool isSelectRegionMode;
 	int width;
 	int height;
 	int smallImageWidth;
@@ -129,12 +132,14 @@ private slots:
 	void setClickModeSlot(void);
 	void clearClickModeSlot(void);
 	void deletePixModeSlot(void);
+	void selectRegionModeSlot(void);
 	void mousePressSlot(int, int);
 	void mouseReleaseSlot(int, int);
 	void imageErosionSlot(void);
 	void imageDilationSlot(void);
 	void imageLabelingSlot(void);
 	void imageEliminatedIsolatedPixelSlot(void);
+	void imageExtractSelectedRegionsSlot(void);
 	void ballCategorySelectedSlot(void);
 	void fieldCategorySelectedSlot(void);
 	void whitelineCategorySelectedSlot(void);

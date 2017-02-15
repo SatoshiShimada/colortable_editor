@@ -166,3 +166,20 @@ void LabelingImageData::deletePix(int x, int y, int size)
 	}
 }
 
+void LabelingImageData::selectRegion(int x, int y)
+{
+	selected_regions.push_back(bitmap_data[currentIndex][y * width + x]);
+}
+
+void LabelingImageData::extractSelectedRegions(void)
+{
+	unsigned char map[0xff];
+	for(int i = 0; i < sizeof(map); i++)
+		map[i] = 0;
+	for(int i = 0; i < selected_regions.size(); i++)
+		map[selected_regions[i]] = selected_regions[i];
+	for(int i = 0; i < width * height; i++)
+		bitmap_data[currentIndex][i] = map[bitmap_data[currentIndex][i]];
+	selected_regions.clear();
+}
+

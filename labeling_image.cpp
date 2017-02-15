@@ -54,6 +54,14 @@ void LabelingImage::deletePix(int x, int y)
 	setImage(labelData.getCurrentData());
 }
 
+void LabelingImage::selectRegion(int x, int y)
+{
+	if(x < 0 || x > width) return;
+	if(y < 0 || y > height) return;
+	labelData.selectRegion(x, y);
+	setImage(labelData.getCurrentData());
+}
+
 void LabelingImage::setBitColorTable(int x, int y)
 {
 	if(x < 0 || x > width) return;
@@ -148,6 +156,12 @@ void LabelingImage::labeling(void)
 void LabelingImage::eliminateIsolatedPixel(void)
 {
 	labelData.eliminateIsolatedPixel();
+	setImage(labelData.getCurrentData());
+}
+
+void LabelingImage::extractSelectedRegion(void)
+{
+	labelData.extractSelectedRegions();
 	setImage(labelData.getCurrentData());
 }
 

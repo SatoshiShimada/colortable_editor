@@ -12,7 +12,7 @@
 #include "paint.h"
 #include "labeling_image.h"
 
-Interface::Interface() : QMainWindow(), isSetColorTable(true), isClickPixMode(false), isClickColorTableMode(true), isDeletePixMode(true), width(320), height(240), smallImageWidth(width / 2), smallImageHeight(height / 2), listFileIndex(0), categories(5)
+Interface::Interface() : QMainWindow(), isSetColorTable(true), isClickPixMode(false), isClickColorTableMode(true), isDeletePixMode(true), isSelectRegionMode(false), width(320), height(240), smallImageWidth(width / 2), smallImageHeight(height / 2), listFileIndex(0), categories(5)
 {
 	setAcceptDrops(true);
 	createWindow();
@@ -43,6 +43,7 @@ void Interface::createWindow(void)
 	setClickModeRadioButton   = new QRadioButton("Set");
 	clearClickModeRadioButton = new QRadioButton("Clear");
 	deletePixModeRadioButton  = new QRadioButton("Delete");
+	selectRegionRadioButton   = new QRadioButton("Select");
 	changeClickModeGroupBox   = new QGroupBox("Click mode");
 	colortableGroupBox        = new QGroupBox("color table");
 	imageGroupBox             = new QGroupBox("image");
@@ -62,6 +63,7 @@ void Interface::createWindow(void)
 	imageDilationButton       = new QPushButton("Dilation");
 	imageLabelingButton       = new QPushButton("Labeling");
 	imageEliminateIsolatedPixelButton = new QPushButton("Isolated Pixel");
+	imageExtractSelectedRegionsButton = new QPushButton("Extract Region");
 	ballSmallImageButton      = new QPushButton("Ball");
 	fieldSmallImageButton     = new QPushButton("Field");
 	whitelineSmallImageButton = new QPushButton("White line");
@@ -139,6 +141,7 @@ void Interface::createWindow(void)
 	buttonLayout->addWidget(setClickModeRadioButton);
 	buttonLayout->addWidget(clearClickModeRadioButton);
 	buttonLayout->addWidget(deletePixModeRadioButton);
+	buttonLayout->addWidget(selectRegionRadioButton);
 	changeClickModeGroupBox->setLayout(buttonLayout);
 
 	colortableLayout->addWidget(clearAllTableButton);
@@ -160,6 +163,7 @@ void Interface::createWindow(void)
 	imageProcessingLayout->addWidget(imageDilationButton);
 	imageProcessingLayout->addWidget(imageLabelingButton);
 	imageProcessingLayout->addWidget(imageEliminateIsolatedPixelButton);
+	imageProcessingLayout->addWidget(imageExtractSelectedRegionsButton);
 	imageProcessingGroupBox->setLayout(imageProcessingLayout);
 
 	labelLayout->addWidget(imageGroupBox, 1, 1);
@@ -215,6 +219,7 @@ void Interface::connection(void)
 	QObject::connect(setClickModeRadioButton, SIGNAL(clicked(bool)), this, SLOT(setClickModeSlot()));
 	QObject::connect(clearClickModeRadioButton, SIGNAL(clicked(bool)), this, SLOT(clearClickModeSlot()));
 	QObject::connect(deletePixModeRadioButton, SIGNAL(clicked(bool)), this, SLOT(deletePixModeSlot()));
+	QObject::connect(selectRegionRadioButton, SIGNAL(clicked(bool)), this, SLOT(selectRegionModeSlot()));
 	QObject::connect(paintarea, SIGNAL(mousePressSignal(int, int)), this, SLOT(mousePressSlot(int, int)));
 	QObject::connect(paintarea, SIGNAL(mouseMoveSignal(int, int)), this, SLOT(mousePressSlot(int, int)));
 	QObject::connect(paintarea, SIGNAL(mouseReleaseSignal(int, int)), this, SLOT(mouseReleaseSlot(int, int)));
@@ -223,6 +228,7 @@ void Interface::connection(void)
 	QObject::connect(imageDilationButton, SIGNAL(clicked(bool)), this, SLOT(imageDilationSlot()));
 	QObject::connect(imageLabelingButton, SIGNAL(clicked(bool)), this, SLOT(imageLabelingSlot()));
 	QObject::connect(imageEliminateIsolatedPixelButton, SIGNAL(clicked(bool)), this, SLOT(imageEliminatedIsolatedPixelSlot()));
+	QObject::connect(imageExtractSelectedRegionsButton, SIGNAL(clicked(bool)), this, SLOT(imageExtractSelectedRegionsSlot()));
 	QObject::connect(ballSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(ballCategorySelectedSlot()));
 	QObject::connect(fieldSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(fieldCategorySelectedSlot()));
 	QObject::connect(whitelineSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(whitelineCategorySelectedSlot()));
@@ -349,6 +355,7 @@ void Interface::setClickModeSlot(void)
 	isSetColorTable = true;
 	isClickColorTableMode = true;
 	isClickPixMode = false;
+	isSelectRegionMode = false;
 }
 
 void Interface::clearClickModeSlot(void)
@@ -356,6 +363,7 @@ void Interface::clearClickModeSlot(void)
 	isSetColorTable = false;
 	isClickColorTableMode = true;
 	isClickPixMode = false;
+	isSelectRegionMode = false;
 }
 
 void Interface::deletePixModeSlot(void)
@@ -363,6 +371,15 @@ void Interface::deletePixModeSlot(void)
 	isDeletePixMode = true;
 	isClickColorTableMode = false;
 	isClickPixMode = true;
+	isSelectRegionMode = false;
+}
+
+void Interface::selectRegionModeSlot(void)
+{
+	isSetColorTable = false;
+	isClickColorTableMode = false;
+	isClickPixMode = false;
+	isSelectRegionMode = true;
 }
 
 void Interface::mousePressSlot(int x, int y)
@@ -377,6 +394,8 @@ void Interface::mousePressSlot(int x, int y)
 			labelingimage->deletePix(x, y);
 		else
 			;
+	} else if(isSelectRegionMode) {
+		labelingimage->selectRegion(x, y);
 	}
 }
 
@@ -402,6 +421,11 @@ void Interface::imageLabelingSlot(void)
 void Interface::imageEliminatedIsolatedPixelSlot(void)
 {
 	labelingimage->eliminateIsolatedPixel();
+}
+
+void Interface::imageExtractSelectedRegionsSlot(void)
+{
+	labelingimage->extractSelectedRegion();
 }
 
 void Interface::ballCategorySelectedSlot(void)

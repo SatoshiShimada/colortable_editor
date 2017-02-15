@@ -23,6 +23,7 @@ public:
 	void dilation(void);
 	void labeling(void);
 	void eliminateIsolatedPixel(void);
+	void extractSelectedRegion(void);
 	void setImage(const unsigned char *);
 	void getSmallImage(unsigned char *, int);
 protected:
@@ -42,6 +43,7 @@ public slots:
 	void setMargin(int);
 	void setDeleteSize(int);
 	void deletePix(int, int);
+	void selectRegion(int, int);
 	void setBitColorTable(int, int);
 	void clearBitColorTable(int, int);
 	void applyColorTable(void);

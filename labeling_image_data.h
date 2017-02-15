@@ -31,6 +31,8 @@ public:
 	void exportImage(unsigned char *);
 	void setImage(unsigned char *);
 	void deletePix(int, int, int);
+	void selectRegion(int, int);
+	void extractSelectedRegions(void);
 	unsigned char *original_data;
 	std::vector<unsigned char *> bitmap_data;
 protected:
@@ -39,6 +41,7 @@ protected:
 	const int category_num;
 	int currentIndex;
 	int margin;
+	std::vector<unsigned char> selected_regions;
 	ColorTable colortable;
 	ImageProcessing imageprocessing;
 	table tableValue(int);
