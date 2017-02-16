@@ -86,6 +86,9 @@ void Interface::createWindow(void)
 	robotSmallImageLayout     = new QVBoxLayout;
 	smallImageLayout          = new QHBoxLayout;
 
+	paintarea->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+	labelingimage->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+
 	setClickModeRadioButton->setChecked(true);
 
 	marginSizeSlider->setTickPosition(QSlider::TicksBelow);
