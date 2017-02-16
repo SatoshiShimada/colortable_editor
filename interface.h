@@ -45,7 +45,7 @@ protected:
 	QLabel *image;
 	QLabel *filenameLabel;
 	QLabel *marginSizeLabel;
-	QLabel *deleteSizeLabel;
+	QLabel *editPixSizeLabel;
 	QLabel *ballSmallImageLabel;
 	QLabel *fieldSmallImageLabel;
 	QLabel *whitelineSmallImageLabel;
@@ -61,6 +61,7 @@ protected:
 	QRadioButton *setClickModeRadioButton;
 	QRadioButton *clearClickModeRadioButton;
 	QRadioButton *deletePixModeRadioButton;
+	QRadioButton *writePixModeRadioButton;
 	QRadioButton *selectRegionRadioButton;
 	QPushButton *loadListFileButton;
 	QPushButton *nextImageButton;
@@ -85,7 +86,7 @@ protected:
 	QPushButton *robotSmallImageButton;
 	QLineEdit *filenameLine;
 	QSlider *marginSizeSlider;
-	QSlider *deleteSizeSlider;
+	QSlider *editPixSizeSlider;
 	QGridLayout *mainLayout;
 	QGridLayout *labelLayout;
 	QVBoxLayout *buttonLayout;
@@ -126,12 +127,13 @@ private slots:
 	void loadTableSlot(void);
 	void applyTableSlot(void);
 	void marginSizeChanged(void);
-	void deleteSizeChanged(void);
+	void editPixSizeChanged(void);
 	void drawImage(void);
 	void setObjectType(void);
 	void setClickModeSlot(void);
 	void clearClickModeSlot(void);
 	void deletePixModeSlot(void);
+	void writePixModeSlot(void);
 	void selectRegionModeSlot(void);
 	void mousePressSlot(int, int);
 	void mouseReleaseSlot(int, int);

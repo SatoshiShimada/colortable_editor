@@ -31,6 +31,7 @@ public:
 	void exportImage(unsigned char *);
 	void setImage(unsigned char *);
 	void deletePix(int, int, int);
+	void writePix(int, int, int);
 	void selectRegion(int, int);
 	void extractSelectedRegions(void);
 	unsigned char *original_data;

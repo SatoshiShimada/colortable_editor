@@ -27,7 +27,7 @@ void Interface::createWindow(void)
 {
 	window                    = new QWidget;
 	marginSizeLabel           = new QLabel("Margin size: ");
-	deleteSizeLabel           = new QLabel("Delete size: ");
+	editPixSizeLabel          = new QLabel("Edit Pixel size: ");
 	ballSmallImageLabel       = new QLabel;
 	fieldSmallImageLabel      = new QLabel;
 	whitelineSmallImageLabel  = new QLabel;
@@ -43,6 +43,7 @@ void Interface::createWindow(void)
 	setClickModeRadioButton   = new QRadioButton("Set");
 	clearClickModeRadioButton = new QRadioButton("Clear");
 	deletePixModeRadioButton  = new QRadioButton("Delete");
+	writePixModeRadioButton   = new QRadioButton("Write");
 	selectRegionRadioButton   = new QRadioButton("Select");
 	changeClickModeGroupBox   = new QGroupBox("Click mode");
 	colortableGroupBox        = new QGroupBox("color table");
@@ -72,7 +73,7 @@ void Interface::createWindow(void)
 	paintarea                 = new PaintArea(width, height);
 	labelingimage             = new LabelingImage(width, height, categories);
 	marginSizeSlider          = new QSlider;
-	deleteSizeSlider          = new QSlider;
+	editPixSizeSlider         = new QSlider;
 	mainLayout                = new QGridLayout;
 	labelLayout               = new QGridLayout;
 	buttonLayout              = new QVBoxLayout;
@@ -96,10 +97,10 @@ void Interface::createWindow(void)
 	marginSizeSlider->setRange(0, 10);
 	marginSizeLabel->setText("Margin size: 1");
 
-	deleteSizeSlider->setTickPosition(QSlider::TicksBelow);
-	deleteSizeSlider->setOrientation(Qt::Horizontal);
-	deleteSizeSlider->setRange(1, 10);
-	deleteSizeLabel->setText("Delete size: 1");
+	editPixSizeSlider->setTickPosition(QSlider::TicksBelow);
+	editPixSizeSlider->setOrientation(Qt::Horizontal);
+	editPixSizeSlider->setRange(1, 10);
+	editPixSizeLabel->setText("Edit Pixel size: 1");
 
 	selectCategoriesComboBox->addItem(QString("Ball"));
 	selectCategoriesComboBox->addItem(QString("Field"));
@@ -143,6 +144,7 @@ void Interface::createWindow(void)
 
 	buttonLayout->addWidget(setClickModeRadioButton);
 	buttonLayout->addWidget(clearClickModeRadioButton);
+	buttonLayout->addWidget(writePixModeRadioButton);
 	buttonLayout->addWidget(deletePixModeRadioButton);
 	buttonLayout->addWidget(selectRegionRadioButton);
 	changeClickModeGroupBox->setLayout(buttonLayout);
@@ -176,8 +178,8 @@ void Interface::createWindow(void)
 	labelLayout->addWidget(changeClickModeGroupBox, 3, 2);
 	labelLayout->addWidget(marginSizeLabel, 4, 1);
 	labelLayout->addWidget(marginSizeSlider, 4, 2);
-	labelLayout->addWidget(deleteSizeLabel, 5, 1);
-	labelLayout->addWidget(deleteSizeSlider, 5, 2);
+	labelLayout->addWidget(editPixSizeLabel, 5, 1);
+	labelLayout->addWidget(editPixSizeSlider, 5, 2);
 
 	mainLayout->addLayout(labelLayout, 1, 1, 3, 1);
 	mainLayout->addWidget(currentFileNameLineEdit, 1, 2, 1, 2);
@@ -216,12 +218,13 @@ void Interface::connection(void)
 	QObject::connect(loadTableButton, SIGNAL(clicked()), this, SLOT(loadTableSlot()));
 	QObject::connect(applyTableButton, SIGNAL(clicked()), this, SLOT(applyTableSlot()));
 	QObject::connect(marginSizeSlider, SIGNAL(sliderReleased()), this, SLOT(marginSizeChanged()));
-	QObject::connect(deleteSizeSlider, SIGNAL(sliderReleased()), this, SLOT(deleteSizeChanged()));
+	QObject::connect(editPixSizeSlider, SIGNAL(sliderReleased()), this, SLOT(editPixSizeChanged()));
 	QObject::connect(selectCategoriesComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setObjectType()));
 	QObject::connect(selectCategoriesComboBox, SIGNAL(highlighted(int)), this, SLOT(setObjectType()));
 	QObject::connect(setClickModeRadioButton, SIGNAL(clicked(bool)), this, SLOT(setClickModeSlot()));
 	QObject::connect(clearClickModeRadioButton, SIGNAL(clicked(bool)), this, SLOT(clearClickModeSlot()));
 	QObject::connect(deletePixModeRadioButton, SIGNAL(clicked(bool)), this, SLOT(deletePixModeSlot()));
+	QObject::connect(writePixModeRadioButton, SIGNAL(clicked(bool)), this, SLOT(writePixModeSlot()));
 	QObject::connect(selectRegionRadioButton, SIGNAL(clicked(bool)), this, SLOT(selectRegionModeSlot()));
 	QObject::connect(paintarea, SIGNAL(mousePressSignal(int, int)), this, SLOT(mousePressSlot(int, int)));
 	QObject::connect(paintarea, SIGNAL(mouseMoveSignal(int, int)), this, SLOT(mousePressSlot(int, int)));
@@ -337,12 +340,12 @@ void Interface::marginSizeChanged(void)
 	labelingimage->setMargin(marginSizeSlider->value());
 }
 
-void Interface::deleteSizeChanged(void)
+void Interface::editPixSizeChanged(void)
 {
 	char buf[1024];
-	sprintf(buf, "Delete size: %d", deleteSizeSlider->value());
-	deleteSizeLabel->setText(buf);
-	labelingimage->setDeleteSize(deleteSizeSlider->value());
+	sprintf(buf, "Edit Pixel size: %d", editPixSizeSlider->value());
+	editPixSizeLabel->setText(buf);
+	labelingimage->setEditPixSize(editPixSizeSlider->value());
 }
 
 void Interface::drawImage(void)
@@ -380,6 +383,14 @@ void Interface::deletePixModeSlot(void)
 	isSelectRegionMode = false;
 }
 
+void Interface::writePixModeSlot(void)
+{
+	isDeletePixMode = false;
+	isClickColorTableMode = false;
+	isClickPixMode = true;
+	isSelectRegionMode = false;
+}
+
 void Interface::selectRegionModeSlot(void)
 {
 	isSetColorTable = false;
@@ -399,7 +410,7 @@ void Interface::mousePressSlot(int x, int y)
 		if(isDeletePixMode)
 			labelingimage->deletePix(x, y);
 		else
-			;
+			labelingimage->writePix(x, y);
 	} else if(isSelectRegionMode) {
 		labelingimage->selectRegion(x, y);
 	}

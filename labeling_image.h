@@ -36,13 +36,14 @@ protected:
 	int width;
 	int height;
 	int currentIndex;
-	int deleteSize;
+	int editPixSize;
 	int categoryNum;
 public slots:
 	void setIndex(int);
 	void setMargin(int);
-	void setDeleteSize(int);
+	void setEditPixSize(int);
 	void deletePix(int, int);
+	void writePix(int, int);
 	void selectRegion(int, int);
 	void setBitColorTable(int, int);
 	void clearBitColorTable(int, int);

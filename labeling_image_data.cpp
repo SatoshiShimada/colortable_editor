@@ -166,6 +166,15 @@ void LabelingImageData::deletePix(int x, int y, int size)
 	}
 }
 
+void LabelingImageData::writePix(int x, int y, int size)
+{
+	for(int yi = std::max<int>(y - size, 0); yi < std::min<int>(y + size + 1, height); yi++) {
+		for(int xi = std::max<int>(x - size, 0); xi < std::min<int>(x + size + 1, width); xi++) {
+			bitmap_data[currentIndex][yi * width + xi] = 1;
+		}
+	}
+}
+
 void LabelingImageData::selectRegion(int x, int y)
 {
 	selected_regions.push_back(bitmap_data[currentIndex][y * width + x]);

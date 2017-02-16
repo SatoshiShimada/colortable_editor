@@ -1,7 +1,7 @@
 
 #include "labeling_image.h"
 
-LabelingImage::LabelingImage(int width, int height, int category_num) : QLabel(), map(width, height), originalMap(width, height), labelData(width, height, category_num), width(width), height(height), currentIndex(0), deleteSize(1), categoryNum(category_num)
+LabelingImage::LabelingImage(int width, int height, int category_num) : QLabel(), map(width, height), originalMap(width, height), labelData(width, height, category_num), width(width), height(height), currentIndex(0), editPixSize(1), categoryNum(category_num)
 {
 	this->setMinimumSize(width, height);
 	this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
@@ -50,7 +50,15 @@ void LabelingImage::deletePix(int x, int y)
 {
 	if(x < 0 || x > width) return;
 	if(y < 0 || y > height) return;
-	labelData.deletePix(x, y, deleteSize);
+	labelData.deletePix(x, y, editPixSize);
+	setImage(labelData.getCurrentData());
+}
+
+void LabelingImage::writePix(int x, int y)
+{
+	if(x < 0 || x > width) return;
+	if(y < 0 || y > height) return;
+	labelData.writePix(x, y, editPixSize);
 	setImage(labelData.getCurrentData());
 }
 
@@ -206,9 +214,9 @@ void LabelingImage::setImage(const unsigned char *data)
 	emit updatedImage();
 }
 
-void LabelingImage::setDeleteSize(int value)
+void LabelingImage::setEditPixSize(int value)
 {
-	deleteSize = value;
+	editPixSize = value;
 }
 
 void LabelingImage::getSmallImage(unsigned char *data, int index)
