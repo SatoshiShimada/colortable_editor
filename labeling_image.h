@@ -49,6 +49,9 @@ public slots:
 	void applyColorTable(void);
 signals:
 	void updatedImage(void);
+	void mousePressSignal(int, int);
+	void mouseReleaseSignal(int, int);
+	void mouseMoveSignal(int, int);
 };
 
 #endif //__LABELINGIMAGE_H__

@@ -14,7 +14,7 @@ void LabelingImage::mousePressEvent(QMouseEvent *event)
 	if(event->button() == Qt::LeftButton) {
 		int x = event->x();
 		int y = event->y();
-		deletePix(x, y);
+		emit mousePressSignal(x, y);
 	}
 }
 
@@ -23,7 +23,7 @@ void LabelingImage::mouseReleaseEvent(QMouseEvent *event)
 	if((event->button() & Qt::LeftButton)) {
 		int x = event->x();
 		int y = event->y();
-		deletePix(x, y);
+		emit mouseReleaseSignal(x, y);
 	}
 }
 
@@ -32,7 +32,7 @@ void LabelingImage::mouseMoveEvent(QMouseEvent *event)
 	if(event->button() == Qt::NoButton) {
 		int x = event->x();
 		int y = event->y();
-		deletePix(x, y);
+		emit mouseMoveSignal(x, y);
 	}
 }
 void LabelingImage::setIndex(int index)

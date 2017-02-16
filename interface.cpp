@@ -227,6 +227,9 @@ void Interface::connection(void)
 	QObject::connect(paintarea, SIGNAL(mouseMoveSignal(int, int)), this, SLOT(mousePressSlot(int, int)));
 	QObject::connect(paintarea, SIGNAL(mouseReleaseSignal(int, int)), this, SLOT(mouseReleaseSlot(int, int)));
 	QObject::connect(labelingimage, SIGNAL(updatedImage()), this, SLOT(drawImage()));
+	QObject::connect(labelingimage, SIGNAL(mousePressSignal(int, int)), this, SLOT(mousePressSlot(int, int)));
+	QObject::connect(labelingimage, SIGNAL(mouseMoveSignal(int, int)), this, SLOT(mousePressSlot(int, int)));
+	QObject::connect(labelingimage, SIGNAL(mousePressSignal(int, int)), this, SLOT(mouseReleaseSlot(int, int)));
 	QObject::connect(imageErosionButton, SIGNAL(clicked(bool)), this, SLOT(imageErosionSlot()));
 	QObject::connect(imageDilationButton, SIGNAL(clicked(bool)), this, SLOT(imageDilationSlot()));
 	QObject::connect(imageLabelingButton, SIGNAL(clicked(bool)), this, SLOT(imageLabelingSlot()));
