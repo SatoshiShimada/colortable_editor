@@ -28,6 +28,11 @@ class Interface : public QMainWindow
 protected:
 	void connection(void);
 	void createWindow(void);
+	void createMenus(void);
+	void createActions(void);
+#ifndef QT_NO_CONTEXTMENU
+	void contextMenuEvent(QContextMenuEvent *event);
+#endif //QT_NO_CONTEXTMENU
 	void loadImage(const char *);
 	void saveImage(const char *);
 	void dragEnterEvent(QDragEnterEvent *e);
@@ -38,6 +43,27 @@ protected:
 	QString filenameDrag;
 	QString listFileName;
 	QWidget *window;
+	QMenu *imageMenu;
+	QMenu *colortableMenu;
+	QMenu *imageprocessingMenu;
+	QAction *loadListFileAction;
+	QAction *nextImageAction;
+	QAction *clearImageAction;
+	QAction *clearBitmapImageAction;
+	QAction *loadImageAction;
+	QAction *saveImageAction;
+	QAction *exportImageAction;
+	QAction *loadColortableAction;
+	QAction *saveColortableAction;
+	QAction *clearAllColortableAction;
+	QAction *clearColortableAction;
+	QAction *applyColortableAction;
+	QAction *erosionAction;
+	QAction *dilationAction;
+	QAction *labelingAction;
+	QAction *eliminateIsolatedPixelAction;
+	QAction *fillIsolatedPointAction;
+	QAction *extractRegionAction;
 	QGroupBox *changeClickModeGroupBox;
 	QGroupBox *colortableGroupBox;
 	QGroupBox *imageGroupBox;

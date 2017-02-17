@@ -16,6 +16,8 @@ Interface::Interface() : QMainWindow(), isSetColorTable(true), isClickPixMode(fa
 {
 	setAcceptDrops(true);
 	createWindow();
+	createActions();
+	createMenus();
 	connection();
 }
 
@@ -201,6 +203,65 @@ void Interface::createWindow(void)
 	window->setLayout(mainLayout);
 	setCentralWidget(window);
 }
+
+void Interface::createMenus(void)
+{
+	imageMenu = menuBar()->addMenu("Image");
+	imageMenu->addAction(loadListFileAction);
+	imageMenu->addAction(nextImageAction);
+	imageMenu->addAction(clearImageAction);
+	imageMenu->addAction(clearBitmapImageAction);
+	imageMenu->addAction(loadImageAction);
+	imageMenu->addAction(saveImageAction);
+	imageMenu->addAction(exportImageAction);
+
+	colortableMenu = menuBar()->addMenu("Colortable");
+	colortableMenu->addAction(loadColortableAction);
+	colortableMenu->addAction(saveColortableAction);
+	colortableMenu->addAction(clearAllColortableAction);
+	colortableMenu->addAction(clearColortableAction);
+	colortableMenu->addAction(applyColortableAction);
+
+	imageprocessingMenu = menuBar()->addMenu("Image Processing");
+	imageprocessingMenu->addAction(erosionAction);
+	imageprocessingMenu->addAction(dilationAction);
+	imageprocessingMenu->addAction(labelingAction);
+	imageprocessingMenu->addAction(eliminateIsolatedPixelAction);
+	imageprocessingMenu->addAction(fillIsolatedPointAction);
+	imageprocessingMenu->addAction(extractRegionAction);
+}
+
+void Interface::createActions(void)
+{
+	loadListFileAction = new QAction("Load List File", this);
+	nextImageAction = new QAction("Next image", this);
+	clearImageAction = new QAction("Clear", this);
+	clearBitmapImageAction = new QAction("Clear bitmap", this);
+	loadImageAction = new QAction("Load", this);
+	saveImageAction = new QAction("Save", this);
+	exportImageAction = new QAction("Export", this);
+
+	loadColortableAction = new QAction("Load", this);
+	saveColortableAction = new QAction("Save", this);
+	clearAllColortableAction = new QAction("Clear all", this);
+	clearColortableAction = new QAction("Clear", this);
+	applyColortableAction = new QAction("Apply", this);
+
+	erosionAction = new QAction("Erosion", this);
+	dilationAction = new QAction("Dilation", this);
+	labelingAction = new QAction("Labeling", this);
+	eliminateIsolatedPixelAction = new QAction("Eliminate isolated pixel", this);
+	fillIsolatedPointAction = new QAction("Fill isolated point", this);
+	extractRegionAction = new QAction("Extract regions", this);
+}
+
+#ifndef QT_NO_CONTEXTMENU
+void Interface::contextMenuEvent(QContextMenuEvent *event)
+{
+	//QMenu menu(this);
+	//menu.addAction(cutAct);
+}
+#endif //QT_NO_CONTEXTMENU
 
 void Interface::dragEnterEvent(QDragEnterEvent *e)
 {
