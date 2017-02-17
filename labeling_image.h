@@ -48,6 +48,7 @@ public slots:
 	void setBitColorTable(int, int);
 	void clearBitColorTable(int, int);
 	void applyColorTable(void);
+	void clearCurrentBitmap(void);
 signals:
 	void updatedImage(void);
 	void mousePressSignal(int, int);

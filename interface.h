@@ -66,6 +66,7 @@ protected:
 	QPushButton *loadListFileButton;
 	QPushButton *nextImageButton;
 	QPushButton *clearImageButton;
+	QPushButton *clearBitmapImageButton;
 	QPushButton *saveImageButton;
 	QPushButton *loadImageButton;
 	QPushButton *exportImageButton;
@@ -118,6 +119,7 @@ private slots:
 	void loadListFileSlot(void);
 	void nextImageSlot(void);
 	void clearImageSlot(void);
+	void clearBitmapImageSlot(void);
 	void saveImageSlot(void);
 	void loadImageSlot(void);
 	void exportImageSlot(void);

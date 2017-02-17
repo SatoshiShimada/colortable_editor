@@ -52,6 +52,7 @@ void Interface::createWindow(void)
 	loadListFileButton        = new QPushButton("Load List File");
 	nextImageButton           = new QPushButton("Next Image");
 	clearImageButton          = new QPushButton("Clear");
+	clearBitmapImageButton    = new QPushButton("Clear bitmap");
 	saveImageButton           = new QPushButton("Save");
 	loadImageButton           = new QPushButton("Load");
 	exportImageButton         = new QPushButton("Export");
@@ -159,6 +160,7 @@ void Interface::createWindow(void)
 	imageLayout->addWidget(loadListFileButton);
 	imageLayout->addWidget(nextImageButton);
 	imageLayout->addWidget(clearImageButton);
+	imageLayout->addWidget(clearBitmapImageButton);
 	imageLayout->addWidget(saveImageButton);
 	imageLayout->addWidget(loadImageButton);
 	imageLayout->addWidget(exportImageButton);
@@ -209,6 +211,7 @@ void Interface::connection(void)
 	QObject::connect(loadListFileButton, SIGNAL(clicked()), this, SLOT(loadListFileSlot()));
 	QObject::connect(nextImageButton, SIGNAL(clicked()), this, SLOT(nextImageSlot()));
 	QObject::connect(clearImageButton, SIGNAL(clicked()), this, SLOT(clearImageSlot()));
+	QObject::connect(clearBitmapImageButton, SIGNAL(clicked()), this, SLOT(clearBitmapImageSlot()));
 	QObject::connect(saveImageButton, SIGNAL(clicked()), this, SLOT(saveImageSlot()));
 	QObject::connect(loadImageButton, SIGNAL(clicked()), this, SLOT(loadImageSlot()));
 	QObject::connect(exportImageButton, SIGNAL(clicked()), this, SLOT(exportImageSlot()));
@@ -274,6 +277,11 @@ void Interface::nextImageSlot(void)
 void Interface::clearImageSlot(void)
 {
 	paintarea->resetPixmapArea();
+}
+
+void Interface::clearBitmapImageSlot(void)
+{
+	labelingimage->clearCurrentBitmap();
 }
 
 void Interface::saveImageSlot(void)

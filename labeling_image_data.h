@@ -30,6 +30,7 @@ public:
 	void setMargin(int);
 	void exportImage(unsigned char *);
 	void setImage(unsigned char *);
+	void clearCurrentBitmap(void);
 	void deletePix(int, int, int);
 	void writePix(int, int, int);
 	void selectRegion(int, int);

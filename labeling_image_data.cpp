@@ -157,6 +157,13 @@ unsigned char *LabelingImageData::getCurrentData(void)
 	return bitmap_data[currentIndex];
 }
 
+void LabelingImageData::clearCurrentBitmap(void)
+{
+	for(int i = 0; i < width * height; i++) {
+		bitmap_data[currentIndex][i] = 0;
+	}
+}
+
 void LabelingImageData::deletePix(int x, int y, int size)
 {
 	for(int yi = std::max<int>(y - size, 0); yi < std::min<int>(y + size + 1, height); yi++) {

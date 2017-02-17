@@ -229,3 +229,9 @@ void LabelingImage::getSmallImage(unsigned char *data, int index)
 	}
 }
 
+void LabelingImage::clearCurrentBitmap(void)
+{
+	labelData.clearCurrentBitmap();
+	setImage(labelData.getCurrentData());
+}
+
