@@ -65,18 +65,22 @@ void Interface::createWindow(void)
 	imageDilationButton       = new QPushButton("Dilation");
 	imageLabelingButton       = new QPushButton("Labeling");
 	imageEliminateIsolatedPixelButton = new QPushButton("Isolated Pixel");
+	imageFillButton           = new QPushButton("Fill");
 	imageExtractSelectedRegionsButton = new QPushButton("Extract Region");
 	ballSmallImageButton      = new QPushButton("Ball");
 	fieldSmallImageButton     = new QPushButton("Field");
 	whitelineSmallImageButton = new QPushButton("White line");
 	goalpoleSmallImageButton  = new QPushButton("Goal pole");
 	robotSmallImageButton     = new QPushButton("Robot");
+	superimposeLeftButton     = new QPushButton("<");
+	superimposeRightButton    = new QPushButton(">");
 	paintarea                 = new PaintArea(width, height);
 	labelingimage             = new LabelingImage(width, height, categories);
 	marginSizeSlider          = new QSlider;
 	editPixSizeSlider         = new QSlider;
 	mainLayout                = new QGridLayout;
 	labelLayout               = new QGridLayout;
+	superimposeButtonsLayout  = new QVBoxLayout;
 	buttonLayout              = new QVBoxLayout;
 	colortableLayout          = new QVBoxLayout;
 	imageProcessingLayout     = new QVBoxLayout;
@@ -170,6 +174,7 @@ void Interface::createWindow(void)
 	imageProcessingLayout->addWidget(imageDilationButton);
 	imageProcessingLayout->addWidget(imageLabelingButton);
 	imageProcessingLayout->addWidget(imageEliminateIsolatedPixelButton);
+	imageProcessingLayout->addWidget(imageFillButton);
 	imageProcessingLayout->addWidget(imageExtractSelectedRegionsButton);
 	imageProcessingGroupBox->setLayout(imageProcessingLayout);
 
@@ -183,11 +188,15 @@ void Interface::createWindow(void)
 	labelLayout->addWidget(editPixSizeLabel, 5, 1);
 	labelLayout->addWidget(editPixSizeSlider, 5, 2);
 
+	superimposeButtonsLayout->addWidget(superimposeLeftButton);
+	superimposeButtonsLayout->addWidget(superimposeRightButton);
+
 	mainLayout->addLayout(labelLayout, 1, 1, 3, 1);
-	mainLayout->addWidget(currentFileNameLineEdit, 1, 2, 1, 2);
+	mainLayout->addWidget(currentFileNameLineEdit, 1, 2, 1, 3);
 	mainLayout->addWidget(labelingimage, 2, 2);
-	mainLayout->addWidget(paintarea, 2, 3);
-	mainLayout->addLayout(smallImageLayout, 3, 2, 1, 2);
+	mainLayout->addLayout(superimposeButtonsLayout, 2, 3);
+	mainLayout->addWidget(paintarea, 2, 4);
+	mainLayout->addLayout(smallImageLayout, 3, 2, 1, 3);
 
 	window->setLayout(mainLayout);
 	setCentralWidget(window);
@@ -240,12 +249,15 @@ void Interface::connection(void)
 	QObject::connect(imageDilationButton, SIGNAL(clicked(bool)), this, SLOT(imageDilationSlot()));
 	QObject::connect(imageLabelingButton, SIGNAL(clicked(bool)), this, SLOT(imageLabelingSlot()));
 	QObject::connect(imageEliminateIsolatedPixelButton, SIGNAL(clicked(bool)), this, SLOT(imageEliminatedIsolatedPixelSlot()));
+	QObject::connect(imageFillButton, SIGNAL(clicked(bool)), this, SLOT(imageFillSlot()));
 	QObject::connect(imageExtractSelectedRegionsButton, SIGNAL(clicked(bool)), this, SLOT(imageExtractSelectedRegionsSlot()));
 	QObject::connect(ballSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(ballCategorySelectedSlot()));
 	QObject::connect(fieldSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(fieldCategorySelectedSlot()));
 	QObject::connect(whitelineSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(whitelineCategorySelectedSlot()));
 	QObject::connect(goalpoleSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(goalpoleCategorySelectedSlot()));
 	QObject::connect(robotSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(robotCategorySelectedSlot()));
+	QObject::connect(superimposeLeftButton, SIGNAL(clicked(bool)), this, SLOT(superimposeLeftSlot()));
+	QObject::connect(superimposeRightButton, SIGNAL(clicked(bool)), this, SLOT(superimposeRightSlot()));
 }
 
 void Interface::loadListFileSlot(void)
@@ -448,6 +460,11 @@ void Interface::imageEliminatedIsolatedPixelSlot(void)
 	labelingimage->eliminateIsolatedPixel();
 }
 
+void Interface::imageFillSlot(void)
+{
+	labelingimage->fill();
+}
+
 void Interface::imageExtractSelectedRegionsSlot(void)
 {
 	labelingimage->extractSelectedRegion();
@@ -508,5 +525,14 @@ void Interface::getSmallImages(void)
 	goalpoleSmallImageLabel->setPixmap(*goalpoleSmallImagePixmap);
 	robotSmallImageLabel->setPixmap(*robotSmallImagePixmap);
 	delete[] data;
+}
+
+void Interface::superimposeLeftSlot(void)
+{
+	labelingimage->imageAndOperation();
+}
+
+void Interface::superimposeRightSlot(void)
+{
 }
 

@@ -167,6 +167,12 @@ void LabelingImage::eliminateIsolatedPixel(void)
 	setImage(labelData.getCurrentData());
 }
 
+void LabelingImage::fill(void)
+{
+	labelData.fill();
+	setImage(labelData.getCurrentData());
+}
+
 void LabelingImage::extractSelectedRegion(void)
 {
 	labelData.extractSelectedRegions();
@@ -214,6 +220,22 @@ void LabelingImage::setImage(const unsigned char *data)
 	emit updatedImage();
 }
 
+void LabelingImage::setImageColor(const unsigned char *data)
+{
+	QImage image = map.toImage();
+	for(int h = 0; h < height; h++) {
+		for(int w = 0; w < width; w++) {
+			image.setPixel(w, h, qRgb(
+				data[(h * width + w) * 3 + 0],
+				data[(h * width + w) * 3 + 1],
+				data[(h * width + w) * 3 + 2]));
+		}
+	}
+	map = QPixmap::fromImage(image);
+	this->setPixmap(map);
+	emit updatedImage();
+}
+
 void LabelingImage::setEditPixSize(int value)
 {
 	editPixSize = value;
@@ -233,5 +255,11 @@ void LabelingImage::clearCurrentBitmap(void)
 {
 	labelData.clearCurrentBitmap();
 	setImage(labelData.getCurrentData());
+}
+
+void LabelingImage::imageAndOperation(void)
+{
+	labelData.imageAndOperation();
+	setImageColor(labelData.getCurrentColorData());
 }
 

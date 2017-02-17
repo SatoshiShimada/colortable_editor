@@ -13,6 +13,7 @@ public:
 	void labelingWithSize(unsigned char *);
 	void labelingWithSize(unsigned char *, unsigned int);
 	void eliminateIsolatedPixel(unsigned char *);
+	void fill(unsigned char *);
 protected:
 	int width;
 	int height;

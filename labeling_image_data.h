@@ -15,6 +15,7 @@ public:
 	void setData(int, unsigned char *);
 	unsigned char *getData(int);
 	unsigned char *getCurrentData(void);
+	unsigned char *getCurrentColorData(void);
 	void loadColorTable(const char *);
 	void saveColorTable(const char *);
 	void clearAllColorTable(void);
@@ -26,16 +27,20 @@ public:
 	void dilation(void);
 	void labeling(void);
 	void eliminateIsolatedPixel(void);
+	void fill(void);
 	void setIndex(int);
 	void setMargin(int);
 	void exportImage(unsigned char *);
 	void setImage(unsigned char *);
+	void setImageColor(unsigned char *);
 	void clearCurrentBitmap(void);
 	void deletePix(int, int, int);
 	void writePix(int, int, int);
 	void selectRegion(int, int);
 	void extractSelectedRegions(void);
+	void imageAndOperation(void);
 	unsigned char *original_data;
+	unsigned char *color_data;
 	std::vector<unsigned char *> bitmap_data;
 protected:
 	const int width;

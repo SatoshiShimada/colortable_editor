@@ -260,3 +260,32 @@ void ImageProcessing::eliminateIsolatedPixel(unsigned char *data)
 	delete[] buf;
 }
 
+void ImageProcessing::fill(unsigned char *data)
+{
+	unsigned char *buf = new unsigned char[width * height];
+	for(int h = 0; h < height; h++) {
+		for(int w = 0; w < width; w++) {
+			if(data[h * width + w] == 0) {
+				int wdec = std::max<int>(w - 1, 0);
+				int winc = std::min<int>(w + 1, width - 1);
+				int hdec = std::max<int>(h - 1, 0);
+				int hinc = std::min<int>(h + 1, height - 1);
+				unsigned char p1 = data[hdec * width + w   ];
+				unsigned char p2 = data[h    * width + wdec];
+				unsigned char p3 = data[h    * width + winc];
+				unsigned char p4 = data[hinc * width + w   ];
+				if(p1 && p2 && p3 && p4) {
+					buf[h * width + w] = 1;
+				} else {
+					buf[h * width + w] = 0;
+				}
+			} else {
+				buf[h * width + w] = 1;
+			}
+		}
+	}
+	for(int i = 0; i < width * height; i++)
+		data[i] = buf[i];
+	delete[] buf;
+}
+

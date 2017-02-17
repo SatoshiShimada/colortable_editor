@@ -79,17 +79,21 @@ protected:
 	QPushButton *imageDilationButton;
 	QPushButton *imageLabelingButton;
 	QPushButton *imageEliminateIsolatedPixelButton;
+	QPushButton *imageFillButton;
 	QPushButton *imageExtractSelectedRegionsButton;
 	QPushButton *ballSmallImageButton;
 	QPushButton *fieldSmallImageButton;
 	QPushButton *whitelineSmallImageButton;
 	QPushButton *goalpoleSmallImageButton;
 	QPushButton *robotSmallImageButton;
+	QPushButton *superimposeLeftButton;
+	QPushButton *superimposeRightButton;
 	QLineEdit *filenameLine;
 	QSlider *marginSizeSlider;
 	QSlider *editPixSizeSlider;
 	QGridLayout *mainLayout;
 	QGridLayout *labelLayout;
+	QVBoxLayout *superimposeButtonsLayout;
 	QVBoxLayout *buttonLayout;
 	QVBoxLayout *colortableLayout;
 	QVBoxLayout *imageProcessingLayout;
@@ -143,12 +147,15 @@ private slots:
 	void imageDilationSlot(void);
 	void imageLabelingSlot(void);
 	void imageEliminatedIsolatedPixelSlot(void);
+	void imageFillSlot(void);
 	void imageExtractSelectedRegionsSlot(void);
 	void ballCategorySelectedSlot(void);
 	void fieldCategorySelectedSlot(void);
 	void whitelineCategorySelectedSlot(void);
 	void goalpoleCategorySelectedSlot(void);
 	void robotCategorySelectedSlot(void);
+	void superimposeLeftSlot(void);
+	void superimposeRightSlot(void);
 };
 
 #endif //__INTERFACE_H__

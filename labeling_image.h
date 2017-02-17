@@ -23,8 +23,10 @@ public:
 	void dilation(void);
 	void labeling(void);
 	void eliminateIsolatedPixel(void);
+	void fill(void);
 	void extractSelectedRegion(void);
 	void setImage(const unsigned char *);
+	void setImageColor(const unsigned char *);
 	void getSmallImage(unsigned char *, int);
 protected:
 	void mousePressEvent(QMouseEvent *event);
@@ -49,6 +51,7 @@ public slots:
 	void clearBitColorTable(int, int);
 	void applyColorTable(void);
 	void clearCurrentBitmap(void);
+	void imageAndOperation(void);
 signals:
 	void updatedImage(void);
 	void mousePressSignal(int, int);

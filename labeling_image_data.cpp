@@ -6,8 +6,11 @@
 LabelingImageData::LabelingImageData(int width, int height, int category_num) : width(width), height(height), category_num(category_num), currentIndex(0), margin(0), imageprocessing(width, height)
 {
 	original_data = new unsigned char [width * height * 3];
-	for(int i = 0; i < width * height * 3; i++)
+	color_data    = new unsigned char [width * height * 3];
+	for(int i = 0; i < width * height * 3; i++) {
 		original_data[i] = 0;
+		color_data[i]    = 0;
+	}
 	for(int c = 0; c < category_num; c++)
 		bitmap_data.push_back(new unsigned char [width * height]);
 	for(int c = 0; c < category_num; c++)
@@ -18,6 +21,7 @@ LabelingImageData::LabelingImageData(int width, int height, int category_num) : 
 LabelingImageData::~LabelingImageData()
 {
 	delete[] original_data;
+	delete[] color_data;
 	for(int i = 0; i < category_num; i++) {
 		delete[] bitmap_data[i];
 	}
@@ -53,6 +57,11 @@ void LabelingImageData::labeling(void)
 void LabelingImageData::eliminateIsolatedPixel(void)
 {
 	imageprocessing.eliminateIsolatedPixel(getCurrentData());
+}
+
+void LabelingImageData::fill(void)
+{
+	imageprocessing.fill(getCurrentData());
 }
 
 void LabelingImageData::loadColorTable(const char *filename)
@@ -157,6 +166,11 @@ unsigned char *LabelingImageData::getCurrentData(void)
 	return bitmap_data[currentIndex];
 }
 
+unsigned char *LabelingImageData::getCurrentColorData(void)
+{
+	return color_data;
+}
+
 void LabelingImageData::clearCurrentBitmap(void)
 {
 	for(int i = 0; i < width * height; i++) {
@@ -197,5 +211,22 @@ void LabelingImageData::extractSelectedRegions(void)
 	for(int i = 0; i < width * height; i++)
 		bitmap_data[currentIndex][i] = map[bitmap_data[currentIndex][i]];
 	selected_regions.clear();
+}
+
+void LabelingImageData::imageAndOperation(void)
+{
+	for(int h = 0; h < height; h++) {
+		for(int w = 0; w < width; w++) {
+			if(bitmap_data[currentIndex][h * width + w] != 0) {
+				for(int i = 0; i < 3; i++) {
+					color_data[(h * width + w) * 3 + i] = original_data[(h * width + w) * 3 + i];
+				}
+			} else {
+				color_data[(h * width + w) * 3 + 0] = 0;
+				color_data[(h * width + w) * 3 + 1] = 0;
+				color_data[(h * width + w) * 3 + 2] = 0;
+			}
+		}
+	}
 }
 
