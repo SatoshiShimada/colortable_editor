@@ -180,15 +180,15 @@ void Interface::createWindow(void)
 	imageProcessingLayout->addWidget(imageExtractSelectedRegionsButton);
 	imageProcessingGroupBox->setLayout(imageProcessingLayout);
 
-	labelLayout->addWidget(imageGroupBox, 1, 1);
-	labelLayout->addWidget(colortableGroupBox, 1, 2);
-	labelLayout->addWidget(selectCategoriesComboBox, 2, 1);
-	labelLayout->addWidget(imageProcessingGroupBox, 3, 1);
-	labelLayout->addWidget(changeClickModeGroupBox, 3, 2);
-	labelLayout->addWidget(marginSizeLabel, 4, 1);
-	labelLayout->addWidget(marginSizeSlider, 4, 2);
-	labelLayout->addWidget(editPixSizeLabel, 5, 1);
-	labelLayout->addWidget(editPixSizeSlider, 5, 2);
+	//labelLayout->addWidget(imageGroupBox, 1, 1);
+	//labelLayout->addWidget(colortableGroupBox, 1, 2);
+	//labelLayout->addWidget(selectCategoriesComboBox, 2, 1);
+	labelLayout->addWidget(imageProcessingGroupBox, 1, 1);
+	labelLayout->addWidget(changeClickModeGroupBox, 1, 2);
+	labelLayout->addWidget(marginSizeLabel, 2, 1);
+	labelLayout->addWidget(marginSizeSlider, 2, 2);
+	labelLayout->addWidget(editPixSizeLabel, 3, 1);
+	labelLayout->addWidget(editPixSizeSlider, 3, 2);
 
 	superimposeButtonsLayout->addWidget(superimposeLeftButton);
 	superimposeButtonsLayout->addWidget(superimposeRightButton);
