@@ -344,6 +344,7 @@ void Interface::loadListFileSlot(void)
 	listFileName = QFileDialog::getOpenFileName(this, "Open Image", "./");
 	std::ifstream listFileStream(listFileName.toStdString().c_str());
 	std::string line;
+	listFile.clear();
 	while(std::getline(listFileStream, line)) {
 		listFile.push_back(line);
 	}
