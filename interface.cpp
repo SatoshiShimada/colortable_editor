@@ -234,25 +234,43 @@ void Interface::createMenus(void)
 void Interface::createActions(void)
 {
 	loadListFileAction = new QAction("Load List File", this);
+	connect(loadListFileAction, SIGNAL(triggered()), this, SLOT(loadListFileSlot()));
 	nextImageAction = new QAction("Next image", this);
+	connect(nextImageAction, SIGNAL(triggered()), this, SLOT(nextImageSlot()));
 	clearImageAction = new QAction("Clear", this);
+	connect(clearImageAction, SIGNAL(triggered()), this, SLOT(clearImageSlot()));
 	clearBitmapImageAction = new QAction("Clear bitmap", this);
+	connect(clearBitmapImageAction, SIGNAL(triggered()), this, SLOT(clearBitmapImageSlot()));
 	loadImageAction = new QAction("Load", this);
+	connect(loadImageAction, SIGNAL(triggered()), this, SLOT(loadImageSlot()));
 	saveImageAction = new QAction("Save", this);
+	connect(saveImageAction, SIGNAL(triggered()), this, SLOT(saveImageSlot()));
 	exportImageAction = new QAction("Export", this);
+	connect(exportImageAction, SIGNAL(triggered()), this, SLOT(exportImageSlot()));
 
 	loadColortableAction = new QAction("Load", this);
+	connect(loadColortableAction, SIGNAL(triggered()), this, SLOT(loadTableSlot()));
 	saveColortableAction = new QAction("Save", this);
+	connect(saveColortableAction, SIGNAL(triggered()), this, SLOT(saveTableSlot()));
 	clearAllColortableAction = new QAction("Clear all", this);
+	connect(clearAllColortableAction, SIGNAL(triggered()), this, SLOT(clearAllTableSlot()));
 	clearColortableAction = new QAction("Clear", this);
+	connect(clearColortableAction, SIGNAL(triggered()), this, SLOT(clearTableSlot()));
 	applyColortableAction = new QAction("Apply", this);
+	connect(applyColortableAction, SIGNAL(triggered()), this, SLOT(applyTableSlot()));
 
 	erosionAction = new QAction("Erosion", this);
+	connect(erosionAction, SIGNAL(triggered()), this, SLOT(imageErosionSlot()));
 	dilationAction = new QAction("Dilation", this);
+	connect(dilationAction, SIGNAL(triggered()), this, SLOT(imageDilationSlot()));
 	labelingAction = new QAction("Labeling", this);
+	connect(labelingAction, SIGNAL(triggered()), this, SLOT(imageLabelingSlot()));
 	eliminateIsolatedPixelAction = new QAction("Eliminate isolated pixel", this);
+	connect(eliminateIsolatedPixelAction, SIGNAL(triggered()), this, SLOT(imageEliminatedIsolatedPixelSlot()));
 	fillIsolatedPointAction = new QAction("Fill isolated point", this);
+	connect(fillIsolatedPointAction, SIGNAL(triggered()), this, SLOT(imageFillSlot()));
 	extractRegionAction = new QAction("Extract regions", this);
+	connect(extractRegionAction, SIGNAL(triggered()), this, SLOT(imageExtractSelectedRegionsSlot()));
 }
 
 #ifndef QT_NO_CONTEXTMENU
