@@ -107,6 +107,7 @@ protected:
 	QPushButton *imageEliminateIsolatedPixelButton;
 	QPushButton *imageFillButton;
 	QPushButton *imageExtractSelectedRegionsButton;
+	QPushButton *imageSobelButton;
 	QPushButton *ballSmallImageButton;
 	QPushButton *fieldSmallImageButton;
 	QPushButton *whitelineSmallImageButton;
@@ -175,6 +176,7 @@ private slots:
 	void imageEliminatedIsolatedPixelSlot(void);
 	void imageFillSlot(void);
 	void imageExtractSelectedRegionsSlot(void);
+	void imageSobelSlot(void);
 	void ballCategorySelectedSlot(void);
 	void fieldCategorySelectedSlot(void);
 	void whitelineCategorySelectedSlot(void);

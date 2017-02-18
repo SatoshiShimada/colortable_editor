@@ -69,6 +69,7 @@ void Interface::createWindow(void)
 	imageEliminateIsolatedPixelButton = new QPushButton("Isolated Pixel");
 	imageFillButton           = new QPushButton("Fill");
 	imageExtractSelectedRegionsButton = new QPushButton("Extract Region");
+	imageSobelButton          = new QPushButton("Sobel");
 	ballSmallImageButton      = new QPushButton("Ball");
 	fieldSmallImageButton     = new QPushButton("Field");
 	whitelineSmallImageButton = new QPushButton("White line");
@@ -178,6 +179,7 @@ void Interface::createWindow(void)
 	imageProcessingLayout->addWidget(imageEliminateIsolatedPixelButton);
 	imageProcessingLayout->addWidget(imageFillButton);
 	imageProcessingLayout->addWidget(imageExtractSelectedRegionsButton);
+	imageProcessingLayout->addWidget(imageSobelButton);
 	imageProcessingGroupBox->setLayout(imageProcessingLayout);
 
 	//labelLayout->addWidget(imageGroupBox, 1, 1);
@@ -330,6 +332,7 @@ void Interface::connection(void)
 	QObject::connect(imageEliminateIsolatedPixelButton, SIGNAL(clicked(bool)), this, SLOT(imageEliminatedIsolatedPixelSlot()));
 	QObject::connect(imageFillButton, SIGNAL(clicked(bool)), this, SLOT(imageFillSlot()));
 	QObject::connect(imageExtractSelectedRegionsButton, SIGNAL(clicked(bool)), this, SLOT(imageExtractSelectedRegionsSlot()));
+	QObject::connect(imageSobelButton, SIGNAL(clicked(bool)), this, SLOT(imageSobelSlot()));
 	QObject::connect(ballSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(ballCategorySelectedSlot()));
 	QObject::connect(fieldSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(fieldCategorySelectedSlot()));
 	QObject::connect(whitelineSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(whitelineCategorySelectedSlot()));
@@ -548,6 +551,11 @@ void Interface::imageFillSlot(void)
 void Interface::imageExtractSelectedRegionsSlot(void)
 {
 	labelingimage->extractSelectedRegion();
+}
+
+void Interface::imageSobelSlot(void)
+{
+	labelingimage->sobel();
 }
 
 void Interface::ballCategorySelectedSlot(void)

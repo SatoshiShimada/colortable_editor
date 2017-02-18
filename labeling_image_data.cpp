@@ -230,3 +230,10 @@ void LabelingImageData::imageAndOperation(void)
 	}
 }
 
+void LabelingImageData::sobel(void)
+{
+	for(int i = 0; i < width * height * 3; i++)
+		color_data[i] = original_data[i];
+	imageprocessing.sobelDrivative(color_data);
+}
+

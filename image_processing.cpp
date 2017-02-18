@@ -308,7 +308,7 @@ void ImageProcessing::sobelDrivative(unsigned char *data)
 	filter(buf_y, filter_value_y);
 	/* G = sqrt(Gx^2 + Gy^2) */
 	for(int i = 0; i < width * height * 3; i++) {
-		data[i] = sqrt(buf_x[i] * buf_x[i] + buf_y[i] * buf_y[i]);
+		data[i] = std::max<unsigned char>(0, std::min<unsigned char>(255, sqrt(buf_x[i] * buf_x[i] + buf_y[i] * buf_y[i])));
 	}
 	delete[] buf_x;
 	delete[] buf_y;
@@ -353,7 +353,7 @@ void ImageProcessing::filter(unsigned char *data, unsigned char *filter)
 				filter[8] * data[((h + 1) * width + (w + 1)) * 3 + 2];
 		}
 	}
-	for(int i = 0; i < width * height; i++)
+	for(int i = 0; i < width * height * 3; i++)
 		data[i] = buf[i];
 	delete[] buf;
 }
