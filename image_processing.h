@@ -14,12 +14,14 @@ public:
 	void labelingWithSize(unsigned char *, unsigned int);
 	void eliminateIsolatedPixel(unsigned char *);
 	void fill(unsigned char *);
+	void sobelDrivative(unsigned char *);
 protected:
 	int width;
 	int height;
 	const unsigned int lookup_table_size;
 	unsigned int size_threshold;
 	void labelingProcess(unsigned int *);
+	void filter(unsigned char *, unsigned char *);
 };
 
 #endif //__IMAGEPROCESSING_H__

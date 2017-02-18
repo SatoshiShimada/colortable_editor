@@ -1,5 +1,6 @@
 
 #include <cstdio>
+#include <cmath>
 #include <iostream>
 #include <utility>
 #include <vector>
@@ -282,6 +283,74 @@ void ImageProcessing::fill(unsigned char *data)
 			} else {
 				buf[h * width + w] = 1;
 			}
+		}
+	}
+	for(int i = 0; i < width * height; i++)
+		data[i] = buf[i];
+	delete[] buf;
+}
+
+void ImageProcessing::sobelDrivative(unsigned char *data)
+{
+	unsigned char filter_value_x[] = {
+		-1, 0, +1, -2, 0, +2, -1, 0, +1
+	};
+	unsigned char filter_value_y[] = {
+		-1, -2, -1, 0, 0, 0, +1, +2, +1
+	};
+	unsigned char *buf_x = new unsigned char[width * height * 3];
+	unsigned char *buf_y = new unsigned char[width * height * 3];
+	for(int i = 0; i < width * height * 3; i++) {
+		buf_x[i] = data[i];
+		buf_y[i] = data[i];
+	}
+	filter(buf_x, filter_value_x);
+	filter(buf_y, filter_value_y);
+	/* G = sqrt(Gx^2 + Gy^2) */
+	for(int i = 0; i < width * height * 3; i++) {
+		data[i] = sqrt(buf_x[i] * buf_x[i] + buf_y[i] * buf_y[i]);
+	}
+	delete[] buf_x;
+	delete[] buf_y;
+}
+
+void ImageProcessing::filter(unsigned char *data, unsigned char *filter)
+{
+	unsigned char *buf = new unsigned char[width * height * 3];
+	for(int i = 0; i < width * height * 3; i++)
+		buf[i] = 0;
+	for(int h = 1; h < height - 1; h++) {
+		for(int w = 1; w < width - 1; w++) {
+			buf[(h * width + w) * 3 + 0] =
+				filter[0] * data[((h - 1) * width + (w - 1)) * 3 + 0] +
+				filter[1] * data[((h - 1) * width + (w    )) * 3 + 0] +
+				filter[2] * data[((h - 1) * width + (w + 1)) * 3 + 0] +
+				filter[3] * data[((h    ) * width + (w - 1)) * 3 + 0] +
+				filter[4] * data[((h    ) * width + (w    )) * 3 + 0] +
+				filter[5] * data[((h    ) * width + (w + 1)) * 3 + 0] +
+				filter[6] * data[((h + 1) * width + (w - 1)) * 3 + 0] +
+				filter[7] * data[((h + 1) * width + (w    )) * 3 + 0] +
+				filter[8] * data[((h + 1) * width + (w + 1)) * 3 + 0];
+			buf[(h * width + w) * 3 + 1] =
+				filter[0] * data[((h - 1) * width + (w - 1)) * 3 + 1] +
+				filter[1] * data[((h - 1) * width + (w    )) * 3 + 1] +
+				filter[2] * data[((h - 1) * width + (w + 1)) * 3 + 1] +
+				filter[3] * data[((h    ) * width + (w - 1)) * 3 + 1] +
+				filter[4] * data[((h    ) * width + (w    )) * 3 + 1] +
+				filter[5] * data[((h    ) * width + (w + 1)) * 3 + 1] +
+				filter[6] * data[((h + 1) * width + (w - 1)) * 3 + 1] +
+				filter[7] * data[((h + 1) * width + (w    )) * 3 + 1] +
+				filter[8] * data[((h + 1) * width + (w + 1)) * 3 + 1];
+			buf[(h * width + w) * 3 + 2] =
+				filter[0] * data[((h - 1) * width + (w - 1)) * 3 + 2] +
+				filter[1] * data[((h - 1) * width + (w    )) * 3 + 2] +
+				filter[2] * data[((h - 1) * width + (w + 1)) * 3 + 2] +
+				filter[3] * data[((h    ) * width + (w - 1)) * 3 + 2] +
+				filter[4] * data[((h    ) * width + (w    )) * 3 + 2] +
+				filter[5] * data[((h    ) * width + (w + 1)) * 3 + 2] +
+				filter[6] * data[((h + 1) * width + (w - 1)) * 3 + 2] +
+				filter[7] * data[((h + 1) * width + (w    )) * 3 + 2] +
+				filter[8] * data[((h + 1) * width + (w + 1)) * 3 + 2];
 		}
 	}
 	for(int i = 0; i < width * height; i++)
