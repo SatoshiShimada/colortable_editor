@@ -52,7 +52,7 @@ public slots:
 	void applyColorTable(void);
 	void clearCurrentBitmap(void);
 	void imageAndOperation(void);
-	void sobel(void);
+	void sobel(unsigned char);
 signals:
 	void updatedImage(void);
 	void mousePressSignal(int, int);

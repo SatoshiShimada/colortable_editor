@@ -12,7 +12,7 @@
 #include "paint.h"
 #include "labeling_image.h"
 
-Interface::Interface() : QMainWindow(), isSetColorTable(true), isClickPixMode(false), isClickColorTableMode(true), isDeletePixMode(true), isSelectRegionMode(false), width(320), height(240), smallImageWidth(width / 2), smallImageHeight(height / 2), listFileIndex(0), categories(5)
+Interface::Interface() : QMainWindow(), filterColorFlag(1), isSetColorTable(true), isClickPixMode(false), isClickColorTableMode(true), isDeletePixMode(true), isSelectRegionMode(false), width(320), height(240), smallImageWidth(width / 2), smallImageHeight(height / 2), listFileIndex(0), categories(5)
 {
 	setAcceptDrops(true);
 	createWindow();
@@ -47,10 +47,14 @@ void Interface::createWindow(void)
 	deletePixModeRadioButton  = new QRadioButton("Delete");
 	writePixModeRadioButton   = new QRadioButton("Write");
 	selectRegionRadioButton   = new QRadioButton("Select");
+	filterRedCheckBox         = new QCheckBox("Red");
+	filterGreenCheckBox       = new QCheckBox("Green");
+	filterBlueCheckBox        = new QCheckBox("Blue");
 	changeClickModeGroupBox   = new QGroupBox("Click mode");
 	colortableGroupBox        = new QGroupBox("color table");
 	imageGroupBox             = new QGroupBox("image");
 	imageProcessingGroupBox   = new QGroupBox("Image Processing");
+	filterColorGroupBox       = new QGroupBox("Filter colors");
 	loadListFileButton        = new QPushButton("Load List File");
 	nextImageButton           = new QPushButton("Next Image");
 	clearImageButton          = new QPushButton("Clear");
@@ -87,6 +91,7 @@ void Interface::createWindow(void)
 	buttonLayout              = new QVBoxLayout;
 	colortableLayout          = new QVBoxLayout;
 	imageProcessingLayout     = new QVBoxLayout;
+	filterColorLayout         = new QVBoxLayout;
 	imageLayout               = new QVBoxLayout;
 	ballSmallImageLayout      = new QVBoxLayout;
 	fieldSmallImageLayout     = new QVBoxLayout;
@@ -182,15 +187,21 @@ void Interface::createWindow(void)
 	imageProcessingLayout->addWidget(imageSobelButton);
 	imageProcessingGroupBox->setLayout(imageProcessingLayout);
 
+	filterColorLayout->addWidget(filterRedCheckBox);
+	filterColorLayout->addWidget(filterGreenCheckBox);
+	filterColorLayout->addWidget(filterBlueCheckBox);
+	filterColorGroupBox->setLayout(filterColorLayout);
+
 	//labelLayout->addWidget(imageGroupBox, 1, 1);
 	//labelLayout->addWidget(colortableGroupBox, 1, 2);
 	//labelLayout->addWidget(selectCategoriesComboBox, 2, 1);
 	labelLayout->addWidget(imageProcessingGroupBox, 1, 1);
 	labelLayout->addWidget(changeClickModeGroupBox, 1, 2);
-	labelLayout->addWidget(marginSizeLabel, 2, 1);
-	labelLayout->addWidget(marginSizeSlider, 2, 2);
-	labelLayout->addWidget(editPixSizeLabel, 3, 1);
-	labelLayout->addWidget(editPixSizeSlider, 3, 2);
+	labelLayout->addWidget(filterColorGroupBox, 2, 1);
+	labelLayout->addWidget(marginSizeLabel, 3, 1);
+	labelLayout->addWidget(marginSizeSlider, 3, 2);
+	labelLayout->addWidget(editPixSizeLabel, 4, 1);
+	labelLayout->addWidget(editPixSizeSlider, 4, 2);
 
 	superimposeButtonsLayout->addWidget(superimposeLeftButton);
 	superimposeButtonsLayout->addWidget(superimposeRightButton);
@@ -340,6 +351,9 @@ void Interface::connection(void)
 	QObject::connect(robotSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(robotCategorySelectedSlot()));
 	QObject::connect(superimposeLeftButton, SIGNAL(clicked(bool)), this, SLOT(superimposeLeftSlot()));
 	QObject::connect(superimposeRightButton, SIGNAL(clicked(bool)), this, SLOT(superimposeRightSlot()));
+	QObject::connect(filterRedCheckBox, SIGNAL(stateChanged(int)), this, SLOT(filterColorRedSlot()));
+	QObject::connect(filterGreenCheckBox, SIGNAL(stateChanged(int)), this, SLOT(filterColorGreenSlot()));
+	QObject::connect(filterBlueCheckBox, SIGNAL(stateChanged(int)), this, SLOT(filterColorBlueSlot()));
 }
 
 void Interface::loadListFileSlot(void)
@@ -555,7 +569,7 @@ void Interface::imageExtractSelectedRegionsSlot(void)
 
 void Interface::imageSobelSlot(void)
 {
-	labelingimage->sobel();
+	labelingimage->sobel(filterColorFlag);
 }
 
 void Interface::ballCategorySelectedSlot(void)
@@ -622,5 +636,32 @@ void Interface::superimposeLeftSlot(void)
 
 void Interface::superimposeRightSlot(void)
 {
+}
+
+void Interface::filterColorRedSlot(void)
+{
+	if(filterRedCheckBox->isChecked()) {
+		filterColorFlag |= FILTER_COLOR_RED;
+	} else {
+		filterColorFlag &= ~FILTER_COLOR_RED;
+	}
+}
+
+void Interface::filterColorGreenSlot(void)
+{
+	if(filterGreenCheckBox->isChecked()) {
+		filterColorFlag |= FILTER_COLOR_GREEN;
+	} else {
+		filterColorFlag &= ~FILTER_COLOR_GREEN;
+	}
+}
+
+void Interface::filterColorBlueSlot(void)
+{
+	if(filterBlueCheckBox->isChecked()) {
+		filterColorFlag |= FILTER_COLOR_BLUE;
+	} else {
+		filterColorFlag &= ~FILTER_COLOR_BLUE;
+	}
 }
 

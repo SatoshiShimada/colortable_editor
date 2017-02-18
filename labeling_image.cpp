@@ -263,9 +263,9 @@ void LabelingImage::imageAndOperation(void)
 	setImageColor(labelData.getCurrentColorData());
 }
 
-void LabelingImage::sobel(void)
+void LabelingImage::sobel(unsigned char flag)
 {
-	labelData.sobel();
+	labelData.sobel(flag);
 	setImageColor(labelData.getCurrentColorData());
 }
 

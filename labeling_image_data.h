@@ -39,7 +39,7 @@ public:
 	void selectRegion(int, int);
 	void extractSelectedRegions(void);
 	void imageAndOperation(void);
-	void sobel(void);
+	void sobel(unsigned char);
 	unsigned char *original_data;
 	unsigned char *color_data;
 	std::vector<unsigned char *> bitmap_data;

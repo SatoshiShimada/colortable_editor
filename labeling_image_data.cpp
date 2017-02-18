@@ -230,10 +230,10 @@ void LabelingImageData::imageAndOperation(void)
 	}
 }
 
-void LabelingImageData::sobel(void)
+void LabelingImageData::sobel(unsigned char flag)
 {
 	for(int i = 0; i < width * height * 3; i++)
 		color_data[i] = original_data[i];
-	imageprocessing.sobelDrivative(color_data);
+	imageprocessing.sobelDrivative(color_data, flag);
 }
 

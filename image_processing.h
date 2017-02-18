@@ -2,6 +2,13 @@
 #ifndef __IMAGEPROCESSING_H__
 #define __IMAGEPROCESSING_H__
 
+enum {
+	FILTER_COLOR = 1,
+	FILTER_COLOR_RED = 2,
+	FILTER_COLOR_GREEN = 4,
+	FILTER_COLOR_BLUE = 8,
+};
+
 class ImageProcessing
 {
 public:
@@ -14,7 +21,7 @@ public:
 	void labelingWithSize(unsigned char *, unsigned int);
 	void eliminateIsolatedPixel(unsigned char *);
 	void fill(unsigned char *);
-	void sobelDrivative(unsigned char *);
+	void sobelDrivative(unsigned char *, unsigned char);
 protected:
 	int width;
 	int height;

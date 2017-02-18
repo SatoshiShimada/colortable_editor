@@ -290,7 +290,7 @@ void ImageProcessing::fill(unsigned char *data)
 	delete[] buf;
 }
 
-void ImageProcessing::sobelDrivative(unsigned char *data)
+void ImageProcessing::sobelDrivative(unsigned char *data, unsigned char flag)
 {
 	unsigned char filter_value_x[] = {
 		-1, 0, +1, -2, 0, +2, -1, 0, +1
@@ -309,6 +309,19 @@ void ImageProcessing::sobelDrivative(unsigned char *data)
 	/* G = sqrt(Gx^2 + Gy^2) */
 	for(int i = 0; i < width * height * 3; i++) {
 		data[i] = std::max<unsigned char>(0, std::min<unsigned char>(255, sqrt(buf_x[i] * buf_x[i] + buf_y[i] * buf_y[i])));
+	}
+	if(flag | FILTER_COLOR) {
+		if(!(flag & FILTER_COLOR_RED))
+			for(int i = 0; i < width * height; i++)
+				data[i * 3 + 0] = 0;
+		if(!(flag & FILTER_COLOR_GREEN))
+			for(int i = 0; i < width * height; i++)
+				data[i * 3 + 1] = 0;
+		if(!(flag & FILTER_COLOR_BLUE))
+			for(int i = 0; i < width * height; i++)
+				data[i * 3 + 2] = 0;
+	} else {
+		/* gray scale */
 	}
 	delete[] buf_x;
 	delete[] buf_y;

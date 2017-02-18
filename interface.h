@@ -25,6 +25,8 @@ class Interface : public QMainWindow
 {
 	Q_OBJECT
 
+private:
+	unsigned char filterColorFlag;
 protected:
 	void connection(void);
 	void createWindow(void);
@@ -68,6 +70,7 @@ protected:
 	QGroupBox *colortableGroupBox;
 	QGroupBox *imageGroupBox;
 	QGroupBox *imageProcessingGroupBox;
+	QGroupBox *filterColorGroupBox;
 	QLabel *image;
 	QLabel *filenameLabel;
 	QLabel *marginSizeLabel;
@@ -89,6 +92,9 @@ protected:
 	QRadioButton *deletePixModeRadioButton;
 	QRadioButton *writePixModeRadioButton;
 	QRadioButton *selectRegionRadioButton;
+	QCheckBox *filterRedCheckBox;
+	QCheckBox *filterGreenCheckBox;
+	QCheckBox *filterBlueCheckBox;
 	QPushButton *loadListFileButton;
 	QPushButton *nextImageButton;
 	QPushButton *clearImageButton;
@@ -124,6 +130,7 @@ protected:
 	QVBoxLayout *buttonLayout;
 	QVBoxLayout *colortableLayout;
 	QVBoxLayout *imageProcessingLayout;
+	QVBoxLayout *filterColorLayout;
 	QVBoxLayout *imageLayout;
 	QVBoxLayout *ballSmallImageLayout;
 	QVBoxLayout *fieldSmallImageLayout;
@@ -184,6 +191,9 @@ private slots:
 	void robotCategorySelectedSlot(void);
 	void superimposeLeftSlot(void);
 	void superimposeRightSlot(void);
+	void filterColorRedSlot(void);
+	void filterColorGreenSlot(void);
+	void filterColorBlueSlot(void);
 };
 
 #endif //__INTERFACE_H__
