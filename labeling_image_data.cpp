@@ -237,3 +237,20 @@ void LabelingImageData::sobel(unsigned char flag)
 	imageprocessing.sobelDrivative(color_data, flag);
 }
 
+unsigned char *LabelingImageData::getCheckImageData(void)
+{
+	unsigned char *data = getCurrentData();
+	for(int i = 0; i < width * height; i++) {
+		if(data[i] != 0) {
+			color_data[i * 3 + 0] = 255;
+			color_data[i * 3 + 1] = 0;
+			color_data[i * 3 + 2] = 0;
+		} else {
+			color_data[i * 3 + 0] = original_data[i * 3 + 0];
+			color_data[i * 3 + 1] = original_data[i * 3 + 1];
+			color_data[i * 3 + 2] = original_data[i * 3 + 2];
+		}
+	}
+	return color_data;
+}
+

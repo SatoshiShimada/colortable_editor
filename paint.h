@@ -31,6 +31,7 @@ public slots:
 	void resetPixmapArea(void);
 	void savePixmapImage(const char *);
 	void loadPixmapImage(const char *);
+	void setPixImage(const unsigned char *);
 signals:
 	void mousePressSignal(int, int);
 	void mouseReleaseSignal(int, int);

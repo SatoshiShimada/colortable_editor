@@ -636,6 +636,7 @@ void Interface::superimposeLeftSlot(void)
 
 void Interface::superimposeRightSlot(void)
 {
+	paintarea->setPixImage(labelingimage->getCheckImageData());
 }
 
 void Interface::filterColorRedSlot(void)

@@ -269,3 +269,8 @@ void LabelingImage::sobel(unsigned char flag)
 	setImageColor(labelData.getCurrentColorData());
 }
 
+unsigned char *LabelingImage::getCheckImageData(void)
+{
+	return labelData.getCheckImageData();
+}
+

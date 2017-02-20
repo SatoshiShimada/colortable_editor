@@ -65,3 +65,19 @@ void PaintArea::loadPixmapImage(const char *filename)
 	this->update();
 }
 
+void PaintArea::setPixImage(const unsigned char *data)
+{
+	QImage image(width, height, QImage::Format_RGB32);
+	for(int y = 0; y < height; y++) {
+		for(int x = 0; x < width; x++) {
+			image.setPixel(x, y, qRgb(
+				(int)data[(y * width + x) * 3 + 0],
+				(int)data[(y * width + x) * 3 + 1],
+				(int)data[(y * width + x) * 3 + 2]));
+		}
+	}
+	*mainPixmap = QPixmap::fromImage(image);
+	this->setPixmap(*mainPixmap);
+	this->update();
+}
+

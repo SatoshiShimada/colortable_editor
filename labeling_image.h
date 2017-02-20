@@ -28,6 +28,7 @@ public:
 	void setImage(const unsigned char *);
 	void setImageColor(const unsigned char *);
 	void getSmallImage(unsigned char *, int);
+	unsigned char *getCheckImageData(void);
 protected:
 	void mousePressEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);
