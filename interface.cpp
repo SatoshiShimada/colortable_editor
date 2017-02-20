@@ -112,7 +112,7 @@ void Interface::createWindow(void)
 
 	editPixSizeSlider->setTickPosition(QSlider::TicksBelow);
 	editPixSizeSlider->setOrientation(Qt::Horizontal);
-	editPixSizeSlider->setRange(1, 10);
+	editPixSizeSlider->setRange(0, 10);
 	editPixSizeLabel->setText("Edit Pixel size: 1");
 
 	selectCategoriesComboBox->addItem(QString("Ball"));
