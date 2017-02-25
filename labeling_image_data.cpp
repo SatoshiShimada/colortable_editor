@@ -147,7 +147,7 @@ void LabelingImageData::exportImage(unsigned char *output_image)
 
 	for(int i = 0; i < width * height * 3; i++)
 		output_image[i] = 0;
-	for(int num = 0; num < index_list.size(); num++) {
+	for(unsigned int num = 0; num < index_list.size(); num++) {
 		for(int i = 0; i < width * height; i++) {
 			if(bitmap_data[num][i] != 0) {
 				output_image[i * 3 + 0] = color_lists[num][0];
@@ -211,9 +211,9 @@ void LabelingImageData::selectRegion(int x, int y)
 void LabelingImageData::extractSelectedRegions(void)
 {
 	unsigned char map[0xff];
-	for(int i = 0; i < sizeof(map); i++)
+	for(unsigned int i = 0; i < sizeof(map); i++)
 		map[i] = 0;
-	for(int i = 0; i < selected_regions.size(); i++)
+	for(unsigned int i = 0; i < selected_regions.size(); i++)
 		map[selected_regions[i]] = selected_regions[i];
 	for(int i = 0; i < width * height; i++)
 		bitmap_data[currentIndex][i] = map[bitmap_data[currentIndex][i]];
