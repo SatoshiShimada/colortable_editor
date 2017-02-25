@@ -64,7 +64,7 @@ protected:
 	QAction *dilationAction;
 	QAction *labelingAction;
 	QAction *eliminateIsolatedPixelAction;
-	QAction *fillIsolatedPointAction;
+	QAction *expandIsolatedPointAction;
 	QAction *extractRegionAction;
 	QGroupBox *changeClickModeGroupBox;
 	QGroupBox *colortableGroupBox;
@@ -111,7 +111,7 @@ protected:
 	QPushButton *imageDilationButton;
 	QPushButton *imageLabelingButton;
 	QPushButton *imageEliminateIsolatedPixelButton;
-	QPushButton *imageFillButton;
+	QPushButton *imageExpandButton;
 	QPushButton *imageExtractSelectedRegionsButton;
 	QPushButton *imageSobelButton;
 	QPushButton *ballSmallImageButton;
@@ -181,7 +181,7 @@ private slots:
 	void imageDilationSlot(void);
 	void imageLabelingSlot(void);
 	void imageEliminatedIsolatedPixelSlot(void);
-	void imageFillSlot(void);
+	void imageExpandSlot(void);
 	void imageExtractSelectedRegionsSlot(void);
 	void imageSobelSlot(void);
 	void ballCategorySelectedSlot(void);

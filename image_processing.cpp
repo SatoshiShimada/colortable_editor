@@ -261,7 +261,7 @@ void ImageProcessing::eliminateIsolatedPixel(unsigned char *data)
 	delete[] buf;
 }
 
-void ImageProcessing::fill(unsigned char *data)
+void ImageProcessing::expand(unsigned char *data)
 {
 	unsigned char *buf = new unsigned char[width * height];
 	for(int h = 0; h < height; h++) {

@@ -167,9 +167,9 @@ void LabelingImage::eliminateIsolatedPixel(void)
 	setImage(labelData.getCurrentData());
 }
 
-void LabelingImage::fill(void)
+void LabelingImage::expand(void)
 {
-	labelData.fill();
+	labelData.expand();
 	setImage(labelData.getCurrentData());
 }
 

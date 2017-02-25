@@ -27,7 +27,7 @@ public:
 	void dilation(void);
 	void labeling(void);
 	void eliminateIsolatedPixel(void);
-	void fill(void);
+	void expand(void);
 	void setIndex(int);
 	void setMargin(int);
 	void exportImage(unsigned char *);

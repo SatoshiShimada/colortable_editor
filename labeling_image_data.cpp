@@ -59,9 +59,9 @@ void LabelingImageData::eliminateIsolatedPixel(void)
 	imageprocessing.eliminateIsolatedPixel(getCurrentData());
 }
 
-void LabelingImageData::fill(void)
+void LabelingImageData::expand(void)
 {
-	imageprocessing.fill(getCurrentData());
+	imageprocessing.expand(getCurrentData());
 }
 
 void LabelingImageData::loadColorTable(const char *filename)

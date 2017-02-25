@@ -23,7 +23,7 @@ public:
 	void dilation(void);
 	void labeling(void);
 	void eliminateIsolatedPixel(void);
-	void fill(void);
+	void expand(void);
 	void extractSelectedRegion(void);
 	void setImage(const unsigned char *);
 	void setImageColor(const unsigned char *);

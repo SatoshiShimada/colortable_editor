@@ -71,7 +71,7 @@ void Interface::createWindow(void)
 	imageDilationButton       = new QPushButton("Dilation");
 	imageLabelingButton       = new QPushButton("Labeling");
 	imageEliminateIsolatedPixelButton = new QPushButton("Isolated Pixel");
-	imageFillButton           = new QPushButton("Fill");
+	imageExpandButton           = new QPushButton("Expand");
 	imageExtractSelectedRegionsButton = new QPushButton("Extract Region");
 	imageSobelButton          = new QPushButton("Sobel");
 	ballSmallImageButton      = new QPushButton("Ball");
@@ -182,7 +182,7 @@ void Interface::createWindow(void)
 	imageProcessingLayout->addWidget(imageDilationButton);
 	imageProcessingLayout->addWidget(imageLabelingButton);
 	imageProcessingLayout->addWidget(imageEliminateIsolatedPixelButton);
-	imageProcessingLayout->addWidget(imageFillButton);
+	imageProcessingLayout->addWidget(imageExpandButton);
 	imageProcessingLayout->addWidget(imageExtractSelectedRegionsButton);
 	imageProcessingLayout->addWidget(imageSobelButton);
 	imageProcessingGroupBox->setLayout(imageProcessingLayout);
@@ -240,7 +240,7 @@ void Interface::createMenus(void)
 	imageprocessingMenu->addAction(dilationAction);
 	imageprocessingMenu->addAction(labelingAction);
 	imageprocessingMenu->addAction(eliminateIsolatedPixelAction);
-	imageprocessingMenu->addAction(fillIsolatedPointAction);
+	imageprocessingMenu->addAction(expandIsolatedPointAction);
 	imageprocessingMenu->addAction(extractRegionAction);
 }
 
@@ -280,8 +280,8 @@ void Interface::createActions(void)
 	connect(labelingAction, SIGNAL(triggered()), this, SLOT(imageLabelingSlot()));
 	eliminateIsolatedPixelAction = new QAction("Eliminate isolated pixel", this);
 	connect(eliminateIsolatedPixelAction, SIGNAL(triggered()), this, SLOT(imageEliminatedIsolatedPixelSlot()));
-	fillIsolatedPointAction = new QAction("Fill isolated point", this);
-	connect(fillIsolatedPointAction, SIGNAL(triggered()), this, SLOT(imageFillSlot()));
+	expandIsolatedPointAction = new QAction("Expand isolated point", this);
+	connect(expandIsolatedPointAction, SIGNAL(triggered()), this, SLOT(imageExpandSlot()));
 	extractRegionAction = new QAction("Extract regions", this);
 	connect(extractRegionAction, SIGNAL(triggered()), this, SLOT(imageExtractSelectedRegionsSlot()));
 }
@@ -341,7 +341,7 @@ void Interface::connection(void)
 	QObject::connect(imageDilationButton, SIGNAL(clicked(bool)), this, SLOT(imageDilationSlot()));
 	QObject::connect(imageLabelingButton, SIGNAL(clicked(bool)), this, SLOT(imageLabelingSlot()));
 	QObject::connect(imageEliminateIsolatedPixelButton, SIGNAL(clicked(bool)), this, SLOT(imageEliminatedIsolatedPixelSlot()));
-	QObject::connect(imageFillButton, SIGNAL(clicked(bool)), this, SLOT(imageFillSlot()));
+	QObject::connect(imageExpandButton, SIGNAL(clicked(bool)), this, SLOT(imageExpandSlot()));
 	QObject::connect(imageExtractSelectedRegionsButton, SIGNAL(clicked(bool)), this, SLOT(imageExtractSelectedRegionsSlot()));
 	QObject::connect(imageSobelButton, SIGNAL(clicked(bool)), this, SLOT(imageSobelSlot()));
 	QObject::connect(ballSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(ballCategorySelectedSlot()));
@@ -557,9 +557,9 @@ void Interface::imageEliminatedIsolatedPixelSlot(void)
 	labelingimage->eliminateIsolatedPixel();
 }
 
-void Interface::imageFillSlot(void)
+void Interface::imageExpandSlot(void)
 {
-	labelingimage->fill();
+	labelingimage->expand();
 }
 
 void Interface::imageExtractSelectedRegionsSlot(void)
