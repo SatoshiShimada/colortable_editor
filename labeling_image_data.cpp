@@ -138,9 +138,16 @@ void LabelingImageData::exportImage(unsigned char *output_image)
 		{ 255, 255,   0 },
 		{ 255, 255, 255 },
 	};
+	std::vector<int> index_list;
+	index_list.push_back(index_field);
+	index_list.push_back(index_white);
+	index_list.push_back(index_goalpole);
+	index_list.push_back(index_robot);
+	index_list.push_back(index_ball);
+
 	for(int i = 0; i < width * height * 3; i++)
 		output_image[i] = 0;
-	for(int num = 0; num < category_num; num++) {
+	for(int num = 0; num < index_list.size(); num++) {
 		for(int i = 0; i < width * height; i++) {
 			if(bitmap_data[num][i] != 0) {
 				output_image[i * 3 + 0] = color_lists[num][0];

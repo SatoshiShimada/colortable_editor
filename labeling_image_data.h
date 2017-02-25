@@ -54,6 +54,14 @@ protected:
 	ColorTable colortable;
 	ImageProcessing imageprocessing;
 	table tableValue(int);
+public:
+	enum {
+		index_ball,
+		index_field,
+		index_white,
+		index_goalpole,
+		index_robot,
+	} object_index;
 };
 
 #endif //__LABELINGIMAGEDATA_H__

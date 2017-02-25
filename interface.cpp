@@ -574,27 +574,27 @@ void Interface::imageSobelSlot(void)
 
 void Interface::ballCategorySelectedSlot(void)
 {
-	labelingimage->setIndex(0);
+	labelingimage->setIndex(LabelingImageData::index_ball);
 }
 
 void Interface::fieldCategorySelectedSlot(void)
 {
-	labelingimage->setIndex(1);
+	labelingimage->setIndex(LabelingImageData::index_field);
 }
 
 void Interface::whitelineCategorySelectedSlot(void)
 {
-	labelingimage->setIndex(2);
+	labelingimage->setIndex(LabelingImageData::index_white);
 }
 
 void Interface::goalpoleCategorySelectedSlot(void)
 {
-	labelingimage->setIndex(3);
+	labelingimage->setIndex(LabelingImageData::index_goalpole);
 }
 
 void Interface::robotCategorySelectedSlot(void)
 {
-	labelingimage->setIndex(4);
+	labelingimage->setIndex(LabelingImageData::index_robot);
 }
 
 void Interface::getSmallImages(void)
