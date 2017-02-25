@@ -130,7 +130,7 @@ loop:
 			unsigned int num1 = lookup_table[i].first;
 			unsigned int num2 = lookup_table[i].second;
 			bool found = false;
-			for(int j = 0; j < list.size(); j++) {
+			for(unsigned int j = 0; j < list.size(); j++) {
 				if(num1 == list[j]) {
 					list.push_back(num2);
 					found = true;
