@@ -22,6 +22,7 @@ public:
 	void eliminateIsolatedPixel(unsigned char *);
 	void expand(unsigned char *);
 	void sobelDrivative(unsigned char *, unsigned char);
+	void closingAtROI(unsigned char *, int, int, int, int);
 protected:
 	int width;
 	int height;

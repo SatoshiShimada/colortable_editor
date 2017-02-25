@@ -371,3 +371,57 @@ void ImageProcessing::filter(unsigned char *data, unsigned char *filter)
 	delete[] buf;
 }
 
+void ImageProcessing::closingAtROI(unsigned char *data, int startx, int starty, int endx, int endy)
+{
+	if(startx > endx) { int swap = startx; startx = endx; endx = swap; }
+	if(starty > endy) { int swap = starty; starty = endy; endy = swap; }
+	if(startx < 0) startx = 0;
+	if(endx > width) endx = width;
+	if(starty < 0) starty = 0;
+	if(endy > height) endy = height;
+	const int buf_size = (endx - startx) * (endy - starty);
+	unsigned char *buf = new unsigned char [buf_size];
+	for(int i = 0; i < buf_size; i++)
+		buf[i] = 0;
+	/* dilation */
+	for(int h = starty; h < endy; h++) {
+		for(int w = startx; w < endx; w++) {
+			int wdec = std::max<int>(w - 1, 0);
+			int winc = std::min<int>(w + 1, width - 1);
+			int hdec = std::max<int>(h - 1, 0);
+			int hinc = std::min<int>(h + 1, height - 1);
+			unsigned char value = 1;
+			if(data[h * width + w] != 0) {
+				buf[hdec * width + w   ] = value;
+				buf[h    * width + wdec] = value;
+				buf[h    * width + w   ] = value;
+				buf[h    * width + winc] = value;
+				buf[hinc * width + w   ] = value;
+			}
+		}
+	}
+	/* erosion */
+	for(int h = starty; h < endy; h++) {
+		for(int w = startx; w < endx; w++) {
+			int wdec = std::max<int>(w - 1, 0);
+			int winc = std::min<int>(w + 1, width - 1);
+			int hdec = std::max<int>(h - 1, 0);
+			int hinc = std::min<int>(h + 1, height - 1);
+			unsigned char p1 = data[hdec * width + w   ];
+			unsigned char p2 = data[h    * width + wdec];
+			unsigned char p3 = data[h    * width + w   ];
+			unsigned char p4 = data[h    * width + winc];
+			unsigned char p5 = data[hinc * width + w   ];
+			if(p1 && p2 && p3 && p4 && p5) {
+				buf[h * width + w] = 1;
+			} else {
+				buf[h * width + w] = 0;
+			}
+		}
+	}
+	for(int h = starty; h < endy; h++)
+		for(int w = startx; w < endx; w++)
+			data[h * width + w] = buf[h * (endx - startx) + w];
+	delete[] buf;
+}
+
