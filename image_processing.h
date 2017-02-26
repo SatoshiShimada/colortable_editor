@@ -26,10 +26,11 @@ public:
 protected:
 	int width;
 	int height;
+	double red_weight, green_weight, blue_weight;
 	const unsigned int lookup_table_size;
 	unsigned int size_threshold;
 	void labelingProcess(unsigned int *);
-	void filter(unsigned char *, unsigned char *);
+	void filter(unsigned char *, int *);
 };
 
 #endif //__IMAGEPROCESSING_H__

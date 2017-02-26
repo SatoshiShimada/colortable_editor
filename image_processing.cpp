@@ -8,7 +8,7 @@
 
 #include "image_processing.h"
 
-ImageProcessing::ImageProcessing(int width, int height) : width(width), height(height), lookup_table_size(0xff * sizeof(int) /* max number of sizeof(int) byte */), size_threshold(1)
+ImageProcessing::ImageProcessing(int width, int height) : width(width), height(height), red_weight(0.2929), green_weight(0.5870), blue_weight(0.1140), lookup_table_size(0xff * sizeof(int) /* max number of sizeof(int) byte */), size_threshold(1)
 
 {
 }
@@ -292,10 +292,10 @@ void ImageProcessing::expand(unsigned char *data)
 
 void ImageProcessing::sobelDrivative(unsigned char *data, unsigned char flag)
 {
-	unsigned char filter_value_x[] = {
+	int filter_value_x[] = {
 		-1, 0, +1, -2, 0, +2, -1, 0, +1
 	};
-	unsigned char filter_value_y[] = {
+	int filter_value_y[] = {
 		-1, -2, -1, 0, 0, 0, +1, +2, +1
 	};
 	unsigned char *buf_x = new unsigned char[width * height * 3];
@@ -327,9 +327,9 @@ void ImageProcessing::sobelDrivative(unsigned char *data, unsigned char flag)
 	delete[] buf_y;
 }
 
-void ImageProcessing::filter(unsigned char *data, unsigned char *filter)
+void ImageProcessing::filter(unsigned char *data, int *filter)
 {
-	unsigned char *buf = new unsigned char[width * height * 3];
+	int *buf = new int[width * height * 3];
 	for(int i = 0; i < width * height * 3; i++)
 		buf[i] = 0;
 	for(int h = 1; h < height - 1; h++) {
@@ -367,7 +367,7 @@ void ImageProcessing::filter(unsigned char *data, unsigned char *filter)
 		}
 	}
 	for(int i = 0; i < width * height * 3; i++)
-		data[i] = buf[i];
+		data[i] = (unsigned char)(std::min<int>(std::max<int>(buf[i] / 2 + 128, 0), 256));
 	delete[] buf;
 }
 
