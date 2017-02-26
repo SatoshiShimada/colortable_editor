@@ -54,6 +54,7 @@ public slots:
 	void clearCurrentBitmap(void);
 	void imageAndOperation(void);
 	void sobel(unsigned char);
+	void closingAtROI(int, int, int, int);
 signals:
 	void updatedImage(void);
 	void mousePressSignal(int, int);

@@ -114,6 +114,7 @@ protected:
 	QPushButton *imageExpandButton;
 	QPushButton *imageExtractSelectedRegionsButton;
 	QPushButton *imageSobelButton;
+	QPushButton *imageFillRegionButton;
 	QPushButton *ballSmallImageButton;
 	QPushButton *fieldSmallImageButton;
 	QPushButton *whitelineSmallImageButton;
@@ -143,6 +144,7 @@ protected:
 	bool isClickColorTableMode;
 	bool isDeletePixMode;
 	bool isSelectRegionMode;
+	bool isClickSelectPoint;
 	int width;
 	int height;
 	int smallImageWidth;
@@ -150,6 +152,7 @@ protected:
 	int listFileIndex;
 	const int categories;
 	std::vector<std::string> listFile;
+	std::vector<int> clickPointList;
 public:
 	Interface();
 	~Interface();
@@ -184,6 +187,7 @@ private slots:
 	void imageExpandSlot(void);
 	void imageExtractSelectedRegionsSlot(void);
 	void imageSobelSlot(void);
+	void imageFillRegionSlot(void);
 	void ballCategorySelectedSlot(void);
 	void fieldCategorySelectedSlot(void);
 	void whitelineCategorySelectedSlot(void);

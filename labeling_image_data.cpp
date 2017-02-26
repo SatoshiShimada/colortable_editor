@@ -261,3 +261,8 @@ unsigned char *LabelingImageData::getCheckImageData(void)
 	return color_data;
 }
 
+void LabelingImageData::closingAtROI(int startx, int starty, int endx, int endy)
+{
+	imageprocessing.closingAtROI(bitmap_data[currentIndex], startx, starty, endx, endy);
+}
+

@@ -40,6 +40,7 @@ public:
 	void extractSelectedRegions(void);
 	void imageAndOperation(void);
 	void sobel(unsigned char);
+	void closingAtROI(int, int, int, int);
 	unsigned char *getCheckImageData(void);
 	unsigned char *original_data;
 	unsigned char *color_data;

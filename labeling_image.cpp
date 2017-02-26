@@ -274,3 +274,9 @@ unsigned char *LabelingImage::getCheckImageData(void)
 	return labelData.getCheckImageData();
 }
 
+void LabelingImage::closingAtROI(int startx, int starty, int endx, int endy)
+{
+	labelData.closingAtROI(startx, starty, endx, endy);
+	setImage(labelData.getCurrentData());
+}
+

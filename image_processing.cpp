@@ -376,52 +376,51 @@ void ImageProcessing::closingAtROI(unsigned char *data, int startx, int starty, 
 	if(startx > endx) { int swap = startx; startx = endx; endx = swap; }
 	if(starty > endy) { int swap = starty; starty = endy; endy = swap; }
 	if(startx < 0) startx = 0;
-	if(endx > width) endx = width;
+	if(endx > width - 1) endx = width - 1;
 	if(starty < 0) starty = 0;
-	if(endy > height) endy = height;
-	const int buf_size = (endx - startx) * (endy - starty);
-	unsigned char *buf = new unsigned char [buf_size];
+	if(endy > height - 1) endy = height - 1;
+	unsigned char value = 1;
+	const int buf_width = endx - startx + 1;
+	const int buf_height = endy - starty + 1;
+	const int buf_size = buf_width * buf_height;
+	unsigned char *buf = new unsigned char[buf_size];
 	for(int i = 0; i < buf_size; i++)
 		buf[i] = 0;
 	/* dilation */
-	for(int h = starty; h < endy; h++) {
-		for(int w = startx; w < endx; w++) {
+	for(int h = 0; h < buf_height; h++) {
+		for(int w = 0; w < buf_width; w++) {
 			int wdec = std::max<int>(w - 1, 0);
-			int winc = std::min<int>(w + 1, width - 1);
+			int winc = std::min<int>(w + 1, buf_width - 1);
 			int hdec = std::max<int>(h - 1, 0);
-			int hinc = std::min<int>(h + 1, height - 1);
-			unsigned char value = 1;
-			if(data[h * width + w] != 0) {
-				buf[hdec * width + w   ] = value;
-				buf[h    * width + wdec] = value;
-				buf[h    * width + w   ] = value;
-				buf[h    * width + winc] = value;
-				buf[hinc * width + w   ] = value;
+			int hinc = std::min<int>(h + 1, buf_height - 1);
+			if(data[(h + starty) * width + (w + startx)] != 0) {
+				buf[hdec * buf_width + w   ] = value;
+				buf[h    * buf_width + wdec] = value;
+				buf[h    * buf_width + w   ] = value;
+				buf[h    * buf_width + winc] = value;
+				buf[hinc * buf_width + w   ] = value;
 			}
 		}
 	}
 	/* erosion */
-	for(int h = starty; h < endy; h++) {
-		for(int w = startx; w < endx; w++) {
+	for(int h = 0; h < buf_height; h++) {
+		for(int w = 0; w < buf_width; w++) {
 			int wdec = std::max<int>(w - 1, 0);
-			int winc = std::min<int>(w + 1, width - 1);
+			int winc = std::min<int>(w + 1, buf_width - 1);
 			int hdec = std::max<int>(h - 1, 0);
-			int hinc = std::min<int>(h + 1, height - 1);
-			unsigned char p1 = data[hdec * width + w   ];
-			unsigned char p2 = data[h    * width + wdec];
-			unsigned char p3 = data[h    * width + w   ];
-			unsigned char p4 = data[h    * width + winc];
-			unsigned char p5 = data[hinc * width + w   ];
+			int hinc = std::min<int>(h + 1, buf_height - 1);
+			unsigned char p1 = buf[hdec * buf_width + w   ];
+			unsigned char p2 = buf[h    * buf_width + wdec];
+			unsigned char p3 = buf[h    * buf_width + w   ];
+			unsigned char p4 = buf[h    * buf_width + winc];
+			unsigned char p5 = buf[hinc * buf_width + w   ];
 			if(p1 && p2 && p3 && p4 && p5) {
-				buf[h * width + w] = 1;
+				data[(h + starty) * width + (w + startx)] = value;
 			} else {
-				buf[h * width + w] = 0;
+				data[(h + starty) * width + (w + startx)] = 0;
 			}
 		}
 	}
-	for(int h = starty; h < endy; h++)
-		for(int w = startx; w < endx; w++)
-			data[h * width + w] = buf[h * (endx - startx) + w];
 	delete[] buf;
 }
 

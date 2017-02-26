@@ -12,7 +12,7 @@
 #include "paint.h"
 #include "labeling_image.h"
 
-Interface::Interface() : QMainWindow(), filterColorFlag(1), isSetColorTable(true), isClickPixMode(false), isClickColorTableMode(true), isDeletePixMode(true), isSelectRegionMode(false), width(320), height(240), smallImageWidth(width / 2), smallImageHeight(height / 2), listFileIndex(0), categories(5)
+Interface::Interface() : QMainWindow(), filterColorFlag(1), isSetColorTable(true), isClickPixMode(false), isClickColorTableMode(true), isDeletePixMode(true), isSelectRegionMode(false), isClickSelectPoint(false), width(320), height(240), smallImageWidth(width / 2), smallImageHeight(height / 2), listFileIndex(0), categories(5)
 {
 	setAcceptDrops(true);
 	createWindow();
@@ -74,6 +74,7 @@ void Interface::createWindow(void)
 	imageExpandButton           = new QPushButton("Expand");
 	imageExtractSelectedRegionsButton = new QPushButton("Extract Region");
 	imageSobelButton          = new QPushButton("Sobel");
+	imageFillRegionButton     = new QPushButton("Fill region");
 	ballSmallImageButton      = new QPushButton("Ball");
 	fieldSmallImageButton     = new QPushButton("Field");
 	whitelineSmallImageButton = new QPushButton("White line");
@@ -185,6 +186,7 @@ void Interface::createWindow(void)
 	imageProcessingLayout->addWidget(imageExpandButton);
 	imageProcessingLayout->addWidget(imageExtractSelectedRegionsButton);
 	imageProcessingLayout->addWidget(imageSobelButton);
+	imageProcessingLayout->addWidget(imageFillRegionButton);
 	imageProcessingGroupBox->setLayout(imageProcessingLayout);
 
 	filterColorLayout->addWidget(filterRedCheckBox);
@@ -344,6 +346,7 @@ void Interface::connection(void)
 	QObject::connect(imageExpandButton, SIGNAL(clicked(bool)), this, SLOT(imageExpandSlot()));
 	QObject::connect(imageExtractSelectedRegionsButton, SIGNAL(clicked(bool)), this, SLOT(imageExtractSelectedRegionsSlot()));
 	QObject::connect(imageSobelButton, SIGNAL(clicked(bool)), this, SLOT(imageSobelSlot()));
+	QObject::connect(imageFillRegionButton, SIGNAL(clicked(bool)), this, SLOT(imageFillRegionSlot()));
 	QObject::connect(ballSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(ballCategorySelectedSlot()));
 	QObject::connect(fieldSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(fieldCategorySelectedSlot()));
 	QObject::connect(whitelineSmallImageButton, SIGNAL(clicked(bool)), this, SLOT(whitelineCategorySelectedSlot()));
@@ -518,7 +521,15 @@ void Interface::selectRegionModeSlot(void)
 
 void Interface::mousePressSlot(int x, int y)
 {
-	if(isClickColorTableMode) {
+	if(isClickSelectPoint) {
+		clickPointList.push_back(x);
+		clickPointList.push_back(y);
+		if(clickPointList.size() == 4) {
+			labelingimage->closingAtROI(clickPointList[0], clickPointList[1], clickPointList[2], clickPointList[3]);
+			clickPointList.clear();
+			isClickSelectPoint = false;
+		}
+	} else if(isClickColorTableMode) {
 		if(isSetColorTable)
 			labelingimage->setBitColorTable(x, y);
 		else
@@ -570,6 +581,12 @@ void Interface::imageExtractSelectedRegionsSlot(void)
 void Interface::imageSobelSlot(void)
 {
 	labelingimage->sobel(filterColorFlag);
+}
+
+void Interface::imageFillRegionSlot(void)
+{
+	isClickSelectPoint = true;
+	clickPointList.clear();
 }
 
 void Interface::ballCategorySelectedSlot(void)
