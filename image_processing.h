@@ -14,6 +14,7 @@ class ImageProcessing
 public:
 	ImageProcessing(int, int);
 	~ImageProcessing();
+	void toGray(unsigned char *);
 	void erosion(unsigned char *);
 	void dilation(unsigned char *);
 	void labeling(unsigned char *);

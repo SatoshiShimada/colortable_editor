@@ -17,6 +17,17 @@ ImageProcessing::~ImageProcessing()
 {
 }
 
+void ImageProcessing::toGray(unsigned char *data)
+{
+	unsigned char gray;
+	for(int i = 0; i < height * width; i++) {
+		gray = (unsigned char)std::ceil(red_weight * data[i * 3 + 0] + green_weight * data[i * 3 + 1] + blue_weight * data[i * 3 + 2]);
+		data[i * 3 + 0] = gray;
+		data[i * 3 + 1] = gray;
+		data[i * 3 + 2] = gray;
+	}
+}
+
 void ImageProcessing::erosion(unsigned char *data)
 {
 	unsigned char *buf = new unsigned char[width * height];
