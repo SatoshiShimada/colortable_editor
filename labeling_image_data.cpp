@@ -149,10 +149,10 @@ void LabelingImageData::exportImage(unsigned char *output_image)
 		output_image[i] = 0;
 	for(unsigned int num = 0; num < index_list.size(); num++) {
 		for(int i = 0; i < width * height; i++) {
-			if(bitmap_data[num][i] != 0) {
-				output_image[i * 3 + 0] = color_lists[num][0];
-				output_image[i * 3 + 1] = color_lists[num][1];
-				output_image[i * 3 + 2] = color_lists[num][2];
+			if(bitmap_data[index_list[num]][i] != 0) {
+				output_image[i * 3 + 0] = color_lists[index_list[num]][0];
+				output_image[i * 3 + 1] = color_lists[index_list[num]][1];
+				output_image[i * 3 + 2] = color_lists[index_list[num]][2];
 			}
 		}
 	}
