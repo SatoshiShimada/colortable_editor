@@ -42,6 +42,7 @@ void Interface::createWindow(void)
 	goalpoleSmallImagePixmap  = new QPixmap(smallImageWidth, smallImageHeight);
 	robotSmallImagePixmap     = new QPixmap(smallImageWidth, smallImageHeight);
 	selectCategoriesComboBox  = new QComboBox();
+	chooseFileComboBox        = new QComboBox();
 	setClickModeRadioButton   = new QRadioButton("Set");
 	clearClickModeRadioButton = new QRadioButton("Clear");
 	deletePixModeRadioButton  = new QRadioButton("Delete");
@@ -209,7 +210,7 @@ void Interface::createWindow(void)
 	superimposeButtonsLayout->addWidget(superimposeRightButton);
 
 	mainLayout->addLayout(labelLayout, 1, 1, 3, 1);
-	mainLayout->addWidget(currentFileNameLineEdit, 1, 2, 1, 3);
+	mainLayout->addWidget(chooseFileComboBox, 1, 2, 1, 3);
 	mainLayout->addWidget(labelingimage, 2, 2);
 	mainLayout->addLayout(superimposeButtonsLayout, 2, 3);
 	mainLayout->addWidget(paintarea, 2, 4);
@@ -327,6 +328,7 @@ void Interface::connection(void)
 	QObject::connect(editPixSizeSlider, SIGNAL(sliderReleased()), this, SLOT(editPixSizeChanged()));
 	QObject::connect(selectCategoriesComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setObjectType()));
 	QObject::connect(selectCategoriesComboBox, SIGNAL(highlighted(int)), this, SLOT(setObjectType()));
+	QObject::connect(chooseFileComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setCurrentIndexSlot(int)));
 	QObject::connect(setClickModeRadioButton, SIGNAL(clicked(bool)), this, SLOT(setClickModeSlot()));
 	QObject::connect(clearClickModeRadioButton, SIGNAL(clicked(bool)), this, SLOT(clearClickModeSlot()));
 	QObject::connect(deletePixModeRadioButton, SIGNAL(clicked(bool)), this, SLOT(deletePixModeSlot()));
@@ -367,6 +369,7 @@ void Interface::loadListFileSlot(void)
 	listFile.clear();
 	while(std::getline(listFileStream, line)) {
 		listFile.push_back(line);
+		chooseFileComboBox->addItem(QString::fromStdString(line));
 	}
 	if(listFile.size() != 0) {
 		loadImage(listFile[0].c_str());
@@ -382,7 +385,7 @@ void Interface::nextImageSlot(void)
 	if(listFileIndex >= listFile.size())
 		listFileIndex = std::max<int>(listFile.size() - 1, 0);
 	loadImage(listFile[listFileIndex].c_str());
-	currentFileNameLineEdit->setText(QString(listFile[listFileIndex].c_str()));
+	chooseFileComboBox->setCurrentIndex(listFileIndex);
 	labelingimage->applyColorTable();
 }
 
@@ -477,6 +480,16 @@ void Interface::drawImage(void)
 void Interface::setObjectType(void)
 {
 	labelingimage->setIndex(selectCategoriesComboBox->currentIndex());
+}
+
+void Interface::setCurrentIndexSlot(int index)
+{
+	listFileIndex = index;
+	if(listFileIndex >= listFile.size())
+		listFileIndex = std::max<int>(listFile.size() - 1, 0);
+	loadImage(listFile[listFileIndex].c_str());
+	chooseFileComboBox->setCurrentIndex(listFileIndex);
+	labelingimage->applyColorTable();
 }
 
 void Interface::setClickModeSlot(void)

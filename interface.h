@@ -87,6 +87,7 @@ protected:
 	QPixmap *goalpoleSmallImagePixmap;
 	QPixmap *robotSmallImagePixmap;
 	QComboBox *selectCategoriesComboBox;
+	QComboBox *chooseFileComboBox;
 	QRadioButton *setClickModeRadioButton;
 	QRadioButton *clearClickModeRadioButton;
 	QRadioButton *deletePixModeRadioButton;
@@ -173,6 +174,7 @@ private slots:
 	void editPixSizeChanged(void);
 	void drawImage(void);
 	void setObjectType(void);
+	void setCurrentIndexSlot(int);
 	void setClickModeSlot(void);
 	void clearClickModeSlot(void);
 	void deletePixModeSlot(void);
