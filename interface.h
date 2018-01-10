@@ -17,6 +17,14 @@
 #include <QMimeData>
 #include <QString>
 #include <QFileDialog>
+#include <QGroupBox>
+#include <QComboBox>
+#include <QRadioButton>
+#include <QCheckBox>
+#include <QSlider>
+#include <QWidget>
+#include <QMenu>
+#include <QMenuBar>
 
 #include "paint.h"
 #include "labeling_image.h"
